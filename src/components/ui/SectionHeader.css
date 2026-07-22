@@ -1,0 +1,24 @@
+.section-header {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+  max-width: 62ch;
+}
+.section-header--center {
+  align-items: center;
+  text-align: center;
+  margin-inline: auto;
+}
+.section-header__title {
+  font-size: var(--fs-h2);
+}
+.section-header__intro {
+  font-size: var(--fs-lead);
+  color: var(--text-muted);
+}
+.section-header--invert .section-header__title {
+  color: var(--color-cream);
+}
+.section-header--invert .section-header__intro {
+  color: #a7b0ab;
+}
