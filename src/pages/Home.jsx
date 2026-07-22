@@ -160,7 +160,7 @@ export default function Home() {
                 <span>Avant</span>
               </div>
               <div className="home-ba__shot">
-                <Img imageKey="gallery-1" alt="Sourire après traitement" variant={2} />
+                <Img imageKey="after" alt="Sourire après traitement" variant={2} />
                 <span className="is-after">Après</span>
               </div>
             </div>

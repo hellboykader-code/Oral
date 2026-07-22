@@ -18,6 +18,7 @@ export const IMAGES = {
   'intro-1': base + 'intro-1.webp',
   'why-us': base + 'why-us.webp',
   'before-after': base + 'before-after.webp',
+  'after': base + 'after.webp',
   'gallery-1': base + 'gallery-1.webp',
   'gallery-2': base + 'gallery-2.webp',
   'gallery-3': base + 'gallery-3.webp',
@@ -27,6 +28,9 @@ export const IMAGES = {
   'about-clinic': base + 'about-clinic.webp',
   'about-doctor': base + 'about-doctor.webp',
   'about-team': base + 'about-team.webp',
+  'doctor-2': base + 'doctor-2.webp',
+  'doctor-3': base + 'doctor-3.webp',
+  'staff-1': base + 'staff-1.webp',
   // Soins (une clé par soin)
   'soin-detartrage': base + 'soin-detartrage.webp',
   'soin-bilan': base + 'soin-bilan.webp',

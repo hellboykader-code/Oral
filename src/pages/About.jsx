@@ -12,9 +12,9 @@ import './About.css';
 // Équipe médicale (placeholders — à personnaliser par le praticien)
 const equipe = [
   { name: 'Dr. [Nom du praticien]', role: 'Chirurgien-dentiste — Fondateur', image: 'about-doctor' },
-  { name: 'Dr. [Nom]', role: 'Spécialiste en orthodontie', image: 'about-team' },
-  { name: '[Nom]', role: 'Assistant(e) dentaire', image: 'temoin-2' },
-  { name: '[Nom]', role: 'Secrétaire médical(e)', image: 'temoin-4' },
+  { name: 'Dr. [Nom]', role: 'Spécialiste en orthodontie', image: 'doctor-2' },
+  { name: 'Dr. [Nom]', role: 'Chirurgien oral', image: 'doctor-3' },
+  { name: '[Nom]', role: 'Assistant(e) dentaire', image: 'staff-1' },
 ];
 
 const diplomes = [
