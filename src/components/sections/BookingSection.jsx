@@ -1,4 +1,5 @@
 import { useState } from 'react';
+import { Link } from 'react-router-dom';
 import { motion } from 'framer-motion';
 import Button from '../ui/Button.jsx';
 import Reveal from '../ui/Reveal.jsx';
@@ -81,6 +82,9 @@ export default function BookingSection() {
               <Button type="submit" size="lg" className="booking__submit">
                 Réserver
               </Button>
+              <Link className="booking__full" to="/rendez-vous">
+                Besoin de plus de détails ? Formulaire complet →
+              </Link>
             </form>
           )}
         </motion.div>

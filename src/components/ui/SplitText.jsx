@@ -2,7 +2,7 @@ import { motion } from 'framer-motion';
 
 /**
  * Titre qui apparaît caractère par caractère (flou → net), comme le modèle original.
- * Découpe le texte en mots (insécables) puis en lettres animées en cascade.
+ * Un "\n" dans `text` force un vrai saut de ligne (contrôle précis de la mise en page).
  */
 export default function SplitText({
   text,
@@ -12,7 +12,7 @@ export default function SplitText({
   stagger = 0.028,
 }) {
   const Tag = motion[as] || motion.h1;
-  const words = String(text).split(' ');
+  const lines = String(text).split('\n');
 
   const container = {
     hidden: {},
@@ -31,19 +31,35 @@ export default function SplitText({
   };
 
   return (
-    <Tag className={className} variants={container} initial="hidden" animate="show" aria-label={text}>
-      {words.map((word, wi) => (
-        <span key={wi} style={{ display: 'inline-block', whiteSpace: 'nowrap' }}>
-          {word.split('').map((ch, ci) => (
-            <motion.span
-              key={ci}
-              variants={letter}
-              style={{ display: 'inline-block', willChange: 'transform, filter' }}
+    <Tag
+      className={className}
+      variants={container}
+      initial="hidden"
+      animate="show"
+      aria-label={text.replace(/\n/g, ' ')}
+    >
+      {lines.map((line, li) => (
+        <span key={li} style={{ display: 'block' }}>
+          {line.split(' ').map((word, wi, arr) => (
+            <span
+              key={wi}
+              style={{
+                display: 'inline-block',
+                whiteSpace: 'nowrap',
+                marginRight: wi < arr.length - 1 ? '0.28em' : 0,
+              }}
             >
-              {ch}
-            </motion.span>
+              {word.split('').map((ch, ci) => (
+                <motion.span
+                  key={ci}
+                  variants={letter}
+                  style={{ display: 'inline-block', willChange: 'transform, filter' }}
+                >
+                  {ch}
+                </motion.span>
+              ))}
+            </span>
           ))}
-          {wi < words.length - 1 && ' '}
         </span>
       ))}
     </Tag>

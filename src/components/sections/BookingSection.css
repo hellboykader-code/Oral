@@ -41,6 +41,19 @@
   width: 100%;
   margin-top: 0.3rem;
 }
+.booking__full {
+  display: inline-block;
+  text-align: center;
+  width: 100%;
+  font-size: 0.9rem;
+  font-weight: 600;
+  color: var(--color-ink);
+  text-decoration: underline;
+  text-underline-offset: 3px;
+}
+.booking__full:hover {
+  color: var(--color-muted);
+}
 
 @media (max-width: 860px) {
   .booking__inner {

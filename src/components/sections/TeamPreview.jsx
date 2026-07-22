@@ -33,10 +33,20 @@ export default function TeamPreview() {
               <figcaption>
                 <span className="team__name">{m.name}</span>
                 <span className="team__role">{m.role}</span>
-                <a href={`tel:${m.phone.replace(/\s/g, '')}`} className="team__phone">
-                  {m.phone}
-                </a>
-                <Button to="/rendez-vous" size="sm" className="team__btn">
+                <div className="team__row">
+                  <a href={`tel:${m.phone.replace(/\s/g, '')}`} className="team__phone">
+                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+                      <path d="M6.5 3.5 9 4l1 3-1.5 1.5a12 12 0 0 0 6 6L15 14l3 1 .5 2.5a2 2 0 0 1-2.2 2.4A16 16 0 0 1 2.1 5.7 2 2 0 0 1 4.5 3.5Z" fill="currentColor" />
+                    </svg>
+                    {m.phone}
+                  </a>
+                  <div className="team__socials" aria-label="Réseaux sociaux">
+                    <a href="#" aria-label="X">𝕏</a>
+                    <a href="#" aria-label="LinkedIn">in</a>
+                    <a href="#" aria-label="Instagram">◎</a>
+                  </div>
+                </div>
+                <Button to="/rendez-vous" className="team__btn">
                   Prendre rendez-vous
                 </Button>
               </figcaption>

@@ -1,8 +1,8 @@
 .hero {
   position: relative;
-  min-height: 100svh;
+  min-height: 90vh;
   display: flex;
-  align-items: flex-end;
+  align-items: center;
   overflow: hidden;
   color: var(--color-cream);
 }
@@ -22,49 +22,56 @@
 .hero__overlay {
   position: absolute;
   inset: 0;
+  /* Dégradé plus léger : l'image reste lumineuse, le texte reste lisible. */
   background: linear-gradient(
       100deg,
-      rgba(13, 27, 21, 0.86) 0%,
-      rgba(13, 27, 21, 0.55) 32%,
-      rgba(13, 27, 21, 0.12) 58%,
-      rgba(13, 27, 21, 0.05) 100%
+      rgba(13, 27, 21, 0.66) 0%,
+      rgba(13, 27, 21, 0.32) 34%,
+      rgba(13, 27, 21, 0.04) 62%,
+      rgba(13, 27, 21, 0) 100%
     ),
-    linear-gradient(to top, rgba(13, 27, 21, 0.6), transparent 40%);
+    linear-gradient(to top, rgba(13, 27, 21, 0.35), transparent 45%);
 }
 
 .hero__inner {
   position: relative;
   z-index: 1;
   width: 100%;
-  padding-top: calc(var(--header-h) + 3rem);
-  padding-bottom: clamp(2rem, 5vw, 3.5rem);
+  padding-top: calc(var(--header-h) + 2.5rem);
+  padding-bottom: clamp(1.5rem, 4vw, 2.5rem);
   display: flex;
   flex-direction: column;
-  gap: clamp(2rem, 5vw, 3.5rem);
+  gap: clamp(1.5rem, 4vw, 2.5rem);
 }
 
 .hero__content {
-  max-width: 20ch;
+  max-width: 34ch;
 }
 .hero__title {
-  font-size: clamp(3rem, 8vw, 6.5rem);
+  font-size: clamp(2.1rem, 4.4vw, 3.6rem);
   font-weight: 600;
-  line-height: 0.98;
+  line-height: 1.04;
   letter-spacing: -0.02em;
   color: #fff;
-  max-width: 14ch;
+}
+/* Chaque ligne du titre reste sur une seule ligne (2 lignes au total). */
+.hero__title > span {
+  white-space: nowrap;
 }
 .hero__lead {
-  margin-top: 1.4rem;
+  margin-top: 1.2rem;
   font-size: var(--fs-lead);
-  color: rgba(255, 255, 255, 0.9);
-  max-width: 46ch;
+  color: rgba(255, 255, 255, 0.92);
+  max-width: 40ch;
 }
 .hero__actions {
   display: flex;
   flex-wrap: wrap;
   gap: 0.9rem;
-  margin-top: 2rem;
+  margin-top: 1.6rem;
+}
+.hero__actions .btn svg {
+  margin-right: -0.1rem;
 }
 
 /* Badge en bas à gauche, superposé sur l'image */

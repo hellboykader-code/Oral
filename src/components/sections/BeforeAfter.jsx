@@ -49,8 +49,7 @@ export default function BeforeAfter() {
 
         <Reveal className="beforeafter__slider">
           <BeforeAfterSlider
-            beforeKey="before-after"
-            afterKey="after"
+            imageKey="soin-couronnes"
             beforeAlt="Sourire avant traitement"
             afterAlt="Sourire après traitement"
           />

@@ -7,11 +7,16 @@ import './BeforeAfterSlider.css';
  * pour révéler l'image « après ». Reproduit l'effet du modèle original.
  */
 export default function BeforeAfterSlider({
+  imageKey,
   beforeKey,
   afterKey,
-  beforeAlt = 'Avant',
-  afterAlt = 'Après',
+  beforeAlt = 'Sourire avant traitement',
+  afterAlt = 'Sourire après traitement',
 }) {
+  // Même sourire des deux côtés : le côté « avant » reçoit un filtre qui
+  // jaunit et ternit les dents, l'« après » reste éclatant. Résultat cohérent.
+  const bKey = imageKey || beforeKey;
+  const aKey = imageKey || afterKey;
   const ref = useRef(null);
   const [pos, setPos] = useState(50);
   const dragging = useRef(false);
@@ -64,7 +69,7 @@ export default function BeforeAfterSlider({
     >
       {/* Après (dessous, pleine largeur) */}
       <div className="ba-slider__img">
-        <Img imageKey={afterKey} alt={afterAlt} variant={2} eager />
+        <Img imageKey={aKey} alt={afterAlt} variant={2} eager />
         <span className="ba-slider__tag ba-slider__tag--after">Après</span>
       </div>
       {/* Avant (dessus, découpé via clip-path pour ne pas déformer l'image) */}
@@ -72,7 +77,7 @@ export default function BeforeAfterSlider({
         className="ba-slider__img ba-slider__img--before"
         style={{ clipPath: `inset(0 ${100 - pos}% 0 0)` }}
       >
-        <Img imageKey={beforeKey} alt={beforeAlt} variant={3} eager />
+        <Img imageKey={bKey} alt={beforeAlt} variant={3} eager />
         <span className="ba-slider__tag ba-slider__tag--before">Avant</span>
       </div>
       {/* Poignée */}

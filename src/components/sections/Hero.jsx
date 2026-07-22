@@ -2,6 +2,7 @@ import { motion } from 'framer-motion';
 import Button from '../ui/Button.jsx';
 import Img from '../ui/Img.jsx';
 import SplitText from '../ui/SplitText.jsx';
+import { site } from '../../data/site.js';
 import './Hero.css';
 
 /**
@@ -24,7 +25,7 @@ export default function Hero() {
       <div className="container hero__inner">
         <div className="hero__content">
           <SplitText
-            text="Des soins dentaires d'exception"
+            text={"Soins dentaires\nd'exception"}
             as="h1"
             className="hero__title"
             delay={0.15}
@@ -33,22 +34,25 @@ export default function Hero() {
             className="hero__lead"
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.7, ease: [0.16, 1, 0.3, 1], delay: 0.9 }}
+            transition={{ duration: 0.7, ease: [0.16, 1, 0.3, 1], delay: 0.8 }}
           >
-            Préparez-vous à sublimer votre sourire avec des soins qui renforcent
-            votre confiance et illuminent votre journée !
+            Sublimez votre sourire avec des soins qui renforcent votre confiance
+            et illuminent votre journée !
           </motion.p>
           <motion.div
             className="hero__actions"
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.7, ease: [0.16, 1, 0.3, 1], delay: 1.05 }}
+            transition={{ duration: 0.7, ease: [0.16, 1, 0.3, 1], delay: 0.95 }}
           >
             <Button to="/rendez-vous" size="lg">
               Prendre rendez-vous
             </Button>
-            <Button to="/nos-soins" variant="light" size="lg">
-              Nos soins
+            <Button href={site.contact.phoneHref} variant="light" size="lg">
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+                <path d="M6.5 3.5 9 4l1 3-1.5 1.5a12 12 0 0 0 6 6L15 14l3 1 .5 2.5a2 2 0 0 1-2.2 2.4A16 16 0 0 1 2.1 5.7 2 2 0 0 1 4.5 3.5Z" fill="currentColor" />
+              </svg>
+              Appeler
             </Button>
           </motion.div>
         </div>

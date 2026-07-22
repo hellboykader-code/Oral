@@ -53,11 +53,11 @@ export const stats = [
   { value: '94%', label: 'Patients satisfaits' },
 ];
 
-// Équipe médicale (placeholders — noms à personnaliser par le praticien)
+// Équipe médicale (noms d'exemple — à personnaliser par le praticien)
 export const equipe = [
-  { name: 'Dr. [Nom]', role: 'Dentisterie esthétique', phone: '+33 1 23 45 67 90', image: 'about-doctor' },
-  { name: 'Dr. [Nom]', role: 'Spécialiste en orthodontie', phone: '+33 1 23 45 67 91', image: 'doctor-2' },
-  { name: 'Dr. [Nom]', role: 'Chirurgien oral', phone: '+33 1 23 45 67 92', image: 'doctor-3' },
+  { name: 'Dr. Camille Lefèvre', role: 'Dentisterie esthétique', phone: '+33 1 23 45 67 90', image: 'about-doctor' },
+  { name: 'Dr. Amélie Grant', role: 'Spécialiste en orthodontie', phone: '+33 1 23 45 67 91', image: 'doctor-2' },
+  { name: 'Dr. Victor Han', role: 'Chirurgien oral', phone: '+33 1 23 45 67 92', image: 'doctor-3' },
 ];
 
 // Étapes du parcours de soin (« Working Process » du modèle original)

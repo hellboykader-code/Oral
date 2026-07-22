@@ -31,8 +31,10 @@
   background: var(--color-accent);
   color: var(--color-accent-ink);
 }
+/* Au survol, le bouton passe au vert foncé (comme le modèle original). */
 .btn--primary:hover {
-  background: #c2f24f;
+  background: var(--color-ink);
+  color: var(--color-cream);
 }
 
 /* Sombre plein */

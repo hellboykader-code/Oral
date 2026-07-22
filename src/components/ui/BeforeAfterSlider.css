@@ -23,6 +23,10 @@
 .ba-slider__img--before {
   will-change: clip-path;
 }
+/* Effet « avant » : dents plus ternes et jaunies sur la même photo. */
+.ba-slider__img--before img {
+  filter: sepia(0.45) saturate(1.15) brightness(0.94) contrast(0.96) hue-rotate(-8deg);
+}
 .ba-slider__tag {
   position: absolute;
   top: 1rem;
