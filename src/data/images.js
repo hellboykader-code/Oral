@@ -9,7 +9,8 @@
 //   public/images/soin-blanchiment.webp → clé "soin-blanchiment"
 // ============================================================
 
-const base = '/images/';
+// Respecte le chemin de base (ex. '/Oral/' sur GitHub Pages, '/' en local).
+const base = import.meta.env.BASE_URL + 'images/';
 
 // Clés attendues → chemin public. Ajoutez/renommez selon vos fichiers.
 export const IMAGES = {

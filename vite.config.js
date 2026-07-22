@@ -3,7 +3,9 @@ import react from '@vitejs/plugin-react'
 
 // Vite : bundling, tree-shaking, minification, code-splitting et Fast Refresh
 // sont fournis nativement. Le plugin React active le Hot Reload / Fast Refresh.
+// Chemin de base : '/' en local, '/Oral/' sur GitHub Pages (défini par le workflow).
 export default defineConfig({
+  base: process.env.VITE_BASE || '/',
   plugins: [react()],
   build: {
     target: 'es2019',

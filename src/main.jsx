@@ -9,7 +9,7 @@ import './styles/global.css';
 // React 18 : createRoot active le rendu concurrent. StrictMode aide au dev.
 ReactDOM.createRoot(document.getElementById('root')).render(
   <React.StrictMode>
-    <BrowserRouter>
+    <BrowserRouter basename={import.meta.env.BASE_URL}>
       <AppProviders>
         <App />
       </AppProviders>
