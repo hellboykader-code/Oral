@@ -7,3 +7,4 @@ dist-ssr
 .env.*
 !.env.example
 _raw_images
+shot-*.png
