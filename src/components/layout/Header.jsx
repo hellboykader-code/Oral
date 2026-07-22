@@ -8,8 +8,8 @@ import Logo from '../ui/Logo.jsx';
 import './Header.css';
 
 /**
- * En-tête collant qui se masque au défilement vers le bas et réapparaît
- * au défilement vers le haut (reveal-on-scroll header).
+ * En-tête « capsule » flottante posée par-dessus le Hero (comme le modèle
+ * original). Se masque au défilement vers le bas, réapparaît vers le haut.
  */
 export default function Header() {
   const [hidden, setHidden] = useState(false);
@@ -19,23 +19,23 @@ export default function Header() {
 
   useMotionValueEvent(scrollY, 'change', (y) => {
     const prev = scrollY.getPrevious() ?? 0;
-    setScrolled(y > 12);
+    setScrolled(y > 30);
     if (menuOpen) return;
-    setHidden(y > prev && y > 240);
+    setHidden(y > prev && y > 300);
   });
 
   return (
     <>
-      <motion.header
-        className={`site-header ${scrolled ? 'is-scrolled' : ''}`}
+      <motion.div
+        className="site-header"
         initial={{ y: 0 }}
-        animate={{ y: hidden ? '-110%' : '0%' }}
+        animate={{ y: hidden ? '-140%' : '0%' }}
         transition={{ duration: 0.4, ease: [0.16, 1, 0.3, 1] }}
       >
-        <div className="container site-header__inner">
+        <div className={`site-header__pill ${scrolled ? 'is-scrolled' : ''}`}>
           <Link to="/" className="site-header__brand" aria-label={site.name}>
             <Logo />
-            <span>{site.name}</span>
+            <span>OralCare</span>
           </Link>
 
           <nav className="site-header__nav" aria-label="Navigation principale">
@@ -48,6 +48,7 @@ export default function Header() {
                   `site-header__link ${isActive ? 'is-active' : ''}`
                 }
               >
+                <span className="site-header__dot" aria-hidden="true">•</span>
                 {l.label}
               </NavLink>
             ))}
@@ -69,7 +70,7 @@ export default function Header() {
             <span />
           </button>
         </div>
-      </motion.header>
+      </motion.div>
 
       <MobileMenu open={menuOpen} onClose={() => setMenuOpen(false)} />
     </>

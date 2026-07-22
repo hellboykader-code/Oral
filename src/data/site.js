@@ -47,10 +47,41 @@ export const navLinks = [
 
 // Chiffres clés de la page d'accueil (adaptés du modèle original)
 export const stats = [
+  { value: '1200+', label: 'Patients suivis' },
   { value: '15+', label: "Années d'expérience" },
-  { value: '1M', label: 'Patients satisfaits' },
-  { value: '98%', label: 'Taux de satisfaction' },
   { value: '21', label: 'Soins proposés' },
+  { value: '94%', label: 'Patients satisfaits' },
+];
+
+// Équipe médicale (placeholders — noms à personnaliser par le praticien)
+export const equipe = [
+  { name: 'Dr. [Nom]', role: 'Dentisterie esthétique', phone: '+33 1 23 45 67 90', image: 'about-doctor' },
+  { name: 'Dr. [Nom]', role: 'Spécialiste en orthodontie', phone: '+33 1 23 45 67 91', image: 'doctor-2' },
+  { name: 'Dr. [Nom]', role: 'Chirurgien oral', phone: '+33 1 23 45 67 92', image: 'doctor-3' },
+];
+
+// Étapes du parcours de soin (« Working Process » du modèle original)
+export const process = [
+  {
+    step: '01',
+    title: 'Prise de rendez-vous',
+    text: "Réservez votre visite en quelques clics et recevez une confirmation immédiate.",
+  },
+  {
+    step: '02',
+    title: 'Consultation & bilan',
+    text: "Nous évaluons votre santé bucco-dentaire et écoutons vos attentes.",
+  },
+  {
+    step: '03',
+    title: 'Plan de soin personnalisé',
+    text: "Un plan de traitement sur mesure, clair et adapté à vos besoins.",
+  },
+  {
+    step: '04',
+    title: 'Traitement & suivi',
+    text: "Des soins doux et précis, avec un accompagnement jusqu'au contrôle final.",
+  },
 ];
 
 // Arguments « Pourquoi nous choisir ? »

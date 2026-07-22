@@ -3,7 +3,6 @@ import PageWrapper from '../components/ui/PageWrapper.jsx';
 import SectionHeader from '../components/ui/SectionHeader.jsx';
 import Reveal from '../components/ui/Reveal.jsx';
 import Img from '../components/ui/Img.jsx';
-import Testimonials from '../components/sections/Testimonials.jsx';
 import CTA from '../components/sections/CTA.jsx';
 import { stats } from '../data/site.js';
 import { staggerParent, fadeUp } from '../lib/motion.js';
@@ -149,7 +148,6 @@ export default function About() {
         </div>
       </section>
 
-      <Testimonials />
       <CTA />
     </PageWrapper>
   );

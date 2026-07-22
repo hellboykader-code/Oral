@@ -1,81 +1,73 @@
-import { motion, useScroll, useTransform } from 'framer-motion';
-import { useRef } from 'react';
+import { motion } from 'framer-motion';
 import Button from '../ui/Button.jsx';
 import Img from '../ui/Img.jsx';
-import { stats } from '../../data/site.js';
-import { staggerParent, fadeUp } from '../../lib/motion.js';
+import SplitText from '../ui/SplitText.jsx';
 import './Hero.css';
 
 /**
- * Section Hero de la page d'accueil.
- * Parallaxe lié au scroll sur le visuel + apparition en cascade du texte.
+ * Hero plein écran : grande image de fond + dégradé + texte blanc superposé.
+ * Titre animé lettre par lettre, badge « Top Dentists & Tech » en bas.
  */
 export default function Hero() {
-  const ref = useRef(null);
-  const { scrollYProgress } = useScroll({
-    target: ref,
-    offset: ['start start', 'end start'],
-  });
-  const y = useTransform(scrollYProgress, [0, 1], ['0%', '18%']);
-  const scale = useTransform(scrollYProgress, [0, 1], [1, 1.12]);
-
   return (
-    <section className="hero" ref={ref}>
+    <section className="hero">
+      <div className="hero__bg">
+        <Img
+          imageKey="hero"
+          alt="Personne souriant chaleureusement à la lumière du soleil"
+          eager
+          className="hero__img"
+        />
+        <div className="hero__overlay" />
+      </div>
+
       <div className="container hero__inner">
-        <motion.div
-          className="hero__content"
-          variants={staggerParent(0.12, 0.1)}
-          initial="hidden"
-          animate="show"
-        >
-          <motion.span className="eyebrow" variants={fadeUp}>
-            Cabinet dentaire · France
-          </motion.span>
-          <motion.h1 className="hero__title" variants={fadeUp}>
-            Sublimez votre sourire avec des soins qui vous redonnent confiance.
-          </motion.h1>
-          <motion.p className="hero__lead" variants={fadeUp}>
-            Des soins dentaires modernes, doux et personnalisés — du contrôle de
-            routine aux traitements les plus avancés, pour protéger votre sourire
-            au quotidien.
+        <div className="hero__content">
+          <SplitText
+            text="Des soins dentaires d'exception"
+            as="h1"
+            className="hero__title"
+            delay={0.15}
+          />
+          <motion.p
+            className="hero__lead"
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.7, ease: [0.16, 1, 0.3, 1], delay: 0.9 }}
+          >
+            Préparez-vous à sublimer votre sourire avec des soins qui renforcent
+            votre confiance et illuminent votre journée !
           </motion.p>
-          <motion.div className="hero__actions" variants={fadeUp}>
+          <motion.div
+            className="hero__actions"
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.7, ease: [0.16, 1, 0.3, 1], delay: 1.05 }}
+          >
             <Button to="/rendez-vous" size="lg">
               Prendre rendez-vous
             </Button>
-            <Button to="/nos-soins" variant="ghost" size="lg">
-              Découvrir nos soins
+            <Button to="/nos-soins" variant="light" size="lg">
+              Nos soins
             </Button>
           </motion.div>
-
-          <motion.dl className="hero__stats" variants={fadeUp}>
-            {stats.map((s) => (
-              <div key={s.label} className="hero__stat">
-                <dt>{s.value}</dt>
-                <dd>{s.label}</dd>
-              </div>
-            ))}
-          </motion.dl>
-        </motion.div>
+        </div>
 
         <motion.div
-          className="hero__media"
-          initial={{ opacity: 0, scale: 0.96 }}
-          animate={{ opacity: 1, scale: 1 }}
-          transition={{ duration: 0.9, ease: [0.16, 1, 0.3, 1], delay: 0.2 }}
+          className="hero__badge"
+          initial={{ opacity: 0, y: 24 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.7, ease: [0.16, 1, 0.3, 1], delay: 1.25 }}
         >
-          <motion.div className="hero__media-inner" style={{ y, scale }}>
-            <Img
-              imageKey="hero"
-              alt="Personne souriant chaleureusement à la lumière du soleil"
-              eager
-              variant={0}
-              className="hero__img"
-            />
-          </motion.div>
-          <div className="hero__badge">
-            <span className="hero__badge-dot" />
-            Nouveaux patients bienvenus
+          <span className="hero__badge-icon" aria-hidden="true">
+            <svg width="22" height="22" viewBox="0 0 24 24" fill="none">
+              <path d="M12 2 4 5v6c0 5 3.4 8.3 8 11 4.6-2.7 8-6 8-11V5l-8-3Z" fill="#0d1b15" />
+              <path d="m9 12 2 2 4-4" stroke="#d1fc71" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
+            </svg>
+          </span>
+          <div>
+            <strong>Praticiens & technologies de pointe</strong>
+            <span>Notre équipe utilise des outils avancés pour des soins précis.</span>
           </div>
         </motion.div>
       </div>

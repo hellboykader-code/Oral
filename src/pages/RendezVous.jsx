@@ -19,6 +19,8 @@ export default function RendezVous() {
     prenom: '',
     telephone: '',
     email: '',
+    date: '',
+    heure: '',
     message: '',
   });
   const [selected, setSelected] = useState([]);
@@ -122,6 +124,18 @@ export default function RendezVous() {
                     <label htmlFor="mail">Email <span className="req">*</span></label>
                     <input id="mail" type="email" value={form.email} onChange={set('email')} autoComplete="email" />
                     {errors.email && <span className="field__err">{errors.email}</span>}
+                  </div>
+                </div>
+
+                {/* Jour et heure souhaités */}
+                <div className="form-row">
+                  <div className="field">
+                    <label htmlFor="rdv-date">Jour souhaité</label>
+                    <input id="rdv-date" type="date" value={form.date} onChange={set('date')} />
+                  </div>
+                  <div className="field">
+                    <label htmlFor="rdv-heure">Heure souhaitée</label>
+                    <input id="rdv-heure" type="time" value={form.heure} onChange={set('heure')} />
                   </div>
                 </div>
 

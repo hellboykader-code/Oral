@@ -1,105 +1,117 @@
 .hero {
-  padding-top: calc(var(--header-h) + clamp(2rem, 5vw, 4rem));
-  padding-bottom: clamp(3rem, 6vw, 5rem);
-  background: radial-gradient(
-      120% 80% at 100% 0%,
-      rgba(209, 252, 113, 0.18),
-      transparent 60%
+  position: relative;
+  min-height: 100svh;
+  display: flex;
+  align-items: flex-end;
+  overflow: hidden;
+  color: var(--color-cream);
+}
+
+/* Image de fond plein écran */
+.hero__bg {
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+}
+.hero__img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: 70% center;
+}
+.hero__overlay {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(
+      100deg,
+      rgba(13, 27, 21, 0.86) 0%,
+      rgba(13, 27, 21, 0.55) 32%,
+      rgba(13, 27, 21, 0.12) 58%,
+      rgba(13, 27, 21, 0.05) 100%
     ),
-    var(--bg);
+    linear-gradient(to top, rgba(13, 27, 21, 0.6), transparent 40%);
 }
+
 .hero__inner {
-  display: grid;
-  grid-template-columns: 1.05fr 0.95fr;
-  gap: clamp(2rem, 5vw, 4rem);
-  align-items: center;
-}
-.hero__content {
+  position: relative;
+  z-index: 1;
+  width: 100%;
+  padding-top: calc(var(--header-h) + 3rem);
+  padding-bottom: clamp(2rem, 5vw, 3.5rem);
   display: flex;
   flex-direction: column;
-  gap: 1.4rem;
+  gap: clamp(2rem, 5vw, 3.5rem);
+}
+
+.hero__content {
+  max-width: 20ch;
 }
 .hero__title {
-  font-size: var(--fs-hero);
-  max-width: 16ch;
+  font-size: clamp(3rem, 8vw, 6.5rem);
+  font-weight: 600;
+  line-height: 0.98;
+  letter-spacing: -0.02em;
+  color: #fff;
+  max-width: 14ch;
 }
 .hero__lead {
+  margin-top: 1.4rem;
   font-size: var(--fs-lead);
-  color: var(--text-muted);
+  color: rgba(255, 255, 255, 0.9);
   max-width: 46ch;
 }
 .hero__actions {
   display: flex;
   flex-wrap: wrap;
   gap: 0.9rem;
-  margin-top: 0.4rem;
-}
-.hero__stats {
-  display: grid;
-  grid-template-columns: repeat(4, auto);
-  gap: 1.6rem 2.4rem;
-  margin-top: 1.6rem;
-  padding-top: 1.6rem;
-  border-top: 1px solid var(--border);
-}
-.hero__stat dt {
-  font-family: var(--font-display);
-  font-size: clamp(1.6rem, 3vw, 2.3rem);
-  font-weight: 700;
-  color: var(--color-ink);
-}
-.hero__stat dd {
-  font-size: 0.85rem;
-  color: var(--text-muted);
+  margin-top: 2rem;
 }
 
-.hero__media {
-  position: relative;
-}
-.hero__media-inner {
-  border-radius: var(--radius-lg);
-  overflow: hidden;
-  box-shadow: var(--shadow-lg);
-  aspect-ratio: 4 / 5;
-  will-change: transform;
-}
-.hero__img {
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
-}
+/* Badge en bas à gauche, superposé sur l'image */
 .hero__badge {
-  position: absolute;
-  bottom: 1.2rem;
-  left: -1rem;
   display: inline-flex;
   align-items: center;
-  gap: 0.5rem;
-  background: var(--color-cream);
-  color: var(--color-ink);
-  font-weight: 600;
-  font-size: 0.9rem;
-  padding: 0.75rem 1.1rem;
-  border-radius: var(--radius-pill);
-  box-shadow: var(--shadow);
+  gap: 0.9rem;
+  max-width: 420px;
+  padding: 1rem 1.3rem;
+  background: rgba(242, 242, 239, 0.14);
+  border: 1px solid rgba(255, 255, 255, 0.22);
+  backdrop-filter: blur(10px);
+  border-radius: var(--radius);
 }
-.hero__badge-dot {
-  width: 9px;
-  height: 9px;
-  border-radius: 50%;
-  background: #35c759;
-  box-shadow: 0 0 0 4px rgba(53, 199, 89, 0.2);
+.hero__badge-icon {
+  flex-shrink: 0;
+  width: 44px;
+  height: 44px;
+  border-radius: 12px;
+  background: var(--color-accent);
+  display: grid;
+  place-items: center;
+}
+.hero__badge strong {
+  display: block;
+  font-family: var(--font-display);
+  font-size: 1.02rem;
+  color: #fff;
+}
+.hero__badge span {
+  font-size: 0.85rem;
+  color: rgba(255, 255, 255, 0.8);
 }
 
-@media (max-width: 900px) {
-  .hero__inner {
-    grid-template-columns: 1fr;
+@media (max-width: 720px) {
+  .hero__img {
+    object-position: 66% center;
   }
-  .hero__media {
-    order: -1;
-    max-width: 460px;
+  .hero__overlay {
+    background: linear-gradient(
+        180deg,
+        rgba(13, 27, 21, 0.5) 0%,
+        rgba(13, 27, 21, 0.35) 30%,
+        rgba(13, 27, 21, 0.75) 100%
+      );
   }
-  .hero__stats {
-    grid-template-columns: repeat(2, 1fr);
+  .hero__badge {
+    max-width: 100%;
   }
 }

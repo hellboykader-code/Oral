@@ -8,6 +8,18 @@ Ce projet et ses contenus sont **en français** (site pour cabinets dentaires en
 France). Rédigez le contenu utilisateur, les libellés et les commentaires en
 français. Le propriétaire de ce dépôt communique en arabe.
 
+## Règles produit (permanentes)
+
+- **Jamais d'avis / témoignages patients** (« client reviews ») sur aucun site.
+  Ne recréez pas de section Testimonials, même si le modèle d'origine en a une.
+- Pages conservées uniquement : **Accueil, Nos soins (21 soins), À propos,
+  Contact, Rendez-vous**. Pas de FAQ, Blog, Team, Legal en pages autonomes.
+- **Fidélité au modèle Framer « Oralcare »** : Hero plein écran (image de fond +
+  texte blanc superposé + titre animé lettre par lettre), en-tête en **capsule
+  blanche flottante** (puces « • », onglet actif en vert), révélations au
+  défilement (texte mot par mot), comparateur **avant/après interactif**.
+- Le formulaire de rendez-vous inclut **jour (date) et heure**.
+
 ## Commandes
 
 ```bash
