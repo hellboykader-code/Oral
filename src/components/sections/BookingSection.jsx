@@ -3,7 +3,7 @@ import { Link } from 'react-router-dom';
 import { motion } from 'framer-motion';
 import Button from '../ui/Button.jsx';
 import Reveal from '../ui/Reveal.jsx';
-import { CATEGORIES } from '../../data/soins.js';
+import { CATEGORIES, soins } from '../../data/soins.js';
 import '../../styles/forms.css';
 import './BookingSection.css';
 
@@ -61,11 +61,19 @@ export default function BookingSection() {
                 </div>
               </div>
               <div className="field">
-                <label htmlFor="b-soin">Soin</label>
+                <label htmlFor="b-soin">Soin souhaité</label>
                 <select id="b-soin" value={form.soin} onChange={set('soin')}>
                   <option value="">Sélectionnez…</option>
-                  {Object.values(CATEGORIES).map((c) => (
-                    <option key={c} value={c}>{c}</option>
+                  {Object.entries(CATEGORIES).map(([key, label]) => (
+                    <optgroup key={key} label={label}>
+                      {soins
+                        .filter((s) => s.category === key)
+                        .map((s) => (
+                          <option key={s.slug} value={s.title}>
+                            {s.title}
+                          </option>
+                        ))}
+                    </optgroup>
                   ))}
                 </select>
               </div>
