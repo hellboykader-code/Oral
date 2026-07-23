@@ -4,17 +4,9 @@ import SectionHeader from '../components/ui/SectionHeader.jsx';
 import Reveal from '../components/ui/Reveal.jsx';
 import Img from '../components/ui/Img.jsx';
 import CTA from '../components/sections/CTA.jsx';
-import { stats } from '../data/site.js';
+import { stats, equipe } from '../data/site.js';
 import { staggerParent, fadeUp } from '../lib/motion.js';
 import './About.css';
-
-// Équipe médicale (placeholders — à personnaliser par le praticien)
-const equipe = [
-  { name: 'Dr. [Nom du praticien]', role: 'Chirurgien-dentiste — Fondateur', image: 'about-doctor' },
-  { name: 'Dr. [Nom]', role: 'Spécialiste en orthodontie', image: 'doctor-2' },
-  { name: 'Dr. [Nom]', role: 'Chirurgien oral', image: 'doctor-3' },
-  { name: '[Nom]', role: 'Assistant(e) dentaire', image: 'staff-1' },
-];
 
 const diplomes = [
   "Docteur en chirurgie dentaire — Université [à compléter]",
@@ -134,13 +126,21 @@ export default function About() {
             viewport={{ once: true, amount: 0.15 }}
           >
             {equipe.map((m, i) => (
-              <motion.figure key={m.role} className="about-team__card" variants={fadeUp}>
+              <motion.figure key={m.name} className="about-team__card" variants={fadeUp}>
                 <div className="about-team__media">
                   <Img imageKey={m.image} alt={m.name} variant={i % 4} />
                 </div>
                 <figcaption>
                   <span className="about-team__name">{m.name}</span>
                   <span className="about-team__role">{m.role}</span>
+                  {m.phone && (
+                    <a
+                      href={`tel:${m.phone.replace(/\s/g, '')}`}
+                      className="about-team__phone"
+                    >
+                      {m.phone}
+                    </a>
+                  )}
                 </figcaption>
               </motion.figure>
             ))}

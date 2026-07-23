@@ -1,5 +1,5 @@
 import { useMemo, useState } from 'react';
-import { motion, AnimatePresence } from 'framer-motion';
+import { motion } from 'framer-motion';
 import PageWrapper from '../components/ui/PageWrapper.jsx';
 import SoinCard from '../components/ui/SoinCard.jsx';
 import CTA from '../components/sections/CTA.jsx';
@@ -52,20 +52,23 @@ export default function Soins() {
             ))}
           </div>
 
+          {/* La clé sur le filtre force un remontage propre + réanimation
+              à chaque changement (robuste, sans transition de layout fragile). */}
           <motion.div
+            key={filter}
             className="soins-grid"
             variants={staggerParent(0.05)}
             initial="hidden"
             animate="show"
           >
-            <AnimatePresence mode="popLayout">
-              {filtered.map((s, i) => (
-                <motion.div key={s.slug} layout exit={{ opacity: 0, scale: 0.95 }}>
-                  <SoinCard soin={s} index={i} />
-                </motion.div>
-              ))}
-            </AnimatePresence>
+            {filtered.map((s, i) => (
+              <SoinCard key={s.slug} soin={s} index={i} />
+            ))}
           </motion.div>
+
+          {filtered.length === 0 && (
+            <p className="soins-empty">Aucun soin dans cette catégorie.</p>
+          )}
         </div>
       </section>
 

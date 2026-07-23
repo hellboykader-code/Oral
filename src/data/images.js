@@ -20,6 +20,9 @@ export const IMAGES = {
   'why-us': base + 'why-us.webp',
   'before-after': base + 'before-after.webp',
   'after': base + 'after.webp',
+  // Comparateur avant/après (deux visuels du modèle original)
+  'before-smile': base + 'before-smile.webp',
+  'after-smile': base + 'after-smile.webp',
   'gallery-1': base + 'gallery-1.webp',
   'gallery-2': base + 'gallery-2.webp',
   'gallery-3': base + 'gallery-3.webp',

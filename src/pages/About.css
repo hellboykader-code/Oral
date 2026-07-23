@@ -156,6 +156,17 @@
   color: var(--text-muted);
   font-size: 0.9rem;
 }
+.about-team__phone {
+  display: inline-block;
+  margin-top: 0.35rem;
+  font-weight: 600;
+  font-size: 0.9rem;
+  color: var(--color-ink);
+  border-bottom: 1.5px solid var(--color-accent);
+}
+.about-team__phone:hover {
+  color: var(--color-muted);
+}
 
 @media (max-width: 1000px) {
   .about-stats {
