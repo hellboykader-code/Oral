@@ -27,6 +27,24 @@ PY
 tar xzf overlay.tgz -C site
 # Retirer pages exclues (Blog / Legal / interne / doublon) — Team conservée (FR)
 rm -rf site/blog site/legal-pages site/seo-report site/index.dup1.html
+# Règles produit : masquer avis patients / blog / FAQ (sections rendues côté client).
+# On cible les data-framer-name (présents dans le DOM même après hydratation).
+python3 - <<'PY'
+import glob, re
+NAMES = ["Reviews","Review","Testimonials","Testimonial","Our Client's Words",
+         "Client's Words","Blog","FAQ","Faq","Innovation",
+         "User 1","User 2","User 3","User 4","User 5","User 6",
+         "Legal Page","Privacy Policy","Terms and Conditions","Utility Page"]
+sel = ",".join('[data-framer-name="%s"]' % n for n in NAMES)
+CSS = '<style id="regles-produit">' + sel + '{display:none !important;}</style>'
+for f in glob.glob('site/**/*.html', recursive=True):
+    t = open(f, encoding='utf-8', errors='ignore').read()
+    t = re.sub(r'<style id="regles-produit">.*?</style>', '', t, flags=re.S)
+    if '</head>' not in t:
+        continue
+    open(f, 'w', encoding='utf-8').write(t.replace('</head>', CSS + '</head>', 1))
+print("CSS règles produit injecté")
+PY
 # Réécriture des chemins absolus -> /Oral/comparaison
 python3 - "$PREFIX" <<'PY'
 import sys,glob,re
