@@ -13,8 +13,7 @@ export default function BeforeAfterSlider({
   beforeAlt = 'Sourire avant traitement',
   afterAlt = 'Sourire après traitement',
 }) {
-  // Même sourire des deux côtés : le côté « avant » reçoit un filtre qui
-  // jaunit et ternit les dents, l'« après » reste éclatant. Résultat cohérent.
+  // Deux vraies photos : « avant » (dents naturelles) et « après » (éclaircies).
   const bKey = imageKey || beforeKey;
   const aKey = imageKey || afterKey;
   const ref = useRef(null);
