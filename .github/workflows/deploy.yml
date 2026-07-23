@@ -32,6 +32,15 @@ jobs:
           VITE_BASE: /Oral/
       # Repli SPA : toute route inconnue sert l'app (React Router)
       - run: cp dist/index.html dist/404.html
+      # --- Site 2 (comparaison) : export Framer OralCare traduit en français ---
+      # Reconstruit depuis le Drive public + fichiers texte FR, publié sous /comparaison/.
+      # continue-on-error : ne doit JAMAIS casser le déploiement du site principal.
+      - name: Build site 2 (comparaison FR)
+        continue-on-error: true
+        run: |
+          bash _site2/build.sh
+          mkdir -p dist/comparaison
+          cp -r _site2/site/* dist/comparaison/ || true
       - uses: actions/upload-pages-artifact@v3
         with:
           path: dist
