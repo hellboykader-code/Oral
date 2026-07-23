@@ -33,9 +33,12 @@ export default function Header() {
         transition={{ duration: 0.4, ease: [0.16, 1, 0.3, 1] }}
       >
         <div className={`site-header__pill ${scrolled ? 'is-scrolled' : ''}`}>
-          <Link to="/" className="site-header__brand" aria-label={site.name}>
-            <Logo />
-            <span>OralCare</span>
+          <Link to="/" className="site-header__brand" aria-label={site.legalName}>
+            <Logo size={34} />
+            <span className="site-header__wordmark">
+              <span className="site-header__name">{site.name}</span>
+              <span className="site-header__brandline">{site.brandline}</span>
+            </span>
           </Link>
 
           <nav className="site-header__nav" aria-label="Navigation principale">

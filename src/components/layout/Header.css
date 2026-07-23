@@ -32,11 +32,27 @@
 .site-header__brand {
   display: inline-flex;
   align-items: center;
-  gap: 0.55rem;
-  font-family: var(--font-display);
-  font-weight: 700;
-  font-size: 1.2rem;
+  gap: 0.6rem;
   color: var(--color-ink);
+}
+.site-header__wordmark {
+  display: flex;
+  flex-direction: column;
+  line-height: 1;
+}
+.site-header__name {
+  font-family: var(--font-display);
+  font-weight: 800;
+  font-size: 1.3rem;
+  letter-spacing: -0.02em;
+}
+.site-header__brandline {
+  font-family: var(--font-body);
+  font-weight: 600;
+  font-size: 0.56rem;
+  letter-spacing: 0.28em;
+  color: var(--text-muted);
+  margin-top: 0.28rem;
 }
 
 /* Liens de navigation parfaitement centrés dans la capsule */

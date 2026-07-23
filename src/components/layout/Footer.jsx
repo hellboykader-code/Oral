@@ -10,7 +10,7 @@ export default function Footer() {
       <div className="container site-footer__grid">
         <div className="site-footer__brand">
           <Link to="/" className="site-footer__logo">
-            <Logo />
+            <Logo onDark />
             <span>{site.name}</span>
           </Link>
           <p className="site-footer__tagline">{site.tagline}</p>

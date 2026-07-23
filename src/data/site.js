@@ -5,7 +5,9 @@
 // ============================================================
 
 export const site = {
-  name: 'Cabinet Dentaire',
+  name: 'Éclat',
+  legalName: 'Éclat — Cabinet dentaire',
+  brandline: 'CABINET DENTAIRE',
   tagline: 'Votre sourire entre de bonnes mains',
   // --- Coordonnées (À REMPLACER par le praticien) ---
   contact: {
