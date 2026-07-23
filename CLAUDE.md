@@ -15,10 +15,16 @@ français. Le propriétaire de ce dépôt communique en arabe.
 - Pages conservées uniquement : **Accueil, Nos soins (21 soins), À propos,
   Contact, Rendez-vous**. Pas de FAQ, Blog, Team, Legal en pages autonomes.
 - **Fidélité au modèle Framer « Oralcare »** : Hero plein écran (image de fond +
-  texte blanc superposé + titre animé lettre par lettre), en-tête en **capsule
-  blanche flottante** (puces « • », onglet actif en vert), révélations au
-  défilement (texte mot par mot), comparateur **avant/après interactif**.
+  texte blanc superposé + titre animé lettre par lettre), en-tête en **barre
+  blanche pleine largeur** (coins doux 8px, ombre discrète `0 2px 4px
+  rgba(13,27,21,.2)`, sans puces, onglet actif en pastille verte, bouton
+  d'action foncé), révélations au défilement (texte mot par mot), comparateur
+  **avant/après interactif**.
 - Le formulaire de rendez-vous inclut **jour (date) et heure**.
+- **Logo professionnel pour chaque site.** Concevez toujours un logo soigné et
+  sur mesure (icône + typographie de marque) pour chaque cabinet — jamais un
+  simple texte brut ni un placeholder générique. Il doit rester cohérent avec la
+  palette et les polices du site.
 
 ## Commandes
 
