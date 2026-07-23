@@ -1,6 +1,6 @@
 .hero {
   position: relative;
-  min-height: 90vh;
+  min-height: 100vh;
   display: flex;
   align-items: center;
   overflow: hidden;
@@ -45,13 +45,14 @@
 }
 
 .hero__content {
-  max-width: 34ch;
+  max-width: min(92vw, 50rem);
 }
+/* Titre monumental, fidèle au modèle : 96px, graisse medium, interlettre serré */
 .hero__title {
-  font-size: clamp(2.1rem, 4.4vw, 3.6rem);
-  font-weight: 600;
-  line-height: 1.04;
-  letter-spacing: -0.02em;
+  font-size: clamp(3rem, 8.2vw, 6rem);
+  font-weight: 500;
+  line-height: 1;
+  letter-spacing: -0.03em;
   color: #fff;
 }
 /* Chaque ligne du titre reste sur une seule ligne (2 lignes au total). */

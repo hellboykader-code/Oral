@@ -9,17 +9,17 @@ export const site = {
   legalName: 'Éclat — Cabinet dentaire',
   brandline: 'CABINET DENTAIRE',
   tagline: 'Votre sourire entre de bonnes mains',
-  // --- Coordonnées (À REMPLACER par le praticien) ---
+  // --- Coordonnées FICTIVES (version démo — aucune donnée réelle) ---
   contact: {
-    phone: '+33 1 23 45 67 89',
-    phoneHref: 'tel:+33123456789',
-    email: 'contact@cabinet-dentaire.fr',
-    address: '12 Rue de l’Exemple, 75000 Paris, France',
-    // Emplacement Google Maps — remplacez par l'URL d'intégration de votre cabinet.
-    // (Google Maps → Partager → Intégrer une carte → copier l'URL du src)
+    phone: '+33 1 84 25 63 10',
+    phoneHref: 'tel:+33184256310',
+    email: 'contact@eclat-dentaire.fr',
+    address: '24 Avenue des Marronniers, 75009 Paris, France',
+    // Carte de démonstration (emplacement fictif, centre de Paris).
     mapsEmbed:
-      'https://www.google.com/maps?q=12+Rue+de+Rivoli,+75004+Paris&output=embed',
-    mapsLink: 'https://www.google.com/maps/search/?api=1&query=Cabinet+Dentaire+Paris',
+      'https://www.google.com/maps?q=Avenue+des+Marronniers+Paris&output=embed',
+    mapsLink:
+      'https://www.google.com/maps/search/?api=1&query=%C3%89clat+Cabinet+dentaire+Paris',
   },
   social: [
     { label: 'Instagram', href: '#' },
@@ -55,11 +55,11 @@ export const stats = [
   { value: '94%', label: 'Patients satisfaits' },
 ];
 
-// Équipe médicale (noms d'exemple — à personnaliser par le praticien)
+// Équipe médicale — noms FICTIFS (version démo)
 export const equipe = [
-  { name: 'Dr. Camille Lefèvre', role: 'Dentisterie esthétique', phone: '+33 1 23 45 67 90', image: 'about-doctor' },
-  { name: 'Dr. Amélie Grant', role: 'Spécialiste en orthodontie', phone: '+33 1 23 45 67 91', image: 'doctor-2' },
-  { name: 'Dr. Victor Han', role: 'Chirurgien oral', phone: '+33 1 23 45 67 92', image: 'doctor-3' },
+  { name: 'Dr. Camille Lefèvre', role: 'Dentisterie esthétique', phone: '+33 1 84 25 63 11', image: 'about-doctor' },
+  { name: 'Dr. Amélie Rousseau', role: 'Spécialiste en orthodontie', phone: '+33 1 84 25 63 12', image: 'doctor-2' },
+  { name: 'Dr. Julien Mercier', role: 'Chirurgien oral', phone: '+33 1 84 25 63 13', image: 'doctor-3' },
 ];
 
 // Étapes du parcours de soin (« Working Process » du modèle original)
