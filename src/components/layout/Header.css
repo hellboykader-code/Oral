@@ -4,31 +4,29 @@
   z-index: 100;
   display: flex;
   justify-content: center;
-  padding: clamp(0.7rem, 1.6vw, 1.1rem) clamp(0.8rem, 3vw, 1.5rem);
+  /* 16px du haut, marges latérales larges — fidèle au modèle Oralcare */
+  padding: 16px clamp(1rem, 4.8vw, 70px);
   pointer-events: none;
 }
 
-/* La capsule blanche flottante */
+/* La barre blanche flottante (rectangle à coins doux, PAS une pilule) */
 .site-header__pill {
   position: relative;
   pointer-events: auto;
   width: 100%;
-  max-width: var(--container);
+  max-width: 1360px;
   display: flex;
   align-items: center;
   gap: 1.5rem;
-  height: 66px;
-  padding: 0 0.7rem 0 1.4rem;
-  background: rgba(255, 255, 255, 0.9);
-  backdrop-filter: blur(16px);
-  border: 1px solid rgba(255, 255, 255, 0.6);
-  border-radius: var(--radius-pill);
-  box-shadow: 0 10px 40px rgba(13, 27, 21, 0.12);
-  transition: box-shadow 0.3s var(--ease-out), background-color 0.3s;
+  height: 64px;
+  padding: 0 0.6rem 0 1.5rem;
+  background: var(--color-white);
+  border-radius: 8px;
+  box-shadow: 0 2px 4px rgba(13, 27, 21, 0.2);
+  transition: box-shadow 0.3s var(--ease-out);
 }
 .site-header__pill.is-scrolled {
-  background: rgba(255, 255, 255, 0.96);
-  box-shadow: 0 12px 44px rgba(13, 27, 21, 0.18);
+  box-shadow: 0 4px 14px rgba(13, 27, 21, 0.16);
 }
 
 .site-header__brand {
@@ -56,27 +54,20 @@
 .site-header__link {
   display: inline-flex;
   align-items: center;
-  gap: 0.35rem;
-  padding: 0.5rem 0.95rem;
+  padding: 0.45rem 0.9rem;
   font-weight: 500;
+  font-size: 0.95rem;
   color: var(--color-ink);
-  border-radius: var(--radius-pill);
+  border-radius: 6px;
   transition: background-color 0.2s var(--ease-out), color 0.2s;
 }
-.site-header__dot {
-  color: var(--color-muted);
-  font-size: 1.1em;
-  line-height: 0;
-  transition: color 0.2s;
-}
 .site-header__link:hover {
-  background: rgba(13, 27, 21, 0.05);
+  color: #4c6b4a;
 }
-.site-header__link.is-active {
+/* Onglet actif : pastille verte, texte foncé — signature du modèle */
+.site-header__link.is-active,
+.site-header__link.is-active:hover {
   background: var(--color-accent);
-  color: var(--color-ink);
-}
-.site-header__link.is-active .site-header__dot {
   color: var(--color-ink);
 }
 

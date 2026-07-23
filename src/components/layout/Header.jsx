@@ -48,14 +48,13 @@ export default function Header() {
                   `site-header__link ${isActive ? 'is-active' : ''}`
                 }
               >
-                <span className="site-header__dot" aria-hidden="true">•</span>
                 {l.label}
               </NavLink>
             ))}
           </nav>
 
           <div className="site-header__cta">
-            <Button to="/rendez-vous" size="sm">
+            <Button to="/rendez-vous" size="sm" variant="dark">
               Prendre rendez-vous
             </Button>
           </div>
