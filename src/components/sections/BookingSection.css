@@ -24,10 +24,11 @@
      sémantiques pour que libellés et champs restent lisibles. */
   --text: var(--color-ink);
   --text-muted: var(--color-muted);
+  --bg: var(--color-cream);
   --bg-elevated: #fff;
   --border: var(--color-line);
   color: var(--color-ink);
-  background: var(--color-cream);
+  background: #fff;
   border-radius: var(--radius-lg);
   padding: clamp(1.6rem, 4vw, 2.4rem);
   box-shadow: var(--shadow-lg);

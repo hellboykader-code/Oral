@@ -126,9 +126,15 @@
 /* Équipe */
 .about-team__grid {
   display: grid;
-  grid-template-columns: repeat(4, 1fr);
-  gap: 1.4rem;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 1.8rem;
   margin-top: 3rem;
+  max-width: 900px;
+  margin-inline: auto;
+}
+/* Légendes centrées sous chaque photo (nom, rôle, téléphone) */
+.about-team__card {
+  text-align: center;
 }
 .about-team__media {
   border-radius: var(--radius);

@@ -9,7 +9,7 @@ import { staggerParent, fadeUp } from '../lib/motion.js';
 import './About.css';
 
 const diplomes = [
-  "Docteur en chirurgie dentaire — Université [à compléter]",
+  'Docteur en chirurgie dentaire — Université Paris-Cité',
   'Diplôme universitaire d’implantologie',
   'Formation continue en dentisterie esthétique',
   'Membre de l’Ordre national des chirurgiens-dentistes',
@@ -93,9 +93,9 @@ export default function About() {
           </Reveal>
           <div className="about-doctor__content">
             <SectionHeader
-              eyebrow="Votre praticien"
-              title="Dr. [Nom du praticien]"
-              intro="Chirurgien-dentiste passionné, le Dr. [Nom] met son expertise et son écoute au service de votre santé bucco-dentaire, avec une approche douce et personnalisée."
+              eyebrow="Votre praticienne"
+              title="Dr. Camille Lefèvre"
+              intro="Chirurgienne-dentiste passionnée et fondatrice du cabinet, le Dr. Camille Lefèvre met son expertise et son écoute au service de votre santé bucco-dentaire, avec une approche douce et personnalisée."
               invert
             />
             <div className="about-doctor__diplomas">
