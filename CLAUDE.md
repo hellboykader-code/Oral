@@ -26,8 +26,12 @@ français. Le propriétaire de ce dépôt communique en arabe.
   propriétaire — ne prenez jamais une image d'un site précédent.
 - **Jamais d'avis / témoignages patients** (« client reviews ») sur aucun site.
   Ne recréez pas de section Testimonials, même si le modèle d'origine en a une.
-- Pages conservées uniquement : **Accueil, Nos soins (21 soins), À propos,
-  Contact, Rendez-vous**. Pas de FAQ, Blog, Team, Legal en pages autonomes.
+- **⭐ Pages obligatoires (RÈGLE) — chaque site DOIT contenir exactement ces 5
+  pages** : **Accueil, À propos, Soins, Équipe, Contact**. Le formulaire de
+  rendez-vous (jour + heure) est une **section** (dans l'Accueil et/ou la page
+  Contact), pas une page autonome. Pas de FAQ, Blog, Legal en pages autonomes.
+  (Remplace l'ancienne liste qui incluait une page « Rendez-vous » autonome et
+  excluait « Équipe ».)
 - **Fidélité au modèle Framer « Oralcare »** : Hero plein écran (image de fond +
   texte blanc superposé + titre animé lettre par lettre), en-tête en **barre
   blanche pleine largeur** (coins doux 8px, ombre discrète `0 2px 4px
