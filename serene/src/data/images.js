@@ -22,8 +22,20 @@ export const IMAGES = {
   'after': base + 'after.webp',
   // Comparateur avant/après — vraies images dents du modèle (noms versionnés
   // pour forcer le rafraîchissement du cache navigateur/CDN)
-  'before-smile': base + 'avant-dents.webp',
-  'after-smile': base + 'apres-dents.webp',
+  'before-smile': base + 'ba1-before.webp',
+  'after-smile': base + 'ba1-after.webp',
+  // --- Visuels du modèle Dentiva (utilisés par « Sérène ») ---
+  'treat-1': base + 'treat-1.webp',
+  'treat-2': base + 'treat-2.webp',
+  'clinic-1': base + 'clinic-1.webp',
+  'clinic-2': base + 'clinic-2.webp',
+  'doctor': base + 'doctor.webp',
+  'ba1-before': base + 'ba1-before.webp',
+  'ba1-after': base + 'ba1-after.webp',
+  'ba2-before': base + 'ba2-before.webp',
+  'ba2-after': base + 'ba2-after.webp',
+  'ba3-before': base + 'ba3-before.webp',
+  'ba3-after': base + 'ba3-after.webp',
   'gallery-1': base + 'gallery-1.webp',
   'gallery-2': base + 'gallery-2.webp',
   'gallery-3': base + 'gallery-3.webp',
