@@ -1,19 +1,25 @@
-/* Hero « Dentiva » — deux colonnes sur fond crème, image en carte arrondie. */
+/* Hero « Dentiva » — texte à gauche, GRANDE image pleine hauteur à droite
+   (l'image déborde jusqu'au bord droit de l'écran, comme l'original). */
 .hero {
   background: var(--color-cream);
-  padding-top: calc(var(--header-h) + clamp(1.5rem, 4vw, 3rem));
-  padding-bottom: clamp(2.5rem, 6vw, 5rem);
   overflow: hidden;
 }
 .hero__grid {
   display: grid;
-  grid-template-columns: 1.05fr 0.95fr;
-  gap: clamp(2rem, 5vw, 4.5rem);
-  align-items: center;
+  grid-template-columns: minmax(auto, 620px) 1fr;
+  align-items: stretch;
+  min-height: 88vh;
+  gap: clamp(1.5rem, 3vw, 3rem);
 }
 .hero__content {
-  max-width: 40rem;
   min-width: 0;
+  align-self: center;
+  padding-top: calc(var(--header-h) + clamp(1rem, 3vw, 2rem));
+  padding-bottom: clamp(2rem, 4vw, 3rem);
+  /* aligne le texte sur la marge du conteneur central */
+  padding-left: clamp(1.2rem, 4vw, 2.5rem);
+  padding-right: clamp(1rem, 2vw, 2rem);
+  margin-left: max(0px, calc((100vw - var(--container)) / 2));
 }
 .hero__eyebrow {
   display: inline-block;
@@ -29,7 +35,7 @@
 }
 .hero__title {
   margin-top: 1.2rem;
-  font-size: clamp(2rem, 3.6vw, 3.1rem);
+  font-size: clamp(2.2rem, 3.8vw, 3.4rem);
   font-weight: 700;
   line-height: 1.08;
   letter-spacing: -0.02em;
@@ -69,21 +75,24 @@
   max-width: 16ch;
 }
 
-/* Image en carte arrondie + badge flottant */
+/* GRANDE image pleine hauteur, débordant jusqu'au bord droit */
 .hero__media {
   position: relative;
+  align-self: stretch;
 }
 .hero__img {
   width: 100%;
-  aspect-ratio: 4 / 4.4;
+  height: 100%;
+  min-height: 88vh;
   object-fit: cover;
-  border-radius: var(--radius-lg);
-  box-shadow: var(--shadow-lg);
+  object-position: center;
+  border-bottom-left-radius: var(--radius-lg);
+  border-top-left-radius: var(--radius-lg);
 }
 .hero__badge {
   position: absolute;
-  left: -1.2rem;
-  bottom: 1.6rem;
+  left: -1.4rem;
+  bottom: 2.4rem;
   display: flex;
   align-items: center;
   gap: 0.75rem;
@@ -113,8 +122,17 @@
 }
 
 @media (max-width: 900px) {
-  .hero__grid { grid-template-columns: 1fr; }
-  .hero__media { order: -1; max-width: 30rem; }
-  .hero__img { aspect-ratio: 4 / 3.4; }
-  .hero__badge { left: 0.8rem; }
+  .hero__grid { grid-template-columns: 1fr; min-height: 0; }
+  .hero__content {
+    margin-left: 0;
+    padding-inline: clamp(1.2rem, 5vw, 2rem);
+    order: 2;
+  }
+  .hero__media { order: 1; }
+  .hero__img {
+    min-height: 0;
+    aspect-ratio: 4 / 3.2;
+    border-radius: 0;
+  }
+  .hero__badge { left: 1rem; }
 }

@@ -17,7 +17,7 @@ const stats = [
 export default function Hero() {
   return (
     <section className="hero">
-      <div className="container hero__grid">
+      <div className="hero__grid">
         <div className="hero__content">
           <motion.span
             className="hero__eyebrow"
