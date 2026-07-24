@@ -93,9 +93,9 @@ export default function About() {
           </Reveal>
           <div className="about-doctor__content">
             <SectionHeader
-              eyebrow="Votre praticienne"
-              title="Dr. Camille Lefèvre"
-              intro="Chirurgienne-dentiste passionnée et fondatrice du cabinet, le Dr. Camille Lefèvre met son expertise et son écoute au service de votre santé bucco-dentaire, avec une approche douce et personnalisée."
+              eyebrow="Votre praticien"
+              title="Dr. Julien Fontaine"
+              intro="Chirurgien-dentiste passionné et fondateur du cabinet, le Dr. Julien Fontaine met son expertise et son écoute au service de votre santé bucco-dentaire, avec une approche douce et personnalisée."
               invert
             />
             <div className="about-doctor__diplomas">

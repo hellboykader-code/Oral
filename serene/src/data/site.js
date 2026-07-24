@@ -57,8 +57,8 @@ export const stats = [
 
 // Équipe médicale — noms FICTIFS (version démo)
 export const equipe = [
-  { name: 'Dr. Léa Fontaine', role: 'Dentisterie esthétique — Fondatrice', phone: '+33 4 78 52 09 45', image: 'about-doctor' },
-  { name: 'Dr. Nadia Benali', role: 'Spécialiste en orthodontie', phone: '+33 4 78 52 09 46', image: 'doctor-2' },
+  { name: 'Dr. Julien Fontaine', role: 'Chirurgien-dentiste — Fondateur', phone: '+33 4 78 52 09 45', image: 'about-doctor' },
+  { name: 'Dr. Marc Lavigne', role: 'Spécialiste en orthodontie', phone: '+33 4 78 52 09 46', image: 'doctor-2' },
   { name: 'Dr. Thomas Ferrand', role: 'Chirurgien oral', phone: '+33 4 78 52 09 47', image: 'doctor-3' },
 ];
 
