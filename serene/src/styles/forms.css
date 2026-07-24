@@ -1,0 +1,76 @@
+/* Styles partagés des formulaires (Contact & Rendez-vous) */
+.field {
+  display: flex;
+  flex-direction: column;
+  gap: 0.45rem;
+}
+.field label {
+  font-weight: 600;
+  font-size: 0.9rem;
+}
+.field .req {
+  color: #c0392b;
+}
+.field input,
+.field textarea,
+.field select {
+  width: 100%;
+  padding: 0.9rem 1rem;
+  border: 1.5px solid var(--border);
+  border-radius: var(--radius-sm);
+  background: var(--bg-elevated);
+  color: var(--text);
+  transition: border-color 0.2s var(--ease-out), box-shadow 0.2s;
+}
+.field input:focus,
+.field textarea:focus,
+.field select:focus {
+  outline: none;
+  border-color: var(--color-ink);
+  box-shadow: 0 0 0 4px rgba(209, 252, 113, 0.35);
+}
+.field textarea {
+  resize: vertical;
+  min-height: 130px;
+}
+.field--error input,
+.field--error textarea {
+  border-color: #c0392b;
+}
+.field__err {
+  color: #c0392b;
+  font-size: 0.82rem;
+}
+
+.form-row {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 1.1rem;
+}
+@media (max-width: 560px) {
+  .form-row {
+    grid-template-columns: 1fr;
+  }
+}
+
+.form-success {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 1rem;
+  text-align: center;
+  padding: 2.5rem 1.5rem;
+}
+.form-success__icon {
+  width: 64px;
+  height: 64px;
+  border-radius: 50%;
+  background: var(--color-accent);
+  color: var(--color-ink);
+  display: grid;
+  place-items: center;
+}
+.form-note {
+  font-size: 0.85rem;
+  color: var(--text-muted);
+}

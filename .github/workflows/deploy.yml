@@ -32,6 +32,15 @@ jobs:
           VITE_BASE: /Oral/
       # Repli SPA : toute route inconnue sert l'app (React Router)
       - run: cp dist/index.html dist/404.html
+      # --- Site « Sérène » (modèle Dentiva reconstruit) -> /Oral/serene/ ---
+      - name: Build site Sérène
+        run: |
+          cd serene
+          npm install --no-audit --no-fund
+          VITE_BASE=/Oral/serene/ npm run build
+          cp dist/index.html dist/404.html
+          mkdir -p ../dist/serene
+          cp -r dist/* ../dist/serene/
       # --- Site 2 : export Framer OralCare traduit en français (/comparaison/) ---
       - name: Build site 2 (Framer FR)
         continue-on-error: true

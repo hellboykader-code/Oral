@@ -1,0 +1,125 @@
+.hero {
+  position: relative;
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  overflow: hidden;
+  color: var(--color-cream);
+}
+
+/* Image de fond plein écran */
+.hero__bg {
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+}
+.hero__img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: 70% center;
+}
+.hero__overlay {
+  position: absolute;
+  inset: 0;
+  /* Dégradé plus léger : l'image reste lumineuse, le texte reste lisible. */
+  background: linear-gradient(
+      100deg,
+      rgba(3, 3, 3, 0.66) 0%,
+      rgba(3, 3, 3, 0.32) 34%,
+      rgba(3, 3, 3, 0.04) 62%,
+      rgba(3, 3, 3, 0) 100%
+    ),
+    linear-gradient(to top, rgba(3, 3, 3, 0.35), transparent 45%);
+}
+
+.hero__inner {
+  position: relative;
+  z-index: 1;
+  width: 100%;
+  padding-top: calc(var(--header-h) + 2.5rem);
+  padding-bottom: clamp(1.5rem, 4vw, 2.5rem);
+  display: flex;
+  flex-direction: column;
+  gap: clamp(1.5rem, 4vw, 2.5rem);
+}
+
+.hero__content {
+  max-width: min(92vw, 50rem);
+}
+/* Titre monumental, fidèle au modèle : 96px, graisse medium, interlettre serré */
+.hero__title {
+  font-size: clamp(3rem, 8.2vw, 6rem);
+  font-weight: 500;
+  line-height: 1;
+  letter-spacing: -0.03em;
+  color: #fff;
+}
+/* Chaque ligne du titre reste sur une seule ligne (2 lignes au total). */
+.hero__title > span {
+  white-space: nowrap;
+}
+.hero__lead {
+  margin-top: 1.2rem;
+  font-size: var(--fs-lead);
+  color: rgba(255, 255, 255, 0.92);
+  max-width: 40ch;
+}
+.hero__actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.9rem;
+  margin-top: 1.6rem;
+}
+.hero__actions .btn svg {
+  margin-right: -0.1rem;
+}
+
+/* Badge en bas à gauche, superposé sur l'image */
+.hero__badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.9rem;
+  max-width: 420px;
+  padding: 1rem 1.3rem;
+  background: rgba(242, 242, 239, 0.14);
+  border: 1px solid rgba(255, 255, 255, 0.22);
+  backdrop-filter: blur(10px);
+  border-radius: var(--radius);
+}
+.hero__badge-icon {
+  flex-shrink: 0;
+  width: 44px;
+  height: 44px;
+  border-radius: 12px;
+  background: var(--color-accent);
+  display: grid;
+  place-items: center;
+}
+.hero__badge strong {
+  display: block;
+  font-family: var(--font-display);
+  font-size: 1.02rem;
+  color: #fff;
+}
+.hero__badge span {
+  font-size: 0.85rem;
+  color: rgba(255, 255, 255, 0.8);
+}
+
+@media (max-width: 720px) {
+  .hero__img {
+    object-position: 66% center;
+  }
+  .hero__overlay {
+    background: linear-gradient(
+        180deg,
+        rgba(3, 3, 3, 0.5) 0%,
+        rgba(3, 3, 3, 0.35) 30%,
+        rgba(3, 3, 3, 0.75) 100%
+      );
+  }
+  .hero__badge {
+    max-width: 100%;
+  }
+}
