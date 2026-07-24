@@ -10,6 +10,15 @@ français. Le propriétaire de ce dépôt communique en arabe.
 
 ## Règles produit (permanentes)
 
+- **⭐ RÈGLE CAPITALE — Réplique fidèle du modèle propre à chaque site.** Chaque
+  cabinet a SON PROPRE modèle Framer (fichiers complets fournis par le
+  propriétaire). Le site produit doit être une **copie fidèle, page par page, de
+  CE modèle-là** : analysez TOUTES les pages, le code, la mise en page, les
+  sections, les animations/transitions, la typographie et les couleurs de
+  l'original, puis reproduisez-les. **Un nouveau site ne doit JAMAIS ressembler à
+  un site déjà conçu** (ex. ne pas ré-habiller « Éclat » en changeant les
+  couleurs). Seuls l'**architecture technique React et les conventions** de ce
+  dépôt sont réutilisés — jamais le design d'un site précédent.
 - **Jamais d'avis / témoignages patients** (« client reviews ») sur aucun site.
   Ne recréez pas de section Testimonials, même si le modèle d'origine en a une.
 - Pages conservées uniquement : **Accueil, Nos soins (21 soins), À propos,
@@ -103,7 +112,9 @@ Reconstruit à partir d'un export Framer du modèle « Oralcare ». Palette :
 
 ## Site 1 — « Éclat » (TERMINÉ, sert de référence)
 
-Premier cabinet livré. À réutiliser comme base/patron pour les sites suivants.
+Premier cabinet livré. ⚠️ On réutilise seulement son **architecture technique et
+ses conventions** (structure React, composants, données, déploiement) — JAMAIS
+son design : chaque site copie fidèlement SON PROPRE modèle (voir règle capitale).
 
 - **Marque** : « Éclat — Cabinet dentaire » (nom court, fictif). Baseline
   « CABINET DENTAIRE ». Logo sur mesure = badge (dent stylisée + étincelle
