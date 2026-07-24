@@ -43,6 +43,10 @@ français. Le propriétaire de ce dépôt communique en arabe.
   sur mesure (icône + typographie de marque) pour chaque cabinet — jamais un
   simple texte brut ni un placeholder générique. Il doit rester cohérent avec la
   palette et les polices du site.
+- **⭐ RÈGLE — 5 propositions de logo au choix.** À chaque conception d'un logo
+  (nouveau site ou refonte), proposez **5 variantes** au propriétaire sous forme
+  d'images et laissez-le **choisir** avant de finaliser. Ne jamais intégrer un
+  logo sans que le propriétaire ait sélectionné sa version parmi les 5.
 
 ## Commandes
 
