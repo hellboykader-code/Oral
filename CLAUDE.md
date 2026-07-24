@@ -101,6 +101,41 @@ Reconstruit à partir d'un export Framer du modèle « Oralcare ». Palette :
 `#0d1b15`, `#d1fc71`, `#f2f2ef`, `#595e5c`. Polices : Bricolage Grotesque
 (titres), Figtree / Jost (texte), Gilda Display. Respectez cette identité.
 
+## Site 1 — « Éclat » (TERMINÉ, sert de référence)
+
+Premier cabinet livré. À réutiliser comme base/patron pour les sites suivants.
+
+- **Marque** : « Éclat — Cabinet dentaire » (nom court, fictif). Baseline
+  « CABINET DENTAIRE ». Logo sur mesure = badge (dent stylisée + étincelle
+  « éclat »), composant `Logo` adaptatif (`onDark` pour surfaces sombres),
+  décliné en favicon et en fichier `public/brand/eclat-logo.svg`.
+- **Données 100 % fictives (démo)** : coordonnées, e-mail `contact@eclat-dentaire.fr`,
+  adresse, téléphones, équipe (Dr. Camille Lefèvre — fondatrice, Dr. Amélie
+  Rousseau, Dr. Julien Mercier) — tout est factice et cohérent. Ne pas mettre de
+  vraies données.
+- **En-tête fidèle au modèle** (valeurs extraites de l'export) : barre blanche
+  pleine largeur (max 1360px), coins 8px, ombre `0 2px 4px rgba(13,27,21,.2)`,
+  hauteur 64px, sans puces, onglet actif en pastille verte, bouton d'action
+  foncé. Logo + wordmark « Éclat » + baseline à gauche.
+- **Hero** : plein écran (100vh), titre monumental **96px / graisse 500 /
+  interlettre −0.03em**, animé lettre par lettre (`SplitText`).
+- **Révélation mot par mot** au défilement : composant `WordReveal`, câblé dans
+  `SectionHeader` (titre + intro de chaque section).
+- **Comparateur avant/après** : DEUX vraies images dents du modèle
+  (`avant-dents.webp` = dents naturelles / `apres-dents.webp` = éclaircies).
+  ⚠️ **Aucun filtre CSS** (sepia/hue) sur l'image « avant » : elle est déjà la
+  bonne photo — un filtre la rendrait « cariée ».
+- **Réservation** : un seul formulaire partagé `BookingForm` (prénom, nom,
+  téléphone, e-mail, jour + heure, sélection des 21 soins, message), utilisé à
+  l'identique sur la page `/rendez-vous` ET la section de l'accueil.
+- **Page Nos soins** : 21 soins filtrables par catégorie (remontage par clé
+  `key={filter}`, pas d'`AnimatePresence popLayout` — évite l'écran blanc).
+- **Images** : dans `public/images/`, versionner le nom du fichier (`-v2`) quand
+  on change le contenu, pour casser le cache navigateur/CDN de GitHub Pages.
+- **Déploiement** : GitHub Pages, base `/Oral/`. Le React est LE produit livré.
+  L'export Framer d'origine, traduit, reste en **référence visuelle** sous
+  `/Oral/comparaison/` (build via `_site2/`), pas un livrable.
+
 ## Contexte multi-sites
 
 Ces conventions (structure, français, fidélité au design d'origine) s'appliquent
