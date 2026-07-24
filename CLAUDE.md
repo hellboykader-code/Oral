@@ -19,6 +19,11 @@ français. Le propriétaire de ce dépôt communique en arabe.
   un site déjà conçu** (ex. ne pas ré-habiller « Éclat » en changeant les
   couleurs). Seuls l'**architecture technique React et les conventions** de ce
   dépôt sont réutilisés — jamais le design d'un site précédent.
+- **⭐ Images & Hero = ceux du modèle d'origine, UNIQUEMENT.** Interdiction
+  absolue de réutiliser les images ou le Hero d'un site déjà conçu. Extrayez et
+  utilisez le Hero et les visuels du modèle Framer fourni pour CE site. Si une
+  image manque ou qu'il en faut une autre, **discutez-en d'abord** avec le
+  propriétaire — ne prenez jamais une image d'un site précédent.
 - **Jamais d'avis / témoignages patients** (« client reviews ») sur aucun site.
   Ne recréez pas de section Testimonials, même si le modèle d'origine en a une.
 - Pages conservées uniquement : **Accueil, Nos soins (21 soins), À propos,
