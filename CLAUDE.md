@@ -384,3 +384,29 @@ sert l'ancienne version ~1-3 min : re-poll jusqu'à disparition du marqueur).
 **Cible de déploiement** : vérifier `curl -I` la **racine** `…github.io/` (souvent
 404 = pas de user-pages) **et** le **project-pages** `…github.io/<repo>/` (200).
 med12 n'a QUE le project-pages → c'est là que vivent les corrections.
+
+### E. Pièges de traduction par `str.replace` (leçons vivadent + dentitive)
+
+- **⭐ NE JAMAIS mapper un mot court/générique seul** (`treatments`, `experience`,
+  `professionals`, `Services`, `Blog`) : il est **sous-chaîne** de phrases plus
+  longues et les **corrompt** (`Gentle treatments`→`Gentle de précision`,
+  `Our Dental Treatments`→`Our Dental Soins`, `dental treatments?`→`dental de
+  précision?`). Toujours traduire la **phrase entière**, jamais le mot nu ; pour la
+  nav, passer par le JS `fixNav` (match `textContent` exact), pas un replace global.
+- **Ordre des remplacements** : phrases longues **d'abord**, marque en **dernier**.
+  Si un mot court est remplacé avant la phrase qui le contient, la phrase ne matche
+  plus → chaîne mixte FR/EN. (C'est la même cause que les fragments SplitText.)
+- **Entités HTML** : le SSR encode `&`→`&amp;`. Un map avec `&` littéral **rate**
+  `General &amp; Cosmetic`. Prévoir la variante `&amp;` (le `.mjs`, lui, garde `&`).
+- **Apostrophes typographiques** : le texte Framer utilise `’` (U+2019), pas `'`.
+  Un map écrit avec `'` droit **rate** `You’ll`, `smile’s`. Copier l'apostrophe
+  exacte de la source.
+- **Détection des chaînes mixtes** : le grep source ne les voit pas (moitié FR).
+  Seul le **rendu réel** (Playwright, texte visible par nœud) les révèle → toujours
+  re-render et scanner `innerText` mot par mot après traduction.
+- **Templates déjà dentaires (vivadent « Verve Dent », dentitive)** : souvent une
+  **ville réelle** en dur (Paris, Chennai) → appliquer la RÈGLE no-city. Retirer
+  aussi les badges promo du template : `framer.link`/`framer.com`/`uihub.design`,
+  « Made by … », « Built in Framer », « Created by … », « Get/Remix Template »,
+  et le dossier `seo-report/`. Landing 1 page (dentitive) : la règle « 5 pages »
+  ne s'applique pas telle quelle → à valider avec le propriétaire.
