@@ -187,6 +187,23 @@ nouveau site.
 - **⭐ Tester VISUELLEMENT (screenshot) chaque page après changement, avant de
   déployer** — pas seulement le DOM. Un test headless court (6 s) ne reproduit
   pas toujours ce que voit l'utilisateur (hydratation, cache, breakpoints).
+- **⭐ Vérification « zéro anglais » = EXHAUSTIVE, jamais par regex étroite.**
+  Erreur commise : j'ai testé avec une regex de quelques mots-clés et conclu
+  « tout en français » alors que la page live était pleine d'anglais (héros,
+  cartes de services, stats, témoignages, FAQ…). → Extraire TOUT le texte de
+  CHAQUE page rendue (textContent de chaque feuille), lister toutes les chaînes
+  contenant des mots anglais, traduire, ré-extraire jusqu'à liste VIDE. Ne jamais
+  dire « fini » avant d'avoir confirmé zéro anglais sur le rendu réel de toutes
+  les pages (et sur le live après déploiement).
+- **⭐ Attention au dépôt/URL de déploiement.** Le site peut être servi à la
+  RACINE (`user.github.io/`) et non sous `/export-<repo>/`. Si je pousse dans le
+  dépôt projet mais que l'utilisateur déploie à la racine, il voit une ancienne
+  version. Confirmer où le site est réellement en ligne, et faire correspondre
+  les base paths (`/` racine vs `/export-<repo>/` projet).
+- **Convertir un template d'un autre secteur (médical → dentaire) est un
+  combat** : préférer partir d'un template DÉJÀ dentaire. Si conversion imposée,
+  traduire ET remplacer tout le vocabulaire métier (spécialités, conditions,
+  rôles des médecins) + retirer avis/FAQ/blog.
 - **Une modification à la fois**, on vérifie, puis on déploie **une seule fois**
   à la fin. Éviter le « je corrige une chose, j'en casse une autre ».
 - **Cache + délai GitHub Pages** : après `git push`, le déploiement prend 2-3 min ;
@@ -326,3 +343,44 @@ studio, pour ne PAS refaire les mêmes erreurs.
 - **Déploiement** : push → GitHub Pages (2-3 min) → **hard refresh + vérif live**.
 - **Communication** : arabe algérien avec l'utilisateur ; jamais annoncer « réglé »
   sans avoir vérifié le live.
+
+### D. Purge exhaustive de l'anglais (leçon med12 « Vitaléa ») — sources cachées
+
+Traduire les pages ne suffit PAS. L'anglais se planque dans des fichiers annexes
+qu'un simple parcours des `index.html` ignore. Checklist **obligatoire** avant de
+dire « zéro anglais » :
+
+1. **`searchIndex-*.json` (Framer)** sous `assets/framer/sites/<id>/` : index de
+   recherche = tout le contenu anglais du template (titres, descriptions, blogs
+   supprimés). Souvent **non référencé** par le code → le **vider** (`{}`) ou le
+   traduire. Vérifier `grep -rl searchIndex assets/framer` pour savoir s'il est lu.
+2. **`search-index.json` (racine) + `<meta name="framer-search-index">`** : petit
+   index des pages → réécrire en français (titres/descriptions/excerpts dentaires).
+3. **`seo-report/`** (data.json + index.html `lang="en"`) : artefact d'audit,
+   **non référencé** → **supprimer** le dossier.
+4. **`.mjs` — fragments SplitText** : un titre coupé mot par mot (« Comprehensive
+   Medical », « Mission & Vision », « Trusted by Patients, » / « Proven by Care »)
+   n'est PAS attrapé par un remplacement de la phrase entière. Les traduire
+   fragment par fragment dans le `.mjs` **et** les ajouter à la map `SPLIT` du JS
+   post-hydratation (double filet).
+5. **Bios praticiens dans le `.mjs`** (« Specialist in cardiovascular… »,
+   « Expert in neurological… ») = texte visible → traduire en rôle **dentaire**.
+6. **`alt=` / `originalFilename=`** (« hospital-img », « waiting-room-hospital ») :
+   texte lu par lecteurs d'écran → traduire aussi.
+7. **Blog** : ne pas seulement masquer — **`rm -rf blogs/`** (pages + articles) ;
+   garder le masquage CSS de la *section aperçu* d'accueil (`[data-framer-name*="Blog"]`).
+8. **Faux positifs à NE PAS toucher** : `data-framer-name` = **noms de calques
+   internes** (« About Block », « Healthcare Process », « Services Main »),
+   identifiants de code (`ico.hospital`), noms de police (`GF;Parisienne` ≠ ville).
+   Invisibles → les modifier casse animations/sélecteurs. Ne jamais remplacer un
+   token nu `"Home"`/`"Services"` dans le `.mjs` (route/composant) → passer par le
+   JS `fixNav`.
+
+**Méthode de vérif** : extraire le texte visible de **toutes** les pages
+(HTML strip-tags + `.mjs` littéraux backtick/`children:`), lister les segments
+anglais, traduire, **re-extraire jusqu'à 0**. Puis **vérif live** (le CDN Pages
+sert l'ancienne version ~1-3 min : re-poll jusqu'à disparition du marqueur).
+
+**Cible de déploiement** : vérifier `curl -I` la **racine** `…github.io/` (souvent
+404 = pas de user-pages) **et** le **project-pages** `…github.io/<repo>/` (200).
+med12 n'a QUE le project-pages → c'est là que vivent les corrections.
