@@ -238,3 +238,84 @@ comme **carte vidéo** (exactement comme Oléa / Novéo / Zenta) :
 Tenir ce tableau à jour à chaque nouveau site, et l'ajouter au studio (règle
 ci-dessus). Note : chaque formulaire de réservation utilise encore un e-mail
 **placeholder** — le remplacer par l'e-mail réel du praticien + activer FormSubmit.
+
+## Rétrospective complète — demandes, erreurs, corrections (à mémoriser)
+
+Analyse de tout ce qui a été fait sur les sites Framer (Oléa, Novéo, Zenta) et le
+studio, pour ne PAS refaire les mêmes erreurs.
+
+### A. Historique des demandes (intentions de l'utilisateur)
+1. Parler **arabe (dialecte algérien)** avec l'utilisateur ; contenu des sites en
+   **français**.
+2. Éditer chaque export Framer → site de cabinet FR complet : traduction, rebrand
+   (nom, médecins, adresse FR, tél FR, e-mail, horaires), **retrait des avis
+   patients**, **logo sur mesure** (fond transparent), **5 pages**.
+3. Corriger : hero qui disparaît, logo qui reste l'ancien, « beaucoup de phrases
+   non traduites » (titres SplitText), performance au scroll.
+4. Soins : remplacer les 6 services par **21 soins** (grille filtrable + 21 options
+   dans le RDV) ; accueil = **6 + « Voir plus »**, page Soins = 21 ; **photos** par
+   soin.
+5. Nouveau **formulaire de réservation** (prénom, nom, e-mail, tél, soin (21),
+   jour, heure) → envoi e-mail praticien + **message de remerciement**.
+6. Rendre le formulaire ET les cartes **professionnels** (niveau Éclat).
+7. Supprimer les sections **anglaises / filler** (investisseurs, « Our Client's
+   Words ») sur toutes les pages.
+8. **Studio** : afficher les sites livrés à la vente, DANS la galerie, avec **nom +
+   visuel**, clic → site en direct ; puis passer du visuel à la **vidéo autoplay**.
+9. Fournir des **prompts** (Claude Design, commandes d'édition) et **mémoriser les
+   règles**.
+
+### B. Erreurs commises → correction → règle
+1. **Affirmé qu'un produit (claude.ai/design) n'existait pas** → il existe (beta).
+   → Règle : ne jamais nier l'existence d'un produit récent ; vérifier / demander.
+2. **Corrigé seulement `/services/` en oubliant l'ACCUEIL** (mêmes cartes anglaises).
+   → Règle : appliquer chaque correction à **TOUTES les pages/instances**, pas une
+   seule ; l'accueil a `Service`, la page Soins a `Sevice Cards` (noms distincts).
+3. **Répété « c'est le cache » alors que c'était un vrai manque de ma part**.
+   → Règle : vérifier que MON code couvre tous les cas AVANT de blâmer le cache ;
+   confirmer sur le live.
+4. **Masquage brut d'une section → grand vide gris** (la section testimonials
+   « Sticky Section » restait, vide). → Règle : après avoir masqué, vérifier qu'il
+   ne reste pas de section sœur vide ; masquer aussi les blocs testimonials/filler
+   voisins.
+5. **Tests headless courts (6 s) « tout en français » mais live en anglais**.
+   → Règle : Framer réhydrate depuis les `.mjs` ; toujours **screenshot + live**,
+   traduire les `.mjs`, masquer en **CSS `!important`**.
+6. **Formulaire qui disparaît à l'envoi** (React reconcilie + submit natif navigue).
+   → Correction : bouton `type="button"` (pas de submit), re-cibler l'ancre vivante,
+   injection auto-réparante. Règle : ne jamais compter sur un nœud injecté stable
+   dans un arbre React — le re-cibler à chaque rendu.
+7. **Réutilisé des images d'Éclat** (contre la règle capitale) → l'utilisateur a
+   donné une raison métier (Éclat sera supprimé) → accepté. Règle : énoncer la
+   règle et **pousser une fois**, mais respecter l'override motivé du propriétaire.
+8. **Studio : hypothèses fausses** (« Éclat y est » = juste le mot français
+   « éclat » ; « sites déjà ajoutés » = faux, que des démos). → Règle : **vérifier
+   les prémices** (grep + rendu) avant d'agir, et remonter l'écart au lieu de
+   foncer.
+9. **Mauvais emplacement dans le studio** (Artifact, puis bande séparée) alors que
+   l'utilisateur voulait les cartes **dans la même galerie**. → Règle : clarifier
+   l'emplacement exact avant de construire.
+10. **Captures d'écran des sites impossibles** (images Hero CDN bloquées) →
+    solution : l'utilisateur enregistre depuis SON navigateur ; récupérer via Drive
+    public + `curl …&confirm=t` ; compresser avec ffmpeg.
+
+### C. Playbook technique (procédures réutilisables)
+- **Traduction** : SSR + `.mjs` + titres SplitText (matcher `textContent`
+  normalisé). Vérifier sur un vrai rendu, pas seulement le DOM.
+- **Masquer sections** (testimonials, filler, pricing, blog, anciennes cartes) :
+  CSS `[data-framer-name="…"]{display:none !important}` (survit à l'hydratation).
+- **Formulaire RDV injecté** : carte blanche, champs 2 colonnes, focus lime,
+  bouton foncé ; envoi FormSubmit par clic bouton ; `.ob-thanks` de remerciement ;
+  `render()` re-cible le `<form>` Framer vivant → auto-réparant.
+- **Cartes soins** : média 4/3 + pastille catégorie superposée + titre + desc +
+  lien fléché ; accueil = 6 + bouton, Soins = 21 filtrables ; images locales dans
+  `assets/soins/` (issues des `soin-*.webp` d'Éclat, réutilisables car techniques).
+- **Logo** : rediriger l'URL CDN → fichier local (mjs + JS `forceLogo`) ; fond
+  transparent ; favicon assorti.
+- **Studio (vidéo)** : Drive public → `curl …confirm=t` → ffmpeg
+  (`scale=760:-2,fps=24,libx264,crf 30,-an,+faststart` ≈ 300 Ko) + poster →
+  entrée `LIVE` dans `assets/dwp-home.js` (`vid` = slug) → vidéo autoplay muted
+  loop, clic → site live.
+- **Déploiement** : push → GitHub Pages (2-3 min) → **hard refresh + vérif live**.
+- **Communication** : arabe algérien avec l'utilisateur ; jamais annoncer « réglé »
+  sans avoir vérifié le live.
