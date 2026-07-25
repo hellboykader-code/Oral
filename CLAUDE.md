@@ -10,6 +10,13 @@ français. Le propriétaire de ce dépôt communique en arabe.
 
 ## Règles produit (permanentes)
 
+- **⭐ RÈGLE CAPITALE — AUCUNE ville / localisation / adresse réelle sur un site.**
+  Ne JAMAIS inscrire une ville (Paris, Créteil, Toulouse, Marseille, Lyon…) ni une
+  adresse précise sur un site de cabinet de démonstration. Un acheteur potentiel
+  penserait que le site a **déjà été vendu** à un autre praticien. Utiliser des
+  **placeholders neutres** (« Votre ville », « Votre adresse », « — ») que le
+  client remplira lui-même. **Supprimer toute mention de ville existante** dans le
+  contenu, les adresses, les titres de pages et les données.
 - **⭐ RÈGLE CAPITALE — Réplique fidèle du modèle propre à chaque site.** Chaque
   cabinet a SON PROPRE modèle Framer (fichiers complets fournis par le
   propriétaire). Le site produit doit être une **copie fidèle, page par page, de
