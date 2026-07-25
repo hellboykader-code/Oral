@@ -163,5 +163,78 @@ son design : chaque site copie fidèlement SON PROPRE modèle (voir règle capit
 ## Contexte multi-sites
 
 Ces conventions (structure, français, fidélité au design d'origine) s'appliquent
-aux sites de cabinets dentaires produits ici. Le futur « studio » qui présentera
-ces sites à la vente est l'exception et suivra ses propres règles.
+aux sites de cabinets dentaires produits ici. Le « studio » qui présente ces
+sites à la vente suit ses propres règles (voir plus bas).
+
+## Leçons apprises — erreurs à NE PAS répéter (IMPORTANT)
+
+Retours d'expérience sur les exports Framer (NoCodeExport). À relire avant chaque
+nouveau site.
+
+- **⭐ Framer réinjecte l'anglais / les sections APRÈS hydratation, depuis les
+  chunks `.mjs`.** Traduire le SSR (HTML) ne suffit pas : le texte anglais
+  revient sur un vrai navigateur. → Traduire aussi les chaînes dans les `.mjs`,
+  ET masquer les sections indésirables via une règle **CSS `!important`** sur un
+  sélecteur `[data-framer-name="…"]` (elle survit à la reconstruction React).
+  Ne PAS masquer via `el.style.display='none'` en JS seul : React l'annule.
+- **⭐ Tester VISUELLEMENT (screenshot) chaque page après changement, avant de
+  déployer** — pas seulement le DOM. Un test headless court (6 s) ne reproduit
+  pas toujours ce que voit l'utilisateur (hydratation, cache, breakpoints).
+- **Une modification à la fois**, on vérifie, puis on déploie **une seule fois**
+  à la fin. Éviter le « je corrige une chose, j'en casse une autre ».
+- **Cache + délai GitHub Pages** : après `git push`, le déploiement prend 2-3 min ;
+  le navigateur garde l'ancienne version. Toujours attendre + **hard refresh
+  (Cmd+Shift+R)** et **vérifier le live** avant d'affirmer que c'est réglé.
+- **Titres animés `SplitText`** : le texte est découpé en `<span>` par lettre/mot ;
+  traduire la chaîne contiguë ne suffit pas → remplacer le contenu de l'élément
+  après hydratation (JS qui matche le `textContent` normalisé) ou dans le `.mjs`.
+- **Logo** : Framer remplace le `<img>` local par une URL CDN à l'hydratation →
+  rediriger l'URL CDN vers le fichier local (dans le `.mjs` + JS `forceLogo`).
+  Logos toujours à **fond transparent** (pas de pastille foncée).
+- **Formulaire injecté dans Framer** : piloter l'envoi par un **clic bouton**
+  (`type="button"`, pas de submit natif → évite la navigation du routeur Framer),
+  et **re-cibler l'ancre vivante** (le vrai `<form>` Framer) à chaque rendu pour
+  que l'injection soit auto-réparante si React reconstruit la zone.
+- **Anciennes cartes de services** : les remplacer par NOS cartes photo — accueil
+  = aperçu 6 soins + bouton « Voir tous nos soins », page Soins = 21 soins.
+- **Images CDN Framer indisponibles dans cet environnement** (proxy) : pour les
+  aperçus/vidéos, l'utilisateur fournit les captures/enregistrements depuis SON
+  navigateur (où le rendu est complet). Pour récupérer une vidéo Drive : la rendre
+  « lien public », `curl` via `drive.usercontent.google.com/download?...&confirm=t`
+  (le connecteur Drive refuse > 10 Mo), puis compresser avec `ffmpeg`
+  (`imageio-ffmpeg` si ffmpeg absent) : `scale=760:-2, fps=24, -c:v libx264,
+  -crf 30, -an, -movflags +faststart` → ~300 Ko, + poster (`-ss 1 -vframes 1`).
+
+## ⭐ RÈGLE — Intégrer chaque site livré au studio (systématique)
+
+Le studio est le repo **`export-kader-framer-website-mrz06s5b`** (marque
+« DentWebPro »), déployé sur GitHub Pages. Sa galerie « Choisissez le site de
+votre cabinet » est générée par `assets/dwp-home.js` (tableau `LIVE` = sites réels
+en tête, tableau `CLINICS` = modèles démo ensuite) + `assets/dwp-portfolio.css`.
+
+**À la fin de CHAQUE site de cabinet livré, l'ajouter IMMÉDIATEMENT au studio**
+comme **carte vidéo** (exactement comme Oléa / Novéo / Zenta) :
+
+1. L'utilisateur enregistre une courte vidéo (scroll ~8-10 s) du site en ligne et
+   la partage (Google Drive, lien public).
+2. Télécharger + compresser (ffmpeg, réglages ci-dessus) dans
+   `assets/realisations/<slug>.mp4` + poster `<slug>-poster.jpg`.
+3. Ajouter une entrée au tableau `LIVE` de `assets/dwp-home.js` :
+   `{name, city, url:"<URL live>", vid:"<slug>", brand:"#…", accent:"#…"}`.
+   → La carte s'affiche en tête de galerie : vidéo **autoplay muted loop**, badge
+   « En ligne », clic → ouverture du site en direct (nouvel onglet).
+4. Déployer le studio et **vérifier le live**.
+
+## Registre des sites livrés (à jour)
+
+| Site | Ville | Repo | URL live |
+|------|-------|------|----------|
+| Éclat (référence React) | — | `hellboykader-code/Oral` | `/Oral/` |
+| Oléa | Marseille | `export-kader1-framer-website-ms074a1w` | `…-ms074a1w/` |
+| Novéo | Lyon | `export-kader9-framer-website-mrzfoouq` | `…-mrzfoouq/` |
+| Zenta | Paris | `export-kader10-framer-website-mrzfwfoi` | `…-mrzfwfoi/` |
+| **Studio** DentWebPro | — | `export-kader-framer-website-mrz06s5b` | `…-mrz06s5b/` |
+
+Tenir ce tableau à jour à chaque nouveau site, et l'ajouter au studio (règle
+ci-dessus). Note : chaque formulaire de réservation utilise encore un e-mail
+**placeholder** — le remplacer par l'e-mail réel du praticien + activer FormSubmit.
