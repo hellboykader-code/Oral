@@ -183,6 +183,19 @@ overrides, et le **playbook d'édition** (traduire les `.mjs`, filet `clinic-fix
 liens en `/route/`, cache-bust, sources d'anglais cachées). Consulter ce fichier
 plutôt que deviner.
 
+- **⭐ Cause racine « les sous-pages retombent sur l'accueil » (section K de
+  FRAMER-SYSTEM.md).** La route INITIALE vient du JSON `data-framer-hydrate-v2` du
+  SSR (`#main`), PAS de l'URL. Si une sous-page n'a pas ce dataset, elle tombe dans
+  le fallback qui matche `location.pathname` (`/export-<repo>/about`) contre `/about`
+  → aucun match → l'accueil s'affiche par-dessus (« apparaît 1 s puis disparaît »).
+  **Correctif définitif** : injecter `data-framer-hydrate-v2` (routeId de la route +
+  breakpoints copiés de l'accueil) sur CHAQUE sous-page. Extraire path→routeId de la
+  table de routes en remontant les accolades depuis chaque `path:`. Certains exports
+  (kader1, kadaaaaa-ms1twfho) ont déjà le dataset partout → immunisés ; d'autres
+  (reddent1, kader9, kader10, med12, vivadent, dentartt) ne l'avaient que sur
+  `index.html` → corrigés. Vérifier aussi que le dataset d'accueil pointe la route
+  d'accueil (`hero-banner`) et pas `/blogs` (bug vu sur med12).
+
 ## Leçons apprises — erreurs à NE PAS répéter (IMPORTANT)
 
 Retours d'expérience sur les exports Framer (NoCodeExport). À relire avant chaque

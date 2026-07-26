@@ -282,9 +282,47 @@ Sources : framer.com/developers (overrides, cms), framer.com/dictionary
 - Images : `srcset` responsive + `loading="lazy"` ; URLs CDN `framerusercontent.com` → à
   réécrire en local `/export-<repo>/assets/framer/images/…` (le CDN est bloqué en preview local).
 
+## ⭐ K. Résolution de la route INITIALE — `data-framer-hydrate-v2` (DÉCOUVERTE CLÉ)
+
+**Au chargement d'une page, Framer NE devine PAS la route depuis l'URL en priorité.** Le
+`script_main` lit, dans l'ordre :
+1. `document.querySelector('#main').dataset.framerHydrateV2` — un JSON
+   `{routeId, localeId, breakpoints}` **injecté dans le SSR**. Si présent → `routeId` est pris
+   **directement**, AUCUN matching d'URL. La page s'hydrate comme SA route, quel que soit le
+   chemin de déploiement. (`s=JSON.parse(t.dataset.framerHydrateV2); r=s.routeId; …`)
+2. sinon, l'en-tête `Server-Timing: route;desc=…` (absent sur GitHub Pages).
+3. sinon **seulement** (`if(!r||!i)`), le fallback : `me(routes, decodeURIComponent(location.pathname))`
+   → matche l'URL contre la table de routes.
+
+**Conséquence — LA cause racine du bug « toutes les sous-pages retombent sur l'accueil » :**
+certains exports n'ont le dataset `framer-hydrate-v2` QUE sur `index.html` ; les sous-pages
+(`about/`, `service/`…) ont un `<div id="main">` **nu**. Elles tombent donc dans le fallback (3),
+qui compare `location.pathname = /export-<repo>/about` à une route `/about` → **aucun match →
+rendu de l'accueil par-dessus le SSR** (« la page apparaît 1 s puis disparaît »).
+D'autres exports (kader1, kadaaaaa-ms1twfho) ont le dataset sur **toutes** les pages → immunisés.
+
+**⭐ CORRECTIF DÉFINITIF (robuste, indépendant du chemin de déploiement) :** injecter le dataset
+sur CHAQUE sous-page. Pour la page du dossier `X` :
+`<div id="main" data-framer-hydrate-v2="{&quot;routeId&quot;:&quot;<ID>&quot;,&quot;localeId&quot;:&quot;default&quot;,&quot;breakpoints&quot;:[…]}">`.
+- `<ID>` = le routeId de la route dont le `path` finit par `/X` (extrait de la table de routes).
+- `breakpoints` = **copier** le tableau du dataset de `index.html` (identique pour tout le site).
+- **Extraction path→routeId** : la table est `…<id>:{elements:{…},page:P(()=>import(…)),path:`/X`}`.
+  Les objets ont des accolades imbriquées (`{…trigger}`) → un regex simple casse : partir de
+  chaque `path:` et **remonter en comptant les accolades** jusqu'à l'accolade ouvrante de l'objet,
+  l'`<id>` est le token juste avant `:{`.
+- **Vérifier** : le routeId injecté doit égaler celui de la table pour ce path ; et le dataset de
+  `index.html` doit pointer la route d'accueil (`elements` contient `hero-banner`), pas `/blogs`
+  (bug réel vu sur med12 : dataset d'accueil corrompu en `nQCqzkvcq`=/blogs → corriger).
+
+Le préfixe des `path:` (point 1 ci-dessous) reste utile **en plus** : il garde des URLs correctes
+lors des navigations client-side (sinon `pushState('/about')` perd le préfixe `/export-<repo>`).
+
 ## J. Récapitulatif des CORRECTIFS fiables (à appliquer)
-1. **Sous-dossier** : préfixer les `path:` de la table de routes par `/export-<repo>` (sinon
-   toute nav interne retombe sur l'accueil). Home `/` → `/export-<repo>`.
+0. **⭐ Sous-pages qui retombent sur l'accueil (sous-dossier)** : le VRAI correctif est
+   d'**injecter `data-framer-hydrate-v2`** sur chaque sous-page (voir section K). Le préfixe des
+   routes (1) est complémentaire, pas suffisant seul si le matcher ne normalise pas le `/` final.
+1. **Sous-dossier** : préfixer les `path:` de la table de routes par `/export-<repo>` (garde les
+   URLs correctes en nav client-side). Home `/` → `/export-<repo>`.
 2. **Nav custom** : `<div role="link">` + `window.location.assign('/export-<repo>/route/')`
    (jamais `<a>` : href réécrit en void(0)). Une fois (1) fait, `/route/` matche.
 3. **Traduction** : SSR + `.mjs` + filet runtime `clinic-fix` (MutationObserver, remplacement
