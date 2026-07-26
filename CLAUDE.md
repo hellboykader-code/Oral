@@ -410,3 +410,23 @@ med12 n'a QUE le project-pages → c'est là que vivent les corrections.
   « Made by … », « Built in Framer », « Created by … », « Get/Remix Template »,
   et le dossier `seo-report/`. Landing 1 page (dentitive) : la règle « 5 pages »
   ne s'applique pas telle quelle → à valider avec le propriétaire.
+
+### F. Gros site multi-pages (leçon dentartt « DentArt », 17 pages)
+
+- **Réduire le volume AVANT de traduire** : `rm -rf blog legal seo-report` (blog +
+  pages légales = des centaines de lignes d'anglais non requises par les 5 pages).
+- **Mot de pays/nom propre = même piège que LESSON E** : `Australia`→`France`
+  **corrompt** `Australian Dental Association`→`Francen…`. Ne pas mapper un mot nu
+  qui est sous-chaîne (pays, université, « Whitening » dans « Teeth Whitening »).
+- **SplitText n'est PAS que dans les `<h*>`** : un titre animé peut vivre dans un
+  `<p>` (hero, footer). Le `clinic-fix` qui remplace un titre par son texte FR doit
+  balayer `h1,h2,h3,h4,p` (borne longueur < 400 pour éviter les gros blocs).
+- **Avis dans un carousel sans nom fiable** (`data-framer-name` = `Quote`/`Star`/
+  `Big`…) : les masquer **par contenu** (regex sur une phrase d'avis → remonter au
+  `topSection` et `display:none`), comme `hideFiller` de med12 — pas par nom.
+- **`placeholder=` des formulaires** = texte visible : traduire (nom « Emily
+  Anderson », tél `+61…`, `emily@email.com` → FR).
+- **Méthode qui marche** : traduire par lots (accueil/à-propos, soins, bios), puis
+  **render Playwright page par page** avec un scan `innerText` par nœud, en
+  ignorant les faux positifs FR (`consultation`, `patient`, `implant` = français) ;
+  itérer jusqu'à 0 anglais visible réel sur CHAQUE type de page.
