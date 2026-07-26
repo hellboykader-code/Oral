@@ -173,6 +173,16 @@ Ces conventions (structure, français, fidélité au design d'origine) s'appliqu
 aux sites de cabinets dentaires produits ici. Le « studio » qui présente ces
 sites à la vente suit ses propres règles (voir plus bas).
 
+## ⭐ RÉFÉRENCE — Comment fonctionne Framer (`FRAMER-SYSTEM.md`)
+
+**À lire AVANT toute édition d'un export Framer.** Le fichier `FRAMER-SYSTEM.md`
+(racine du dépôt) documente le système Framer en entier : modèle SSR + hydratation
+React, chunks `.mjs`, **routeur** (règle `Ei` : `/route/` matche, `/route/index.html`
+= 404), tokens/presets de design, breakpoints, SplitText, CMS, formulaires, code
+overrides, et le **playbook d'édition** (traduire les `.mjs`, filet `clinic-fix`,
+liens en `/route/`, cache-bust, sources d'anglais cachées). Consulter ce fichier
+plutôt que deviner.
+
 ## Leçons apprises — erreurs à NE PAS répéter (IMPORTANT)
 
 Retours d'expérience sur les exports Framer (NoCodeExport). À relire avant chaque
