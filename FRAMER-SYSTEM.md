@@ -65,8 +65,17 @@ sitemap.xml, robots.txt, search-index.json, searchIndex-*.json
   → Framer n'intercepte que SES propres liens. Un `<a>` que j'injecte n'est pas intercepté.
 - **Deep-links** : comme chaque page a son `index.html`, une **navigation complète
   vers `/service/`** (slash final, sans `index.html`) charge le fichier ET le routeur
-  matche la route → fonctionne. **C'est la façon fiable de lier depuis du code externe :
-  simple `<a href=".../service/">`** (répertoire, slash final).
+  matche la route → fonctionne.
+- **⭐⭐ PIÈGE MAJEUR (découvert en debug) : Framer réécrit le `href` de TOUS les
+  `<a>` internes du document en `javascript:void(0)`** (il gère la nav en JS via sa
+  fonction `yu` qui crée un `<a>` temporaire et le `.click()`). Cela s'applique AUSSI
+  aux `<a>` qu'on injecte soi-même → **nos liens perdent leur href et deviennent morts**
+  (clic = rien). C'est LA cause de « les boutons ne marchent pas ».
+  → **Solution fiable pour une nav custom : ne PAS utiliser `<a>`. Utiliser des
+  `<div role="link">` (Framer ne touche pas les non-`<a>`) avec un handler de clic
+  qui fait `window.location.assign(BASE+'/route/')`** (navigation complète, slash final).
+  Ne pas se fier non plus à `pushState`+`popstate` (état validé par `Or(state)`) ni à
+  l'interception (par composant, pas globale : aucun listener `click` global sur `document`).
 
 ---
 
