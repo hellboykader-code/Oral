@@ -184,3 +184,110 @@ Pour reproduire/concevoir comme Framer (sans l'app) :
 Sources : framer.com/developers (overrides, cms), framer.com/dictionary
 (breakpoint-variant, cms-collection), framer.com/academy (CMS), unframer.co
 (export React), frontendpatterns.dev (client-side routing) + analyse des exports réels.
+
+---
+
+# ANNEXE — Étude approfondie (recherche dédiée, ne pas re-deviner)
+
+## A. Routeur — mécanique EXACTE (analyse du code réel `framer.*.mjs` + `script_main`)
+- **Table de routes** dans `script_main.*.mjs` : objets
+  `{<routeId>:{elements:{…}, page:()=>import('…chunk.mjs'), path:`/route`}}`.
+  Paths trouvés : `/`, `/about`, `/service`, `/doctors`, `/contact`, `/blog`, `/404`.
+  → **Les paths sont RELATIFS À LA RACINE (root-relative), SANS le sous-dossier de déploiement.**
+- **Route initiale au chargement** : dérivée de l'URL, PAS du SSR :
+  `oe(routes, decodeURIComponent(location.pathname), …)`. Le SSR n'impose pas la route ;
+  l'hydratation **re-matche `location.pathname`**.
+- **Normalisation** : `t.pathname.endsWith('/') ? pathname.slice(0,-1) : pathname`
+  (enlève UN slash final). `Ei(p)=p.replace(/^\/|\/$/,'').split('/').length` = **compte les
+  segments** (ce n'est PAS un normaliseur de chemin — erreur d'analyse précédente corrigée).
+- **⭐⭐ BUG « tous les liens mènent à l'accueil » (déploiement en sous-dossier)** :
+  le site est servi sous `/export-<repo>/` mais les routes sont `/service` etc.
+  → `location.pathname = /export-<repo>/service` ne matche AUCUNE route → l'hydratation
+  bascule sur l'accueil (route `/`). Confirmé par la doc Framer : « the URL paths must
+  match between your domain and the Framer site » ; « Framer's client-side routing expects
+  consistent paths ». **Framer est conçu pour être servi à la RACINE d'un domaine.**
+  → **Correctif : préfixer les paths de la table de routes avec le sous-dossier**
+  (`path:`/service`` → `path:`/export-<repo>/service``, home `path:`/`` →
+  `path:`/export-<repo>``). Alors `location.pathname` matche. (Ou déployer à la racine.)
+- **Navigation d'un lien Framer** : chaque `<Link>` a un `onClick` par composant (PAS de
+  listener `click` global sur `document`) qui appelle `a.navigate?.()` (SPA) ou
+  `yu(href)` — et `yu` crée un `<a>` temporaire et le `.click()` = **navigation complète**.
+- **⭐ Framer réécrit le `href` de TOUS les `<a>` internes en `javascript:void(0)`**
+  (gestion JS). Touche aussi nos `<a>` injectés → liens morts. **Nav custom = `<div role="link">`
+  (Framer ne touche pas les non-`<a>`) + handler `window.location.assign(url)`.**
+- Le routeur écoute `popstate` MAIS **valide `event.state`** (`if(!Or(state))return`) →
+  un `pushState({})`+popstate d'état vide est ignoré. Écoute aussi la **Navigation API**
+  (`window.navigation`), mais l'interception dépend de la config.
+
+## B. Rendu & hydratation (analyse + reverse-engineering communautaire)
+- SSR HTML complet + hydratation React 18 depuis les `.mjs`. Un site Framer ≈ **800 Ko+ JS**
+  (React + Motion + Framer + chunks). Ordre de chargement (modulepreload) :
+  `rolldown-runtime → react → motion → framer → shared-lib → chunks de page`.
+- **Convertir en HTML statique = retirer les scripts d'hydratation** (le `<script
+  type="module" data-framer-bundle="main">`, les `modulepreload`, tout `hydrateRoot`).
+  MAIS alors : accordéons/onglets/menus morts, **et surtout les éléments d'apparition
+  restent invisibles** (voir C). Donc conversion statique = uniquement si on force
+  aussi `opacity:1` et qu'on accepte de perdre les animations.
+
+## C. Animations d'apparition (appear) — pourquoi « écran par écran » sans JS échoue
+- Attribut racine `data-framer-appear-animation="no-preference"`.
+- Les éléments animés ont un **style inline** `opacity:0.001; transform:translateY(10px)…`
+  dans le SSR. C'est le JS (Framer Motion) qui les passe à `opacity:1` à l'entrée dans
+  le viewport. **Sans JS → ils restent quasi invisibles (0.001).**
+- `will-change:transform` / `will-change:var(--framer-will-change-override,transform)`.
+- Titres animés = **SplitText** (découpe en `<span>` par mot ; parfois plusieurs `<h1>`).
+
+## D. Design system (confirmé)
+- **Couleurs = tokens** `--token-<uuid>` avec repli `rgb(...)`. Dark mode : color styles
+  ont valeur claire+sombre ; bascule via `[data-framer-theme="dark"|"light"]`
+  (`document.body.dataset.framerTheme`).
+- **Typographie = presets** : `data-styles-preset="<id>"` + classe `framer-styles-preset-<id>`.
+  Polices via `@font-face` (chunks `fontshare-*` / `google-*`) — Bricolage Grotesque, Inter…
+- **Breakpoints** desktop-first : Desktop (≥1200/1360) source → Tablet → Phone héritent,
+  surcharge possible (layout, **variante**, style). Media queries dans les chunks.
+
+## E. Composants & code (API complète — réf. Framer Developers)
+- **Code Override** = HOC React (React 18 + `forwardRef`), actif en preview/publié.
+- **Code Component** = composant React + `addPropertyControls(Comp,{prop:{type:ControlType.…}})`.
+  **ControlType** : String (placeholder/maxLength/obscured/displayTextArea), Number
+  (min/max/step/unit/displayStepper), Boolean (enabledTitle/disabledTitle), Color, Enum
+  (options/optionTitles/displaySegmentedControl), ComponentInstance (children), File
+  (allowedFileTypes), ResponsiveImage (src/srcSet/alt), Font, Padding, BorderRadius, Border,
+  BoxShadow, Gap, Cursor, Array (control/maxCount), Object (controls/optional), Date
+  (displayTime), Transition, Link, TrackingId. Options communes : `defaultValue`,
+  `hidden(props)`, `description`. (SegmentedEnum/Image/FusedNumber = dépréciés.)
+- `RenderTarget.current()` = canvas | preview | export. `useStore` (store partagé).
+  `data-framer-component-type="RichTextContainer"`, `data-framer-name` = calque interne.
+
+## F. CMS (réf. Framer Developers)
+- Collection → items `{id, slug, draft, fieldData{fieldId:value}}`, fields `{id,name,type}`.
+  15 types : boolean,color,number,string,formattedText,image,file,link,date,enum,
+  collectionReference,multiCollectionReference,array,unsupported. API :
+  `framer.getCollections()/getActiveCollection()`, `collection.getFields()/getItems()`.
+  Pages CMS : 1 par item, URL `.../:slug`. Contenu rendu côté client → **traduire les `.mjs`**.
+
+## G. Formulaires
+- `<input>` dans un `<form>` → inclus à la soumission. Destinations Framer : e-mail,
+  Google Sheet, webhook. Export statique : **aucun envoi** → brancher Formspree/FormSubmit.
+- Options `<select>` : `{title:`…`(affiché), type:`option`, value:`…`(clé)}`. Placeholders visibles.
+
+## H. Localisation (i18n) native Framer
+- Locales (langue+région), Localization Groups (pages/CMS), Localization Sources (string→traduction).
+  Routing `/en/about`, `/fr/about`. Traduction manuelle ou IA. **Nos exports = mono-locale
+  (anglais)** → on traduit au niveau code (SSR + `.mjs`), équivalent d'une localisation manuelle.
+
+## I. SEO / assets (confirmé dans l'export)
+- `<link rel="canonical">`, `<meta name="description|robots|viewport">`, `og:title/description/
+  image/url/type`. `sitemap.xml`, `robots.txt`, `search-index.json`, `searchIndex-*.json`.
+- Images : `srcset` responsive + `loading="lazy"` ; URLs CDN `framerusercontent.com` → à
+  réécrire en local `/export-<repo>/assets/framer/images/…` (le CDN est bloqué en preview local).
+
+## J. Récapitulatif des CORRECTIFS fiables (à appliquer)
+1. **Sous-dossier** : préfixer les `path:` de la table de routes par `/export-<repo>` (sinon
+   toute nav interne retombe sur l'accueil). Home `/` → `/export-<repo>`.
+2. **Nav custom** : `<div role="link">` + `window.location.assign('/export-<repo>/route/')`
+   (jamais `<a>` : href réécrit en void(0)). Une fois (1) fait, `/route/` matche.
+3. **Traduction** : SSR + `.mjs` + filet runtime `clinic-fix` (MutationObserver, remplacement
+   du nœud texte). Vider `searchIndex-*.json`.
+4. **Masquer sections** (avis/FAQ/blog/offres) : CSS `!important` sur `[data-framer-name*="…"]`.
+5. **Cache** : `clinic-fix.js?v=N` (les `.mjs` gardent leur nom → cache navigateur/CDN ~10 min).
