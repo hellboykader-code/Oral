@@ -537,3 +537,25 @@ sélecteur élargi `a,button,[role="link"],[role="button"]` avec garde longueur
 `t.length>42 → skip` (au lieu du garde enfants) pour ne pas attraper la carte
 entière, et exclusion de `#rd-navbar`. **Règle** : ne jamais matcher un libellé de
 bouton par égalité stricte — normaliser icône/guillemets/casse d'abord.
+
+**10. ⭐⭐ VRAIE cause : Framer DOUBLE le libellé des boutons.** Après enquête sur le
+DOM réel (strip-tags de l'`<a data-framer-name="Button Primary">`), `textContent` =
+« À propos de RedDent**À propos de RedDent** » — Framer rend une **2ᵉ copie masquée
+du texte pour l'effet hover**. C'est pour ÇA que TOUS les matches par égalité stricte
+échouaient (À propos, En savoir plus, Voir tous nos soins) — jamais une histoire de
+cache. **Correctifs cumulés (les 3)** :
+- `btnText(el)` = normalise + **dé-duplique** (`while moitié==moitié → couper`) ;
+- matching en **`startsWith`** (pas `===`) car quand l'icône/guillemet est entre les
+  deux copies, la dé-dup laisse `"en savoir plus en savoir plus"` (asymétrique) ;
+- **intercepteur de clic GLOBAL** `document.addEventListener('click',fn,true)`
+  (capture) qui `closest('a,button,[role])` → mappe le libellé → `preventDefault()`
+  + `stopImmediatePropagation()` + `location.assign(dest)`. **Un seul** listener sur
+  `document` → survit à tous les re-render React et **précède le routeur Framer**
+  (bien plus fiable que réattacher un handler par nœud, qui saute au re-render).
+- **Masquer un bouton** (« Voir tous nos soins ») : CSS `!important` par conteneur
+  (`[data-framer-name="Service Section"] [data-framer-name="Button Primary"]`) — pas
+  par JS `display=none` (React l'annule). Vérifier d'abord qu'il n'y a qu'UN
+  `Button Primary` dans la section (grep de bornes de `<section>`).
+**Règle d'or** : pour un CTA Framer, toujours (a) lire le `textContent` RÉEL du nœud
+(il est doublé), (b) matcher en `startsWith` après dé-dup, (c) piloter le clic par un
+**listener global capture sur `document`**, jamais par le href (réécrit en void(0)).
