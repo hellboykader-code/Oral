@@ -590,3 +590,22 @@ AVANT de normaliser/dé-dupliquer, pour ne garder que le libellé. Vérifié Pla
 `<a>`→void(0)) : nav + CTA + cartes soins naviguent (31 overlays). **Règle** : pour lire le
 libellé d'un bouton Framer, retirer d'abord tout bloc `{…}` (CSS injecté) + l'artefact
 `rolling-text…`, puis dé-dupliquer.
+
+**13. ⭐ Nos overlays de navigation TUENT les interactions de survol natives (image qui
+suit le curseur).** RedDent : le modèle Framer avait, dans la section Soins, une **image
+qui suit le curseur** au survol de chacune des cartes (chaque `[data-framer-name="Service
+Card Tablet"]` a son propre `[data-framer-name="Image Wrapper"] img` en `opacity:0
+scale(.5)`, révélé au hover). Nos overlays de clic (`pointer-events:auto`, posés SUR les
+cartes pour rattraper les `href` voidés) **interceptent le hover** → l'effet natif ne se
+déclenche plus. **Correctif réutilisable** : ré-implémenter le hover **au niveau
+`document`** (un listener `mousemove` sur `document` fire TOUJOURS, même quand un overlay
+est la cible, car `mousemove` bubble). Une `<img id="rd-follow-img">` flottante dans
+`<body>` (hors React → auto-réparante, `pointer-events:none`, `z-index` sous la navbar)
+suit la souris avec un **lerp** (`fx+=(tx-fx)*.18`) ; à chaque move on **hit-teste** les
+rects des cartes (`getBoundingClientRect`) et on affiche la **photo lue dans l'Image
+Wrapper de la carte survolée** (`im.currentSrc||src||srcset[0]`) — donc auto-adaptatif au
+nombre de cartes (4 ici). Refresh de la liste des cartes dans `apply()`. Vérifié
+Playwright : hover carte → `opacity:1` + bonne image, sortie → `opacity:0`. **Règle** :
+quand on pose une couche d'overlays sur des éléments Framer, tout effet de **survol**
+natif (image-follow, tilt, reveal) est perdu → le réimplémenter via un listener
+`document`+`mousemove` (jamais un handler sur la carte, masquée par l'overlay).
