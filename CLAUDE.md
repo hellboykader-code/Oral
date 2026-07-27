@@ -453,3 +453,77 @@ med12 n'a QUE le project-pages → c'est là que vivent les corrections.
   **render Playwright page par page** avec un scan `innerText` par nœud, en
   ignorant les faux positifs FR (`consultation`, `patient`, `implant` = français) ;
   itérer jusqu'à 0 anglais visible réel sur CHAQUE type de page.
+
+### G. ⭐⭐ SESSION DÉCISIVE — « les boutons/sous-pages retombent tous sur l'accueil » (RÉSOLU)
+
+Le bug le plus tenace de tous les sites Framer. Symptôme rapporté par le
+propriétaire : « les boutons cliquent mais mènent tous à l'accueil » puis « la
+page apparaît une seconde puis disparaît ». **Cause racine trouvée et corrigée
+définitivement** — tout est ici pour ne JAMAIS refaire les fausses pistes.
+
+**1. La vraie cause (démontrée dans le code, pas devinée).** Au chargement,
+Framer ne déduit PAS la route depuis l'URL en priorité. `script_main` lit dans
+l'ordre : (a) `document.querySelector('#main').dataset.framerHydrateV2` — un JSON
+`{routeId, localeId, breakpoints}` **injecté dans le SSR** → routeId pris
+directement, AUCUN matching d'URL ; (b) l'en-tête `Server-Timing` (absent sur
+GitHub Pages) ; (c) **seulement sinon** (`if(!r||!i)`) le fallback
+`match(routes, decodeURIComponent(location.pathname))`. Or, sur beaucoup
+d'exports, SEUL `index.html` porte `data-framer-hydrate-v2` ; les sous-pages ont
+un `<div id="main">` **nu** → elles tombent dans le fallback (c), qui compare
+`/export-<repo>/about` à une route `/about` → aucun match → **rendu de l'accueil
+par-dessus le SSR correct**. C'est exactement le « apparaît 1 s puis disparaît ».
+
+**2. Fausses pistes écartées (ne pas y retourner).**
+- ❌ « c'est le cache » — non, c'était un vrai défaut de routing.
+- ❌ prefixer les `path:` de la table de routes SEUL — utile mais **insuffisant**
+  si le matcher ne normalise pas le `/` final. La vraie clé, c'est le dataset.
+- ✅ Diagnostic sûr : `grep 'framer-hydrate-v2'` sur `index.html` vs une sous-page.
+  Si présent partout (kader1, kadaaaaa-ms1twfho) → immunisé. Si présent seulement
+  sur l'accueil (reddent1, kader9, kader10, med12, vivadent, dentartt) → **bug**.
+
+**3. Correctif DÉFINITIF (robuste, indépendant du chemin de déploiement).**
+Injecter le dataset sur CHAQUE sous-page :
+`<div id="main" data-framer-hydrate-v2="{&quot;routeId&quot;:&quot;<ID>&quot;,&quot;localeId&quot;:&quot;default&quot;,&quot;breakpoints&quot;:[…copiés de l'accueil…]}">`.
+- `breakpoints` = copier tel quel le tableau du dataset de `index.html` (identique
+  pour tout le site). `localeId` = `default`.
+- `<ID>` = routeId de la route dont le `path` finit par `/X` (X = nom du dossier).
+- **Extraction path→routeId (piège technique résolu)** : la table est
+  `…<id>:{elements:{…},page:P(()=>import(…)),path:`/X`}`. Un regex simple CASSE car
+  les objets ont des accolades imbriquées non vides (`{…trigger}`). **Solution qui
+  marche** : pour chaque `path:`…`` remonter caractère par caractère en comptant
+  les accolades (`}`→+1, `{`→si depth 0 c'est l'ouvrante sinon −1) ; l'`<id>` est
+  l'identifiant juste avant `:{`. Validé en croisant avec le dataset d'accueil
+  (home doit = augiA20Il, l'`elements` du home contient `hero-banner`).
+- **Vérification finale obligatoire** : pour chaque sous-page, `routeId` injecté ==
+  `routeId` du path dans la table → script « ALL CONSISTENT ». Fait sur les 6 sites.
+- Garder AUSSI le préfixe des `path:` (URLs correctes en nav client-side) + le
+  cache-bust (`script_main.…mjs?fr=2` sur les refs HTML, car le `.mjs` garde son
+  nom → CDN sert l'ancien ~10 min).
+
+**4. Bug bonus trouvé sur med12** : le dataset de `index.html` pointait `nQCqzkvcq`
+(= route `/blogs`) au lieu de la route d'accueil `augiA20Il` → l'accueil hydratait
+en page blog. Corrigé. **Règle** : toujours vérifier que le dataset d'accueil pointe
+la route home (dont `elements` contient `hero-banner`), pas `/blogs`.
+
+**5. Nav injectée maison (reddent)** : boutons en `<div role="link">` +
+`window.location.assign('/export-<repo>/route/')` (jamais `<a>` : href réécrit en
+`javascript:void(0)`). Une fois les datasets injectés, la navigation dure (assign)
+charge la sous-page qui s'hydrate correctement via SON dataset. C'est ça qui a
+enfin fait « marcher les boutons ».
+
+**6. État des 6 sites corrigés** : reddent1 ✅push, kader9 ✅push, kader10 ✅push,
+dentartt ✅push, **med12 ⚠️ commit local** (proxy `repository not found`),
+**vivadent ⚠️ commit local** (idem). Immunisés (datasets déjà présents, NON
+touchés) : kader1/Oléa, kadaaaaa-ms1twfho, dentitive1 (mono-page). Vides
+(README seul, pas des sites) : froore ×2, kadaaaaa-ms0u234t.
+
+**7. Pièges d'outillage rencontrés (à retenir)** :
+- `git push … | tail -1` **masque le code de sortie** → un échec (« not found »)
+  s'affiche faussement comme « PUSHED ». Tester `if git push …; then … else …`.
+- Ne pas tester le comportement client via Playwright ici : le CDN
+  `framerusercontent.com` est bloqué → React #405, rendu blanc. **La vérification
+  fiable est au niveau source** (grep du dataset + cohérence routeId/table).
+
+**8. Doc mémoire** : tout ce mécanisme est détaillé dans `FRAMER-SYSTEM.md`
+**section K** (à lire avant tout futur export). Réappliquer le correctif 3 à tout
+nouveau site multi-pages dont les sous-pages n'ont pas `data-framer-hydrate-v2`.
