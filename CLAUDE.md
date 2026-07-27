@@ -580,3 +580,13 @@ réel), les 4 familles de boutons naviguent correctement.
   global). Un overlay `<a>` voit donc son href vidé → ne navigue plus. D'où le `<div>`.
 - **Règle** : tout élément cliquable injecté qui doit naviguer = `<div>`/`<span>` +
   handler `location.assign`, JAMAIS `<a href>` (Framer le neutralise partout).
+
+**12. ⭐ Composant « rolling text » (hover) → le `textContent` du bouton contient du CSS.**
+Sur Novéo (kader9), les liens de nav ont un effet « rolling text » : Framer injecte un
+`<style>` DANS le `<a>`, donc `el.textContent` = « soins { --font-size:14px; … } span { … } »
+(le CSS du `<style>` fuit dans le textContent). Le mappage `destFor` par libellé échouait →
+0 overlay sur la nav. **Correctif** : dans `btnText`, **couper au premier `{`** (`t.split('{')[0]`)
+AVANT de normaliser/dé-dupliquer, pour ne garder que le libellé. Vérifié Playwright (#main
+`<a>`→void(0)) : nav + CTA + cartes soins naviguent (31 overlays). **Règle** : pour lire le
+libellé d'un bouton Framer, retirer d'abord tout bloc `{…}` (CSS injecté) + l'artefact
+`rolling-text…`, puis dé-dupliquer.
