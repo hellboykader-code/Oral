@@ -527,3 +527,13 @@ touchés) : kader1/Oléa, kadaaaaa-ms1twfho, dentitive1 (mono-page). Vides
 **8. Doc mémoire** : tout ce mécanisme est détaillé dans `FRAMER-SYSTEM.md`
 **section K** (à lire avant tout futur export). Réappliquer le correctif 3 à tout
 nouveau site multi-pages dont les sous-pages n'ont pas `data-framer-hydrate-v2`.
+
+**9. Bouton « En savoir plus » qui RÉSISTE (reddent, capture live)** : la détection
+exacte par texte a échoué car le bouton contient une **icône flèche (↗) enfant** et
+des **guillemets `»`**. Le garde `if(kids.length>0) return` sautait donc le bouton,
+et `t==='En savoir plus'` ne matchait pas `"En savoir plus »↗"`. **Correctif** :
+`isMoreLabel(t)` qui **normalise** (retire `« » ↗ →`, minuscule) puis compare, sur
+sélecteur élargi `a,button,[role="link"],[role="button"]` avec garde longueur
+`t.length>42 → skip` (au lieu du garde enfants) pour ne pas attraper la carte
+entière, et exclusion de `#rd-navbar`. **Règle** : ne jamais matcher un libellé de
+bouton par égalité stricte — normaliser icône/guillemets/casse d'abord.
