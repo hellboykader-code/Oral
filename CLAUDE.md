@@ -609,3 +609,16 @@ Playwright : hover carte → `opacity:1` + bonne image, sortie → `opacity:0`. 
 quand on pose une couche d'overlays sur des éléments Framer, tout effet de **survol**
 natif (image-follow, tilt, reveal) est perdu → le réimplémenter via un listener
 `document`+`mousemove` (jamais un handler sur la carte, masquée par l'overlay).
+- **⭐⭐ PIÈGE DÉCISIF — Framer RENOMME le calque à l'hydratation.** En SSR les cartes
+  s'appellent `data-framer-name="Service Card Tablet"` ; **après hydratation complète**
+  (desktop), Framer les **remplace** par `data-framer-name="Service Card"` → un sélecteur
+  sur le nom SSR trouve **0 carte** sur le vrai navigateur (l'effet ne marche qu'en test
+  partiel-hydraté, jamais en live !). **Ne JAMAIS cibler par le nom du calque.** Cibler un
+  ancrage **stable** (ici les 4 `[data-framer-name="Image Wrapper"]` DANS la section, qui
+  survivent au renommage) puis remonter au lien/carte parent (`closest('a')`) comme zone
+  de survol. + **Refresh perpétuel** de la liste (pas seulement < 20 s) car React
+  reconstruit les nœuds. **Vérif OBLIGATOIRE en hydratation COMPLÈTE** : le CDN
+  `framerusercontent` étant bloqué, le tester via **interception de route Playwright**
+  (`ctx.route(/framerusercontent…/)` → `fetch` via `undici ProxyAgent` sur
+  `HTTPS_PROXY` + `NODE_EXTRA_CA_CERTS` → `route.fulfill`). C'est le SEUL moyen de voir le
+  DOM desktop réel (renommage, carousel, nœuds remplacés). Le test partiel-hydraté ment.
