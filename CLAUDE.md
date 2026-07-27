@@ -559,3 +559,24 @@ cache. **Correctifs cumulés (les 3)** :
 **Règle d'or** : pour un CTA Framer, toujours (a) lire le `textContent` RÉEL du nœud
 (il est doublé), (b) matcher en `startsWith` après dé-dup, (c) piloter le clic par un
 **listener global capture sur `document`**, jamais par le href (réécrit en void(0)).
+
+**11. ⭐⭐⭐ POURQUOI les boutons de l'ACCUEIL résistaient encore (RÉSOLU, vérifié
+Playwright).** Sur hydratation COMPLÈTE (celle du vrai navigateur, pas reproductible
+ici car `init.mjs`/`.framercms` viennent du CDN framerusercontent bloqué), le clic sur
+un `<a>` interne ne déclenche PAS le listener `document` capture — Framer neutralise
+l'événement au niveau de son gestionnaire de gestes (motion) sur le nœud. Le listener
+`document` marchait en test synthétique/jsdom mais PAS sur le vrai geste. **La barre de
+nav marchait** parce qu'elle est faite de `<div>` dans `<body>` (hors #main) avec un
+`addEventListener('click')` direct + `location.assign`. **Correctif définitif = même
+technique pour les boutons de page : une COUCHE D'OVERLAYS.** Un `<div id="rd-ovl-layer">`
+dans `<body>`, contenant un `<div>` transparent `position:fixed` par CTA, repositionné
+sur le bouton via `getBoundingClientRect()` (throttle rAF sur scroll/resize + interval).
+Chaque overlay porte `data-dest` et navigue par `location.assign` au clic. Le mapping
+libellé→destination réutilise `destFor` (nav, pastilles, cartes soins→Contact, cartes
+praticiens→Équipe). Vérifié : en forçant tous les `#main a[href]` à `void(0)` (= l'état
+réel), les 4 familles de boutons naviguent correctement.
+- **⚠️ Piège décisif** : NE PAS faire les overlays en `<a href>` — **Framer réécrit
+  TOUS les `<a href>` du DOCUMENT en `javascript:void(0)`, même hors `#main`** (balayage
+  global). Un overlay `<a>` voit donc son href vidé → ne navigue plus. D'où le `<div>`.
+- **Règle** : tout élément cliquable injecté qui doit naviguer = `<div>`/`<span>` +
+  handler `location.assign`, JAMAIS `<a href>` (Framer le neutralise partout).
