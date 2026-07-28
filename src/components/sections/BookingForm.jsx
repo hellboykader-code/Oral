@@ -9,8 +9,8 @@ import '../../pages/RendezVous.css';
 
 const EMAIL_RE = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 
-// E-mail du praticien qui reçoit les demandes de rendez-vous (à personnaliser par cabinet).
-const DOCTOR_EMAIL = 'kaderhb33@gmail.com';
+// Les demandes sont envoyées au récepteur central DentWebPro (send.php), qui relaie
+// vers l'e-mail du praticien depuis contact@dentwebpro.site (DKIM/SPF -> boîte de réception).
 
 /**
  * Formulaire de rendez-vous complet (prénom/nom/téléphone/email, jour + heure,
@@ -71,9 +71,8 @@ export default function BookingForm({ idPrefix = 'rdv' }) {
     if (!validate()) return;
     // Envoi au praticien via FormSubmit (fonctionne une fois le site en ligne + e-mail activé).
     const payload = {
+      site: 'eclat',
       _subject: 'Nouvelle demande de rendez-vous — Éclat',
-      _template: 'table',
-      _captcha: 'false',
       Prénom: form.prenom,
       Nom: form.nom,
       Téléphone: form.telephone,
@@ -84,7 +83,7 @@ export default function BookingForm({ idPrefix = 'rdv' }) {
       Message: form.message,
     };
     try {
-      fetch(`https://formsubmit.co/ajax/${DOCTOR_EMAIL}`, {
+      fetch('https://dentwebpro.site/send.php', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json', Accept: 'application/json' },
         body: JSON.stringify(payload),
