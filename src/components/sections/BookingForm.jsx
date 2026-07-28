@@ -9,6 +9,9 @@ import '../../pages/RendezVous.css';
 
 const EMAIL_RE = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 
+// E-mail du praticien qui reçoit les demandes de rendez-vous (à personnaliser par cabinet).
+const DOCTOR_EMAIL = 'kaderhb33@gmail.com';
+
 /**
  * Formulaire de rendez-vous complet (prénom/nom/téléphone/email, jour + heure,
  * sélection des 21 soins, message). Partagé entre la page « Rendez-vous » et la
@@ -65,7 +68,31 @@ export default function BookingForm({ idPrefix = 'rdv' }) {
 
   const onSubmit = (e) => {
     e.preventDefault();
-    if (validate()) setSent(true);
+    if (!validate()) return;
+    // Envoi au praticien via FormSubmit (fonctionne une fois le site en ligne + e-mail activé).
+    const payload = {
+      _subject: 'Nouvelle demande de rendez-vous — Éclat',
+      _template: 'table',
+      _captcha: 'false',
+      Prénom: form.prenom,
+      Nom: form.nom,
+      Téléphone: form.telephone,
+      Email: form.email,
+      Jour: form.date,
+      Heure: form.heure,
+      Soins: selectedTitles.join(', '),
+      Message: form.message,
+    };
+    try {
+      fetch(`https://formsubmit.co/ajax/${DOCTOR_EMAIL}`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json', Accept: 'application/json' },
+        body: JSON.stringify(payload),
+      }).catch(() => {});
+    } catch (_) {
+      /* le message de succès reste affiché même si l'envoi échoue */
+    }
+    setSent(true);
   };
 
   const id = (name) => `${idPrefix}-${name}`;
