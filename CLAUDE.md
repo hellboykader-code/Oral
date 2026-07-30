@@ -628,6 +628,13 @@ natif (image-follow, tilt, reveal) est perdu → le réimplémenter via un liste
 Le propriétaire fournira une **clé Google API**. À CHAQUE demande de « liste »,
 appliquer ces règles SANS exception (les rappeler mentalement avant d'agir) :
 
+0. **⭐ DÉCLENCHEUR « ( الامر الاحمر ) » (« l'ordre rouge »)** = quand le propriétaire
+   écrit cette expression, lancer une recherche et **envoyer une liste de EXACTEMENT
+   100 médecins**, en appliquant toutes les règles ci-dessous (sans site, ordre géo,
+   zéro doublon). Chaque liste = **100 médecins**, jamais plus. Outil prêt :
+   `scratchpad/prospect.py` (Places API New `places:searchText`, `MAX=100`, registre
+   `.prospection-ledger.json` = SHA1 des numéros déjà fournis → exclusion auto).
+   Clé Google API fournie par le propriétaire (dans l'historique de session).
 1. **Uniquement les dentistes SANS site web.** Interroger Google Places, récupérer
    le champ `website`. **Ne garder QUE ceux dont `website` est vide.** S'ils ont un
    **Doctolib** ou une page **Facebook/Instagram** mais **pas de vrai site web**, on
