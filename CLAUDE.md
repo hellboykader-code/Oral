@@ -622,3 +622,29 @@ natif (image-follow, tilt, reveal) est perdu → le réimplémenter via un liste
   (`ctx.route(/framerusercontent…/)` → `fetch` via `undici ProxyAgent` sur
   `HTTPS_PROXY` + `NODE_EXTRA_CA_CERTS` → `route.fulfill`). C'est le SEUL moyen de voir le
   DOM desktop réel (renommage, carousel, nœuds remplacés). Le test partiel-hydraté ment.
+
+## ⭐⭐ RÈGLES PERMANENTES — Prospection (listes de médecins via Google API)
+
+Le propriétaire fournira une **clé Google API**. À CHAQUE demande de « liste »,
+appliquer ces règles SANS exception (les rappeler mentalement avant d'agir) :
+
+1. **Uniquement les dentistes SANS site web.** Interroger Google Places, récupérer
+   le champ `website`. **Ne garder QUE ceux dont `website` est vide.** S'ils ont un
+   **Doctolib** ou une page **Facebook/Instagram** mais **pas de vrai site web**, on
+   les **garde** (ils restent des prospects). Un `website` = domaine propre → **exclure**.
+   (Un lien Doctolib/Facebook n'est PAS un site web.)
+2. **Ordre géographique imposé :** commencer par **Paris**, puis **Île-de-France**,
+   puis **le reste de la France**. Ne pas sauter à une autre région tant que la
+   précédente n'est pas épuisée.
+3. **⛔ JAMAIS de numéro de téléphone en double — y compris entre les jours.** Une
+   liste aujourd'hui, une autre demain, une autre après-demain : **aucun médecin
+   déjà donné une fois ne doit réapparaître**. Dédup par **numéro normalisé**
+   (chiffres seuls). La mémoire des numéros déjà fournis = **la base de l'espace**
+   (`espace/data/db.json`) : chaque liste générée est **importée dans l'espace**
+   (source « Google ») → elle devient le registre permanent, et toute génération
+   future **exclut tous les téléphones déjà présents** (lire via l'action admin
+   `admin_data`/export avant de générer). Ainsi le « zéro doublon inter-jours » est
+   garanti par construction, pas par mémoire.
+4. **Caveats à garder en tête** (déjà signalés au propriétaire) : les CGU Google
+   Places restreignent le stockage durable des données ; ajouter un champ/indicateur
+   « Ne pas appeler » (opposition) pour le RGPD. Ne pas bloquer, mais rester correct.
