@@ -655,3 +655,32 @@ appliquer ces règles SANS exception (les rappeler mentalement avant d'agir) :
 4. **Caveats à garder en tête** (déjà signalés au propriétaire) : les CGU Google
    Places restreignent le stockage durable des données ; ajouter un champ/indicateur
    « Ne pas appeler » (opposition) pour le RGPD. Ne pas bloquer, mais rester correct.
+
+## ⭐ RÈGLES — Documents commerciaux DentWebPro (déclencheurs à mémoriser)
+
+Deux documents ont été créés avec le propriétaire et sont **stockés dans le dépôt**
+(donc toujours disponibles, même après recyclage du conteneur) :
+
+- **Facture** → `documents/facture-dentwebpro.html`
+- **Contrat / Bon de commande** → `documents/contrat-dentwebpro.html`
+
+Les deux sont des pages HTML `contenteditable` (champs surlignés à remplir → bouton
+« Imprimer / Enregistrer en PDF »), au design DentWebPro (corail #f55733), avec les
+infos du prestataire **déjà pré-remplies** :
+- AK DEV — Hammou-Boutrig Abdelkader
+- 4 Avenue du Mal de Lattre de Tassigny, 94000 Créteil
+- SIRET 991 470 212 00010 — contact@dentwebpro.site
+
+**Déclencheurs (envoi direct, sans reconstruire) :**
+- Quand le propriétaire écrit **« facture »** → envoyer directement
+  `documents/facture-dentwebpro.html` via SendUserFile (display:render).
+- Quand le propriétaire écrit **« contrat »** → envoyer directement
+  `documents/contrat-dentwebpro.html` via SendUserFile (display:render).
+
+Ne rien redemander : les documents existent déjà, il suffit de les renvoyer tels quels.
+
+## Note RGPD — « Ne pas appeler » = « Pas intéressé »
+
+Le champ « Ne pas appeler » est **déjà couvert** par le statut **« Pas intéressé »**
+déjà présent dans l'espace. Ne PAS ajouter un champ séparé : marquer un prospect
+« Pas intéressé » vaut opposition (ne plus rappeler).
