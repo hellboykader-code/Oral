@@ -663,6 +663,8 @@ Deux documents ont été créés avec le propriétaire et sont **stockés dans l
 
 - **Facture** → `documents/facture-dentwebpro.html`
 - **Contrat / Bon de commande** → `documents/contrat-dentwebpro.html`
+- **E-mails de prospection** (2 modèles : après appel + à froid, avec mention STOP CNIL)
+  → `documents/emails-prospection-dentwebpro.html`
 
 Les deux sont des pages HTML `contenteditable` (champs surlignés à remplir → bouton
 « Imprimer / Enregistrer en PDF »), au design DentWebPro (corail #f55733), avec les
