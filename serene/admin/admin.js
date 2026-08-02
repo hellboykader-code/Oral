@@ -106,17 +106,60 @@ function demoData() {
   };
 }
 
-/* ---------- persistance ---------- */
+/* ---------- persistance (démo : localStorage · hébergé : api.php) ---------- */
 const KEY = 'serene-espace';
 let DB = null;
-function load() { try { DB = JSON.parse(localStorage.getItem(KEY)); } catch (e) { DB = null; } if (!DB || !DB.v) { DB = demoData(); save(); } }
-function save() { localStorage.setItem(KEY, JSON.stringify(DB)); }
+let MODE = 'demo'; // 'serveur' si api.php répond (cPanel)
+let TOKEN = sessionStorage.getItem('serene-token') || '';
+async function detectMode() {
+  try { const r = await fetch('api.php?action=ping', { cache: 'no-store' }); if (r.ok && (await r.json()).ok) MODE = 'serveur'; } catch (e) {}
+}
+async function loadData() {
+  if (MODE === 'serveur') {
+    try {
+      const r = await fetch('api.php?action=load&token=' + encodeURIComponent(TOKEN));
+      if (r.status === 401) { sessionStorage.clear(); location.reload(); return; }
+      const j = await r.json();
+      if (j.data && j.data.v) { DB = j.data; localStorage.setItem(KEY, JSON.stringify(DB)); return; }
+    } catch (e) {}
+    DB = demoData(); save(); return; // première ouverture : base initiale poussée au serveur
+  }
+  try { DB = JSON.parse(localStorage.getItem(KEY)); } catch (e) { DB = null; }
+  if (!DB || !DB.v) { DB = demoData(); save(); }
+}
+let _saveT = null;
+function save() {
+  localStorage.setItem(KEY, JSON.stringify(DB));
+  if (MODE === 'serveur' && TOKEN) {
+    clearTimeout(_saveT);
+    _saveT = setTimeout(() => {
+      fetch('api.php', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ action: 'save', token: TOKEN, data: DB }) }).catch(() => {});
+    }, 600);
+  }
+}
 const soinTitre = (slug) => (DB.soins.find((s) => s.slug === slug) || {}).titre || slug;
 
-/* ---------- authentification (démo : mdp "serene2026") ---------- */
+/* ---------- authentification (mdp initial : "serene2026") ---------- */
 const PASS_KEY = 'serene-espace-pass';
 async function ensurePass() { if (!localStorage.getItem(PASS_KEY)) localStorage.setItem(PASS_KEY, await sha('serene2026')); }
-async function tryLogin(p) { return (await sha(p)) === localStorage.getItem(PASS_KEY); }
+async function tryLogin(p) {
+  if (MODE === 'serveur') {
+    try {
+      const r = await fetch('api.php', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ action: 'login', pass: p }) });
+      const j = await r.json();
+      if (j.ok && j.token) { TOKEN = j.token; sessionStorage.setItem('serene-token', TOKEN); return true; }
+      return false;
+    } catch (e) { return false; }
+  }
+  return (await sha(p)) === localStorage.getItem(PASS_KEY);
+}
+async function changePass(p) {
+  if (MODE === 'serveur') {
+    const r = await fetch('api.php', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ action: 'password', token: TOKEN, pass: p }) });
+    return (await r.json()).ok;
+  }
+  localStorage.setItem(PASS_KEY, await sha(p)); return true;
+}
 
 /* ============================================================
    NAVIGATION / COQUILLE
@@ -722,7 +765,7 @@ RENDER.parametres = () => {
     const a = $('#s-p1').value, b = $('#s-p2').value;
     if (a.length < 8) return toast('8 caractères minimum');
     if (a !== b) return toast('Les deux mots de passe ne correspondent pas');
-    localStorage.setItem(PASS_KEY, await sha(a)); toast('Mot de passe modifié ✅');
+    toast((await changePass(a)) ? 'Mot de passe modifié ✅' : 'Échec — réessayez');
   };
   $('#s-email').onchange = (e) => { DB.settings.emailNotif = e.target.value; save(); toast('E-mail mis à jour'); };
   $('#s-r24').onchange = (e) => { DB.settings.rappel24 = e.target.checked; save(); };
@@ -777,17 +820,23 @@ function openTablet() {
 window.goto = goto;
 window.addEventListener('beforeinstallprompt', (e) => { e.preventDefault(); window._pwaPrompt = e; });
 (async function init() {
-  await ensurePass(); load();
+  await detectMode();
+  await ensurePass();
+  if (MODE === 'serveur') { const h = $('.login-hint'); if (h) h.hidden = true; }
+  const enter = async () => {
+    await loadData();
+    $('#login').hidden = true; $('#app').classList.add('on'); buildNav(); render();
+  };
   $('#login-form').onsubmit = async (e) => {
     e.preventDefault();
     if (await tryLogin($('#login-pass').value)) {
       sessionStorage.setItem('serene-auth', '1');
-      $('#login').hidden = true; $('#app').classList.add('on'); buildNav(); render();
+      await enter();
     } else { toast('Mot de passe incorrect'); }
   };
   $('#hamb').onclick = () => { $('#sidebar').classList.add('open'); $('#scrim').classList.add('on'); };
   $('#scrim').onclick = () => { $('#sidebar').classList.remove('open'); $('#scrim').classList.remove('on'); };
-  $('#logout').onclick = () => { sessionStorage.removeItem('serene-auth'); location.reload(); };
-  if (sessionStorage.getItem('serene-auth')) { $('#login').hidden = true; $('#app').classList.add('on'); buildNav(); render(); }
+  $('#logout').onclick = () => { sessionStorage.removeItem('serene-auth'); sessionStorage.removeItem('serene-token'); location.reload(); };
+  if (sessionStorage.getItem('serene-auth') && (MODE !== 'serveur' || TOKEN)) await enter();
   if ('serviceWorker' in navigator && location.protocol.startsWith('http')) navigator.serviceWorker.register('sw.js').catch(() => {});
 })();
