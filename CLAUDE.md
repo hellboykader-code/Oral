@@ -635,6 +635,15 @@ appliquer ces règles SANS exception (les rappeler mentalement avant d'agir) :
    `scratchpad/prospect.py` (Places API New `places:searchText`, `MAX=100`, registre
    `.prospection-ledger.json` = SHA1 des numéros déjà fournis → exclusion auto).
    Clé Google API fournie par le propriétaire (dans l'historique de session).
+0bis. **⭐ DÉCLENCHEUR « ( الامر الاصفر ) » (« l'ordre jaune »)** = EXACTEMENT comme
+   l'ordre rouge (100 dentistes sans site, Paris → IDF → France, registre anti-doublon)
+   **+ collecte de l'E-MAIL de chaque praticien** (recherche web best-effort :
+   Bing + DuckDuckGo lite via curl, regex e-mail, filtres anti-bruit ; priorité aux
+   e-mails contenant un mot du nom du cabinet, puis domaines grand public FR).
+   Outil prêt : `scratchpad/prospect-yellow.py`. Livrer CSV (Cabinet, Ville,
+   Téléphone, Email) + version lisible ; les e-mails introuvables restent « — ».
+   Ces e-mails alimentent la prospection e-mail (drafts Gmail préparés par
+   l'assistant, envoi MANUEL par le propriétaire, 20-30/jour, mention STOP CNIL).
 1. **Uniquement les dentistes SANS site web.** Interroger Google Places, récupérer
    le champ `website`. **Ne garder QUE ceux dont `website` est vide.** S'ils ont un
    **Doctolib** ou une page **Facebook/Instagram** mais **pas de vrai site web**, on
