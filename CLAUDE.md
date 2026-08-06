@@ -710,6 +710,27 @@ infos du prestataire **déjà pré-remplies** :
 
 Ne rien redemander : les documents existent déjà, il suffit de les renvoyer tels quels.
 
+## ⭐ Espace commerciaux DentWebPro (dentwebpro.site/espace) — v4 PRO (6 août 2026)
+
+Mini-CRM PHP (index.php + store.php + data/db.json sur cPanel). **Dernière version
+livrée : `dentwebpro-espace-v4-pro.zip`** (source de vérité = fichiers sur le cPanel ;
+ne JAMAIS mettre ce code dans un repo public — il contient la clé admin).
+Fonctionnalités v4 (commercial) : badge + filtre « Déjà appelé » (auto au clic 📞),
+Mode Appel séquentiel (file relances→jamais appelés→injoignables+2j, raccourcis
+clavier 1-6/espace), statuts enrichis (Injoignable, Faux n°, Démo envoyée, RDV+date),
+objectif d'appels/jour (barre), timeline par prospect, boutons Google/Démo
+e-mail/Démo WhatsApp (templates), Mes chiffres (+ commissions si configurées),
+confetti + fil des ventes. (Admin) : recherche + filtre campagne, répartition
+équitable, onglet Clients (livraison/URL/prix + **Facture & Contrat imprimables
+pré-remplis** via `?doc=facture|contrat&id=`), Stats v2 (tunnel, classement,
+heatmap heures, rendement par campagne), Journal d'activité + Corbeille 30 j,
+Réglages (objectif/commission/e-mail notif), désactivation d'accès immédiate,
+notifications e-mail vente/intéressé, **backup quotidien auto** data/backups/ (30 j).
+Mise à jour = ré-uploader UNIQUEMENT index.php + store.php (jamais data/).
+Prochaine étape prévue : intégration téléphonie Zadarma (numéro FR de société,
+click-to-call, enregistrements → transcription → analyse IA). Le propriétaire a
+choisi Zadarma (Twilio trop cher : mobile FR ~0,10 €/min vs 0,027 €).
+
 ## Note RGPD — « Ne pas appeler » = « Pas intéressé »
 
 Le champ « Ne pas appeler » est **déjà couvert** par le statut **« Pas intéressé »**
