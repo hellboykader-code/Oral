@@ -726,10 +726,22 @@ pré-remplis** via `?doc=facture|contrat&id=`), Stats v2 (tunnel, classement,
 heatmap heures, rendement par campagne), Journal d'activité + Corbeille 30 j,
 Réglages (objectif/commission/e-mail notif), désactivation d'accès immédiate,
 notifications e-mail vente/intéressé, **backup quotidien auto** data/backups/ (30 j).
-Mise à jour = ré-uploader UNIQUEMENT index.php + store.php (jamais data/).
-Prochaine étape prévue : intégration téléphonie Zadarma (numéro FR de société,
-click-to-call, enregistrements → transcription → analyse IA). Le propriétaire a
-choisi Zadarma (Twilio trop cher : mobile FR ~0,10 €/min vs 0,027 €).
+Mise à jour = ré-uploader UNIQUEMENT les .php (jamais data/).
+**v5 TÉLÉPHONIE (livrée, `dentwebpro-espace-v5-tel.zip`)** : Zadarma intégré —
+numéro société +33189480971 (Paris, 4 €/mois, PBX 583831, postes 100=Neila/101/102,
+enregistrement cloud activé). Fichiers : `zadarma.php` (client API signé),
+`zhook.php` (webhooks NOTIFY_OUT_END/RECORD → évènement `zcall`/`rec` sur la fiche,
+match par téléphone normalisé, auto-« déjà appelé »), actions `zd_call` (callback :
+poste sonne puis prospect), `zd_rec` (redirige vers le mp3), `zd_settings`/`zd_test`
+(Réglages admin : clés + mapping postes ; secret jamais renvoyé au navigateur).
+Bouton carte/Mode Appel « ☎️ ligne société » + fallback tel:. Clés API dans
+Réglages (PAS dans le code). URL notifications à saisir chez Zadarma :
+`https://dentwebpro.site/espace/zhook.php` (répond à zd_echo).
+Reste à faire : CallerID des postes → +33189480971 (numéro en « checking » à l'achat),
+puis analyse IA des enregistrements (clé Anthropic + TTS premium — OpenAI/ElevenLabs)
+avec console vocale « Glowing Spectrum » (démo validée par le propriétaire ;
+il refuse l'analyse écrite, veut VOCAL + spectre lumineux ; voix navigateur jugée
+robotique → prévoir TTS naturel).
 
 ## Note RGPD — « Ne pas appeler » = « Pas intéressé »
 
