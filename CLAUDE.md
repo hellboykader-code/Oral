@@ -635,6 +635,26 @@ appliquer ces règles SANS exception (les rappeler mentalement avant d'agir) :
    `scratchpad/prospect.py` (Places API New `places:searchText`, `MAX=100`, registre
    `.prospection-ledger.json` = SHA1 des numéros déjà fournis → exclusion auto).
    Clé Google API fournie par le propriétaire (dans l'historique de session).
+0ter. **⛔⛔ RÈGLE ABSOLUE — INTERDICTION FORMELLE D'ENVOYER UNE LISTE SANS AVOIR
+   D'ABORD LU TOUTES LES LISTES PRÉCÉDENTES.** Avant de générer/envoyer QUOI QUE CE
+   SOIT, charger l'INTÉGRALITÉ du registre permanent (tous les numéros déjà fournis)
+   et l'utiliser comme exclusion. **LE DOUBLON EST INTERDIT, TOTALEMENT, QUOI QU'IL
+   ARRIVE — منمنووووع.** Zéro tolérance : aucun numéro déjà donné une seule fois ne
+   doit jamais réapparaître.
+   - **⚠️ Le conteneur est neuf à chaque session → le registre local `.prospection-ledger.json`
+     est SOUVENT VIDE. Ne JAMAIS se fier à un registre vide.** Un registre à 0 = signal
+     d'ALERTE, pas un feu vert : il faut d'abord RÉCUPÉRER le registre réel.
+   - **Source de vérité du registre = l'espace DentWebPro** (`https://dentwebpro.site/espace/`).
+     Avant toute génération : demander au propriétaire l'**« Export Excel/CSV »** de l'espace
+     (OU lire sa donnée), puis charger TOUS ses téléphones (normalisés, hashés SHA1) dans le
+     ledger AVANT de lancer `prospect.py`. Ne PAS générer tant que ce registre n'est pas chargé.
+   - **Vérification obligatoire AVANT envoi** : croiser les 100 numéros candidats contre le
+     registre → si un seul doublon subsiste, NE PAS ENVOYER, régénérer. Ne dire « voici la
+     liste » qu'après avoir confirmé 0 doublon.
+   - **Leçon (6 août 2026)** : liste envoyée sur registre vide → 96/100 étaient des doublons
+     (l'espace les a rejetés à l'import). Cause : généré sans lire le registre. NE JAMAIS
+     RÉPÉTER. Toujours : (1) récupérer l'export espace, (2) charger comme exclusion, (3)
+     générer, (4) re-vérifier 0 doublon, (5) seulement alors envoyer.
 0bis. **⭐ DÉCLENCHEUR « ( الامر الاصفر ) » (« l'ordre jaune »)** = EXACTEMENT comme
    l'ordre rouge (100 dentistes sans site, Paris → IDF → France, registre anti-doublon)
    **+ collecte de l'E-MAIL de chaque praticien** (recherche web best-effort :
