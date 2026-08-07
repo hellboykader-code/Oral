@@ -737,11 +737,26 @@ poste sonne puis prospect), `zd_rec` (redirige vers le mp3), `zd_settings`/`zd_t
 Bouton carte/Mode Appel « ☎️ ligne société » + fallback tel:. Clés API dans
 Réglages (PAS dans le code). URL notifications à saisir chez Zadarma :
 `https://dentwebpro.site/espace/zhook.php` (répond à zd_echo).
-Reste à faire : CallerID des postes → +33189480971 (numéro en « checking » à l'achat),
-puis analyse IA des enregistrements (clé Anthropic + TTS premium — OpenAI/ElevenLabs)
-avec console vocale « Glowing Spectrum » (démo validée par le propriétaire ;
-il refuse l'analyse écrite, veut VOCAL + spectre lumineux ; voix navigateur jugée
-robotique → prévoir TTS naturel).
+Reste à faire : CallerID des postes → +33189480971 (numéro en « checking » à l'achat).
+**v6 ANALYSE IA (livrée 7 août 2026, `dentwebpro-espace-v6-ia.zip`, testée
+localement de bout en bout)** : chaîne 100 % GRATUITE — enregistrement Zadarma
+(mp3) → **Gemini `gemini-flash-latest`** (écoute l'audio en `inline_data`, renvoie
+un JSON strict : resume / score 0-10 / temperature froid-tiede-chaud / objections /
+prochaine_etape / conseil) → **Azure TTS voix Vivienne** (mp3 dans `data/voixia/`,
+deny .htaccess) → fiche prospect (`$p['ia'][]`, max 12 + évènement timeline `ia`).
+Fichiers : `ia.php` (moteur : ia_keys/ia_on/ia_gemini_analyse/ia_tts/ia_texte_parle/
+ia_process avec dédup par pcid), zhook.php (NOTIFY_RECORD → répond 200 PUIS analyse :
+fastcgi/litespeed_finish_request, sleep 8 s, db_load() frais), index.php (actions
+`ia_run` [manuel], `ia_voice` [sert le mp3], `ia_settings`/`ia_test` [admin, clés
+masquées '••••••••' comme zdSecret]). UI : pastille 🔥/🌡/❄️ sur la carte, bouton
+« 🤖 Analyse IA », boutons 🤖 Analyser / Voir l'analyse sur chaque enregistrement de
+la timeline, **console lumineuse** (panneau #101116, spectre radial canvas corail
+piloté par AnalyserNode sur la voix Vivienne, chips température/note, sections
+résumé/objections/étape/conseil, « ✓ Appliquer à la fiche » = noteAdd + relance +2 j
+si non-froid). ⚠️ Piège résolu : ne PAS nommer un élément de la console `.hd`
+(collision avec l'en-tête sticky global) → classes préfixées `.ihd`. Clés (Gemini
+gratuite via aistudio.google.com + Azure Speech F0) à saisir dans Réglages →
+« 🤖 Analyse IA », JAMAIS dans le code.
 
 ## ⭐ Voix IA — Azure Speech (7 août 2026, RÉSOLU)
 
@@ -755,7 +770,12 @@ l'espace quand la console d'analyse sera construite. Testé OK : issueToken + TT
 **Voix CHOISIE par le propriétaire : `fr-FR-VivienneMultilingualNeural`**
 (comparatif envoyé : Denise jugée « robotique », Marc/Soleil MAI-Voice-2 HD et
 Rémy disponibles aussi — Vivienne retenue). Quota F0 : 500k chars TTS
-+ 5 h STT/mois. Reste pour l'analyse : clé Anthropic ou OpenAI (5 $).
++ 5 h STT/mois. **Cerveau de l'analyse = Gemini GRATUIT** (le propriétaire a refusé
+les 5 $ : « no free way ? ») : modèles free tier qui marchent = `gemini-flash-latest`
+et `gemini-flash-lite-latest` (gemini-2.0-flash → 429 limit:0). Gemini accepte
+l'audio directement (inline_data mime audio/mp3 base64) → transcription + analyse
+en UNE requête, pas besoin du STT Azure. Clé Gemini détenue par le propriétaire
+(AI Studio). → Intégré dans l'espace v6 (voir section v5/v6 TÉLÉPHONIE).
 
 ## ⭐ NOUVELLE GAMME — Sites RESTAURANTS (lancée 7 août 2026)
 
