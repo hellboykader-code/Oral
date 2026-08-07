@@ -757,6 +757,24 @@ si non-froid). ⚠️ Piège résolu : ne PAS nommer un élément de la console 
 (collision avec l'en-tête sticky global) → classes préfixées `.ihd`. Clés (Gemini
 gratuite via aistudio.google.com + Azure Speech F0) à saisir dans Réglages →
 « 🤖 Analyse IA », JAMAIS dans le code.
+**v6.1 (7 août 2026, VALIDÉE LIVE par le propriétaire)** — leçons décisives :
+- Les webhooks Zadarma n'écrivaient rien (une seule notification cochée + fiches en
+  doublon par téléphone : le serveur écrit sur la PREMIÈRE fiche qui matche). →
+  Solution du propriétaire adoptée : **bouton « 🤖 Analyse IA » sur la carte À LA
+  PLACE de « Faux n° »** (statut faux_numero conservé en Mode Appel/filtres).
+  Action `ia_last` : interroge `/v1/statistics/pbx/` (7 jours), prend le DERNIER
+  appel `is_recorded` vers le numéro du prospect → `ia_process` — **zéro dépendance
+  aux webhooks**. Sélecteur statuts devenu `.seg button[data-v]` (ne pas re-casser).
+- ⚠️ `/v1/pbx/record/request/` : le mp3 est parfois indexé par `call_id` et PAS par
+  `pbx_call_id` → `zd_record_link` essaie les DEUX ; zhook garde `call_id_with_rec`.
+- ⚠️ Bornes stats : Zadarma interprète start/end dans le fuseau du COMPTE (≠ UTC
+  serveur) → end à +2 jours sinon on rate l'appel le plus récent.
+- Console recodée sur le **design d'origine validé** (analyse-ia-demo.html) : cœur
+  corail lumineux play/stop au centre du spectre (barres + glow ambre + halo
+  respirant), ligne « live » serif italique synchronisée par proportion de
+  caractères sur la durée du mp3 Vivienne, chips qui s'allument (hot/obj/nxt),
+  score badge, « ▶ Écouter l'appel original » + « ✓ Appliquer ». Testé Playwright
+  ET validé sur le live par le propriétaire (vraie mkalma analysée par Gemini).
 
 ## ⭐ Voix IA — Azure Speech (7 août 2026, RÉSOLU)
 
