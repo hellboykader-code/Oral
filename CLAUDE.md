@@ -751,8 +751,10 @@ TTS + STT pour l'analyse vocale : ressource **Azure Speech F0 (gratuit)**
 piège vécu : un échec de création laisse un compte soft-deleted qui bloque le
 quota F0 → purger via CLI `az cognitiveservices account purge`). Clés détenues
 par le propriétaire (JAMAIS dans ce repo public) — à saisir dans les Réglages de
-l'espace quand la console d'analyse sera construite. Testé OK : issueToken +
-TTS fr-FR-DeniseNeural (mp3 envoyé au propriétaire). Quota F0 : 500k chars TTS
+l'espace quand la console d'analyse sera construite. Testé OK : issueToken + TTS.
+**Voix CHOISIE par le propriétaire : `fr-FR-VivienneMultilingualNeural`**
+(comparatif envoyé : Denise jugée « robotique », Marc/Soleil MAI-Voice-2 HD et
+Rémy disponibles aussi — Vivienne retenue). Quota F0 : 500k chars TTS
 + 5 h STT/mois. Reste pour l'analyse : clé Anthropic ou OpenAI (5 $).
 
 ## ⭐ NOUVELLE GAMME — Sites RESTAURANTS (lancée 7 août 2026)
