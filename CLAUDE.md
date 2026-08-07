@@ -743,6 +743,30 @@ avec console vocale « Glowing Spectrum » (démo validée par le propriétaire 
 il refuse l'analyse écrite, veut VOCAL + spectre lumineux ; voix navigateur jugée
 robotique → prévoir TTS naturel).
 
+## ⭐ Voix IA — Azure Speech (7 août 2026, RÉSOLU)
+
+TTS + STT pour l'analyse vocale : ressource **Azure Speech F0 (gratuit)**
+`dwp-voix-northeurope`, groupe `dentwebpro`, région **northeurope** (France Central
+= InternalServerError récurrent, West Europe = fermé aux nouveaux clients ;
+piège vécu : un échec de création laisse un compte soft-deleted qui bloque le
+quota F0 → purger via CLI `az cognitiveservices account purge`). Clés détenues
+par le propriétaire (JAMAIS dans ce repo public) — à saisir dans les Réglages de
+l'espace quand la console d'analyse sera construite. Testé OK : issueToken +
+TTS fr-FR-DeniseNeural (mp3 envoyé au propriétaire). Quota F0 : 500k chars TTS
++ 5 h STT/mois. Reste pour l'analyse : clé Anthropic ou OpenAI (5 $).
+
+## ⭐ NOUVELLE GAMME — Sites RESTAURANTS (lancée 7 août 2026)
+
+Extension du modèle DentWebPro aux restaurants sans site. Mêmes règles
+capitales : AUCUNE ville réelle, designs uniques jamais recyclés, formulaire de
+réservation (date + heure + couverts), pages Accueil / La Carte / À propos /
+Galerie / Réservation. Démos = fichiers HTML autonomes (assets base64, hero
+vidéo stock Pexels/Unsplash — vérifier CHAQUE média visuellement avant usage).
+Batch 1 livré en artifacts : **Braise** (grill feu de bois — charbon #16130f,
+braise #ff6b1a, serif Georgia, cadres filaires) et **Oliva** (trattoria —
+crème #faf5ec, tomate #c73a24, olive #66722f, polaroids inclinés, boutons
+cartoon ombre dure). Sources scratchpad/resto/ (tpl + resto-assets.json).
+
 ## Note RGPD — « Ne pas appeler » = « Pas intéressé »
 
 Le champ « Ne pas appeler » est **déjà couvert** par le statut **« Pas intéressé »**
