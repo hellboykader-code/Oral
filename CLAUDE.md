@@ -886,6 +886,32 @@ l'audio directement (inline_data mime audio/mp3 base64) → transcription + anal
 en UNE requête, pas besoin du STT Azure. Clé Gemini détenue par le propriétaire
 (AI Studio). → Intégré dans l'espace v6 (voir section v5/v6 TÉLÉPHONIE).
 
+## ⭐ SAFRAN — 1ᵉʳ site restaurant COMPLET (8 août 2026, VALIDÉ à confirmer)
+
+Nouveau standard de la gamme restaurants (remplace l'approche Braise/Oliva jugée
+« null ») : **PHP dynamique + Espace Restaurateur**, déployable sur tout hébergement
+PHP (`safran-restaurant.zip`, dossier `safran/`).
+- **Marque** : « SAFRAN — Bistrot moderne » (fictif, AUCUNE ville). Palette : encre
+  #16130e, safran #e0a428, cuivre #c1731f, brique #a34a2a, crème #f6efe3. Polices
+  Google : Cormorant Garamond (titres) + Jost (texte). **Logo choisi par le
+  propriétaire : proposition n°2 (fleur de crocus filaire + filaments safran)** —
+  parmi 5 variantes présentées (règle des 5 respectée) ; `assets/logo.svg`.
+- **Structure** : `index.php` (5 pages via ?p= : Accueil hero plein écran /
+  La Carte / À propos / Galerie / Réservation date+heure+couverts), `espace.php`
+  (Espace Restaurateur, PIN par défaut 1234 changeable), `store.php` (db.json :
+  infos/horaires/menuJour/carte/galerie/resas, data/ deny).
+- **Espace Restaurateur** : réservations (statuts nouvelle/confirmée/refusée/venue,
+  stats couverts confirmés vs couvertsMax), carte CRUD (ajouter/modifier/masquer/
+  réordonner par catégorie), infos+horaires+menu du jour+PIN, galerie (upload 6 Mo).
+  Le site lit tout depuis db.json → modifs visibles immédiatement.
+- **Images** : 12 photos Unsplash téléchargées dans assets/ (vérifiées via planche
+  contact — rejetées : dessert.jpg corrompue, int2.jpg ambiance plage). Hero =
+  plat1.jpg (assiette aux chandelles).
+- Studio à venir : **RestoWebPro** (domaine recommandé `restowebpro.fr`, vérifié
+  disponible par RDAP le 8 août ; restowebpro.com pris). Arguments de vente resto
+  documentés (9/10 regardent le menu en ligne, commissions TheFork, fenêtre
+  d'appel 15h-17h30).
+
 ## ⭐ NOUVELLE GAMME — Sites RESTAURANTS (lancée 7 août 2026)
 
 Extension du modèle DentWebPro aux restaurants sans site. Mêmes règles
