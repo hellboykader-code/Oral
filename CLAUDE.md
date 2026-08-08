@@ -822,6 +822,26 @@ widget.min, jssip…) :
   silencieux (le callback exige l'appli Zadarma que personne n'a) — liens manuels
   « via l'application / depuis ce téléphone » conservés sous le bouton.
 
+**v8 (8 août 2026, `dentwebpro-espace-v8.zip`, testée localement)** : 5 améliorations —
+(1) **rapport quotidien « paresseux »** : au 1ᵉʳ accès authentifié après 19 h, e-mail à
+settings.notifyEmail (appels/intéressés/ventes du jour + meilleur commercial, garde
+settings.lastReport) ; (2) **`ia_day`** (admin, bouton dans la carte IA des Réglages) :
+stats Zadarma 24 h → analyse les appels enregistrés non encore analysés par lots de 6
+(dédup par call_id, boucle client max 5 tours) ; (3) **`rdv_ics`** : agenda .ics des RDV
+(commercial = les siens, admin = tous ; boutons « 📅 Agenda » chip commercial + onglet
+Intéressés admin) ; (4) **bannière 🔔 relances du jour** en tête de la liste commerciale
+(clic → filtre À rappeler) ; (5) **modèles de démo éditables** (Réglages admin, carte 💬 :
+tplMail/tplWa/tplSms, variables {cabinet}/{ville}/{commercial}, vide = défaut ; côté
+client `tplTxt()` — les modèles transitent par my_list settings).
+**AUDIT du site public dentwebpro.site (8 août 2026, tout corrigé)** : www absent du DNS
+→ CNAME ajouté + **reissue du Standard SSL via SSL manager Namecheap** (ssl-manager.php
+uploadé dans public_html — NE PAS le supprimer, il gère les renouvellements) ; 7 liens
+morts du template (cartes blogs + projets supprimés) masqués par CSS `#dwp-fix-404`
+injecté dans index/about/services/contact ; sitemap.xml réécrit (6 vraies pages, les 9
+URLs de blogs anglais supprimées) ; favicon.ico généré depuis l'icône Framer. data/
+protégée (403), gzip OK (855 Ko → 54 Ko). Améliorations futures proposées : page /merci,
+bloc vidéos réalisations sur l'accueil, image Open Graph dédiée.
+
 ## ⭐ Voix IA — Azure Speech (7 août 2026, RÉSOLU)
 
 TTS + STT pour l'analyse vocale : ressource **Azure Speech F0 (gratuit)**
