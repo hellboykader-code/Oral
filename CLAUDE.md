@@ -795,6 +795,32 @@ gratuite via aistudio.google.com + Azure Speech F0) à saisir dans Réglages →
   objections implicites, conseil comparé au script (jamais vague, jamais baisser le
   prix), prochaine étape datée. Vérifié sur la vraie mkalma : Gemini cite les
   répliques exactes du script dans son conseil.
+**v7.2 — webphone : VRAIES causes des échecs intermittents (étude du code Zadarma
+lui-même, 8 août 2026).** Symptôme : « parfois ça appelle, souvent Connexion… puis
+rien / retombe sur le callback », même sur PC + WiFi, onglet privé = échec quasi sûr.
+J'ai téléchargé et lu les 8 fichiers du widget (loader-lib/fn, widget-api.min,
+widget.min, jssip…) :
+- ⭐ CAUSE 1 (course) : loader-lib injecte 6 scripts cœur en **async, ordre
+  d'exécution NON garanti** ; appeler `zadarmaWidgetFn` juste après les 2 loaders
+  échoue si `zdrmWebrtcPhoneInterface`/`ZadarmaWebphoneAPI`/`JsSIP`/`io` ne sont pas
+  encore là (cache froid/onglet privé = toujours perdant ; cache chaud = ça marche
+  → « parfois oui parfois non »). Correctif : `zwWaitSymbols()` — attendre les 4
+  globals (25 s max) AVANT de construire le widget.
+- ⭐ CAUSE 2 (verrouillage silencieux) : à la moindre erreur JSONP/clé,
+  widget-api fait `error=true` au niveau MODULE : `apiWidget` existe toujours mais
+  TOUTES ses méthodes renvoient un texte d'erreur — `call()` ne fait rien,
+  silencieusement, et AUCUNE reconstruction ne répare (var de closure) : seul un
+  reload de page réinitialise. Correctif : `zwHealth()` — `getCurrentOptions()`
+  renvoie un objet si sain, une chaîne si verrouillé ; si verrouillé → alert de la
+  cause réelle (`apiWidget.errorText` + `.zdrm-webrtc-error`) + **location.reload()
+  auto (1×/5 min via sessionStorage)**.
+- CAUSE 3 : micro bloqué → appel « muet » sans erreur. Correctif : `getUserMedia`
+  de contrôle AVANT chaque appel, message explicite (icône 🔒 → autoriser le micro).
+- Divers : clé `/v1/webrtc/get_key/` **stable/réutilisable** (vérifié 2 appels =
+  même clé) → pas de conflit de clés ; échec plus jamais « définitif » (retry 8 s,
+  2ᵉ tentative auto, re-init au retour d'onglet) ; plus AUCUN fallback callback
+  silencieux (le callback exige l'appli Zadarma que personne n'a) — liens manuels
+  « via l'application / depuis ce téléphone » conservés sous le bouton.
 
 ## ⭐ Voix IA — Azure Speech (7 août 2026, RÉSOLU)
 
