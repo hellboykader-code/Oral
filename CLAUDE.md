@@ -911,6 +911,26 @@ PHP (`safran-restaurant.zip`, dossier `safran/`).
   disponible par RDAP le 8 août ; restowebpro.com pris). Arguments de vente resto
   documentés (9/10 regardent le menu en ligne, commissions TheFork, fenêtre
   d'appel 15h-17h30).
+- **v2 « resto réel » (8 août 2026, `safran-restaurant.zip`, testée localement)** —
+  toutes les améliorations demandées d'un coup : (1) **anti-surbooking** : capacité
+  par service (midi si heure<16h sinon soir) vs couvertsMax, réservation refusée si
+  dépassement — testé (44>40 refusé, midi/soir séparés) ; (2) **e-mails** : notif au
+  restaurateur (settings.notifyEmail) + accusé au client à chaque résa ; (3) **badge
+  Ouvert/Fermé maintenant** (sf_open_now parse les horaires structurés) ; (4) **QR
+  Carte** : onglet espace, `<img>` api.qrserver.com vers ?p=carte + bouton « Imprimer
+  l'affichette » (window.open + print) — argument de vente : carte à jour sans
+  réimprimer ; (5) **confirmation WhatsApp** par résa (wa.me + message pré-rempli) ;
+  (6) **PWA de l'espace** (manifest.json + sw.js + icônes crocus fond encre) ;
+  (7) **export .ics** des réservations ; (8) **hero carousel** (3 images, 5 s) ;
+  (9) **horaires structurés 7 jours** (midi/soir par jour, vide=fermé) → source
+  unique pour affichage + badge + capacité ; (10) **fermetures exceptionnelles**
+  (dates bloquées) ; (11) **étiquettes plats** (végé/signature/sans gluten/épicé)
+  éditables + affichées ; (12) **barre de remplissage du jour** (%) dans l'espace.
+  ⚠️ Piège corrigé : le `<script>` SW s'était inséré DANS le template literal du
+  bouton « Imprimer l'affichette » (replace du 1ᵉʳ `</body></html>` qui tombait sur
+  celui du template) → réinsérer avant le DERNIER `</body></html>` (rfind). Zéro
+  erreur JS vérifié Playwright. horaires libre supprimé de infos (remplacé par la
+  grille 7 jours) — sf_hours_text() rend le texte partout.
 
 ## ⭐ NOUVELLE GAMME — Sites RESTAURANTS (lancée 7 août 2026)
 
