@@ -833,6 +833,31 @@ Intéressés admin) ; (4) **bannière 🔔 relances du jour** en tête de la lis
 (clic → filtre À rappeler) ; (5) **modèles de démo éditables** (Réglages admin, carte 💬 :
 tplMail/tplWa/tplSms, variables {cabinet}/{ville}/{commercial}, vide = défaut ; côté
 client `tplTxt()` — les modèles transitent par my_list settings).
+**v9 « tout en une fois » (8 août 2026, `dentwebpro-espace-v9.zip` 11 fichiers +
+`dwp-fix2-site.zip`, testée localement)** :
+- **PWA** : manifest.json + sw.js + icon-192/512 (générées du logo MK) + metas iOS ;
+  `KEY` persisté en localStorage (l'icône ouvre /espace/ sans ?k=) ; SW enregistré
+  avec `sw.js?k=…` (le k dans l'URL du SW sert d'auth aux notifs). Offline léger :
+  api() met my_list en cache localStorage `dwpCache` → bannière 📴 lecture seule.
+- **Push VAPID pur PHP sans payload chiffré** (`push.php`) : le push est VIDE, le SW
+  fait `push_peek&k=` pour lire le texte (employees[].notif, TTL 1 h) → pas de
+  RFC8291. ES256 : openssl_sign + conversion DER→r||s. Clés VAPID auto-générées
+  dans settings (vapidPub/vapidPriv). Souscriptions employees[].push (max 3,
+  410=gone→purge). Déclencheurs : `cron.php` (cPanel Cron quotidien 08:30 →
+  relances du jour) + vente → push_notify_admins. Opt-in : chip « 🔔 Activer les
+  notifications » (permission=default) + pushInit() silencieux si granted.
+- **Onglet admin « ☎️ Appels »** (`zd_calls`) : stats Zadarma 7 j, mappées
+  ext→employé + tel→fiche, lecteur audio inline (zd_rec) + indicateur 🤖 analysé.
+- **Audio inline** aussi dans la timeline des fiches (remplace le lien Écouter).
+- **Podium semaine + série** : calculés dans my_list (events call/zcall depuis
+  lundi ; streak = jours consécutifs avec ≥1 appel) → bandeau 🏆 côté commercial.
+- **Fusion doublons** (`dedup_merge`, bouton Réglages) : groupe par tel normalisé,
+  garde la fiche la plus riche, fusionne events/ia/champs vides, corbeille les
+  autres. (C'était la cause du bug « analyse sur la mauvaise fiche ».)
+- **Site** : page `/demo/` (landing prospects : vidéos réalisations autoplay,
+  390 €, CTA WhatsApp wa.me/33189480971 + tel) ; `/merci/` ; `assets/og-dentwebpro.png`
+  (1200×630 PIL) + balises og:image/twitter injectées dans les 4 pages principales
+  (pricing/projects = pages de redirection minuscules, pas d'OG nécessaire).
 **AUDIT du site public dentwebpro.site (8 août 2026, tout corrigé)** : www absent du DNS
 → CNAME ajouté + **reissue du Standard SSL via SSL manager Namecheap** (ssl-manager.php
 uploadé dans public_html — NE PAS le supprimer, il gère les renouvellements) ; 7 liens
