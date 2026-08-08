@@ -775,6 +775,26 @@ gratuite via aistudio.google.com + Azure Speech F0) à saisir dans Réglages →
   caractères sur la durée du mp3 Vivienne, chips qui s'allument (hot/obj/nxt),
   score badge, « ▶ Écouter l'appel original » + « ✓ Appliquer ». Testé Playwright
   ET validé sur le live par le propriétaire (vraie mkalma analysée par Gemini).
+**v7 ORBE + PROMPT ENTRAÎNÉ (8 août 2026, `dentwebpro-espace-v7-orbe.zip`)** :
+- Le spectre est remplacé par une **boule plasma WebGL corail/ambre** (fbm warpé,
+  mouvement LENT t*.085, palette braise→corail→ambre→or de la marque). La boule
+  EST le bouton (clic = pause/lecture, plus de .core). **Taille pilotée par la
+  voix** : énergie AnalyserNode → attaque rapide `.16` / retombée douce `.05`,
+  scale .88→1.22 — elle pulse à chaque syllabe de Vivienne et rétrécit au silence.
+  Fallback 2D (disque corail pulsant) si WebGL absent. Itérations propriétaire :
+  v1 cosmique ✗ trop de couleurs → v2 saphir ✗ (« pas les couleurs du site ») →
+  v3 lente+pulse ✓ mouvement mais ✗ couleurs → **v4 corail ✓ validée**. Toujours
+  prévisualiser via vidéo Playwright (recordVideo webm → ffmpeg mp4) AVANT d'intégrer.
+- **Prompt Gemini v2 « entraîné »** : identité complète (390 €, livraison 3 j,
+  hébergement à vie, 8 patients/10 sur Google) + **injection du script de vente de
+  l'espace** (`ia_script_texte($db)` : stratégie/intros/étapes/objections/règles,
+  cap 7000 chars — modifier le script admin adapte l'analyse automatiquement) +
+  champ **interlocuteur** (secretaire|praticien|repondeur|personne, chip 👤 dans la
+  console + segment parlé) + règles strictes : « envoyez un e-mail » ≠ refus (tiède),
+  barème /10 détaillé (intérêt 4 + échange 2 + praticien atteint 2 + étape obtenue 2),
+  objections implicites, conseil comparé au script (jamais vague, jamais baisser le
+  prix), prochaine étape datée. Vérifié sur la vraie mkalma : Gemini cite les
+  répliques exactes du script dans son conseil.
 
 ## ⭐ Voix IA — Azure Speech (7 août 2026, RÉSOLU)
 
