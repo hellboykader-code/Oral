@@ -48,6 +48,11 @@ jobs:
           bash _site2/build.sh
           mkdir -p dist/comparaison
           cp -r _site2/site/* dist/comparaison/ || true
+      # --- Studio restaurants « RestoWebPro » (export Framer Foodee édité) -> /Oral/resto-studio/ ---
+      - name: Copie studio RestoWebPro
+        run: |
+          mkdir -p dist/resto-studio
+          cp -r _resto-studio/* dist/resto-studio/
       - uses: actions/upload-pages-artifact@v3
         with:
           path: dist
