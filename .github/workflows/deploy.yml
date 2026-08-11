@@ -53,6 +53,11 @@ jobs:
         run: |
           mkdir -p dist/resto-studio
           cp -r _resto-studio/* dist/resto-studio/
+      # --- Aperçu « Slice Town » (export Framer, site non modifié) -> /Oral/slice/ ---
+      - name: Copie aperçu Slice Town
+        run: |
+          mkdir -p dist/slice
+          cp -r _slice/* dist/slice/
       - uses: actions/upload-pages-artifact@v3
         with:
           path: dist
