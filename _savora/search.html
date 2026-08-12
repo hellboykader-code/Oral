@@ -20,7 +20,7 @@ input[type="search"]:focus { border-color: #6366f1; }
 .no-results { color: #94a3b8; text-align: center; padding: 2rem 0; }
 .count { font-size: 0.85rem; color: #94a3b8; margin-bottom: 0.75rem; }
 </style>
-</head>
+<style id="savora-clean">a[href^="https://framer.link"],a[href^="http://framer.link"],[data-framer-name="Remove This Buy Button"],[data-framer-name="Remove Button"],[data-framer-name^="Crafted By"],[data-framer-name^="Made in"],[data-framer-name^="Made By"]{display:none !important;}</style></head>
 <body>
 <div class="search-container">
 <h1>Search</h1>
@@ -62,5 +62,5 @@ function esc(s) { var d = document.createElement('div'); d.textContent = s; retu
 input.addEventListener('input', function() { search(this.value); });
 })();
 </script>
-</body>
+<script id="savora-fix">(function(){function money(v){v=v.replace(/\$\s*(\d+)(?:[.,](\d{2}))?/g,function(m,a,b){return a+(b?","+b:"")+" \u20ac";});v=v.replace(/(\d+)(?:[.,](\d{2}))?\s*\$/g,function(m,a,b){return a+(b?","+b:"")+" \u20ac";});return v;}function fix(){var w=document.createTreeWalker(document.body,NodeFilter.SHOW_TEXT,null),n;while(n=w.nextNode()){var v=n.nodeValue;if(!v||v.indexOf("$")<0)continue;var k=v.trim();if(k==="$"){n.nodeValue="";continue;}var nv=money(v);if(nv!==v)n.nodeValue=nv;}}function start(){fix();try{new MutationObserver(fix).observe(document.body,{childList:true,subtree:true});}catch(e){}var c=0,iv=setInterval(function(){fix();if(++c>30)clearInterval(iv);},500);}if(document.readyState==="complete"){setTimeout(start,1800);}else{window.addEventListener("load",function(){setTimeout(start,1800);});}})();</script></body>
 </html>
