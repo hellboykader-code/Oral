@@ -1,0 +1,2 @@
+import{t as e}from"./rolldown-runtime.Dh6celcD.mjs";var t,n;e((()=>{t=`Date d'effet : `,n={exports:{v0:{type:`variable`,annotations:{framerContractVersion:`1`}},__FramerMetadata__:{type:`variable`}}}}))();export{n as __FramerMetadata__,t as v0};
+//# sourceMappingURL=mhOGnFPZ3-0.D-StMoQw.mjs.map

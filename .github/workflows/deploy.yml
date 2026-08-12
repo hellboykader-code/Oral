@@ -68,6 +68,11 @@ jobs:
         run: |
           mkdir -p dist/savora
           cp -r _savora/* dist/savora/
+      # --- Aperçu « Umami » (export Framer) -> /Oral/umami/ ---
+      - name: Copie aperçu Umami
+        run: |
+          mkdir -p dist/umami
+          cp -r _umami/* dist/umami/
       - uses: actions/upload-pages-artifact@v3
         with:
           path: dist
