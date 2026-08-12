@@ -58,6 +58,11 @@ jobs:
         run: |
           mkdir -p dist/slice
           cp -r _slice/* dist/slice/
+      # --- Aperçu « Foodly » (export Framer) -> /Oral/foodly/ ---
+      - name: Copie aperçu Foodly
+        run: |
+          mkdir -p dist/foodly
+          cp -r _foodly/* dist/foodly/
       - uses: actions/upload-pages-artifact@v3
         with:
           path: dist
