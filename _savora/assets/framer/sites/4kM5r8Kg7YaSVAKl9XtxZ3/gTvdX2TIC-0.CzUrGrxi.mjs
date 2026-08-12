@@ -1,0 +1,2 @@
+import{t as e}from"./rolldown-runtime.Dh6celcD.mjs";var t,n,r;e((()=>{t=`Confidentialité`,n=`Retour à l'accueil`,r={exports:{v0:{type:`variable`,annotations:{framerContractVersion:`1`}},v1:{type:`variable`,annotations:{framerContractVersion:`1`}},__FramerMetadata__:{type:`variable`}}}}))();export{r as __FramerMetadata__,t as v0,n as v1};
+//# sourceMappingURL=gTvdX2TIC-0.CzUrGrxi.mjs.map
