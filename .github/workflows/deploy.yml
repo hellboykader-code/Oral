@@ -73,6 +73,11 @@ jobs:
         run: |
           mkdir -p dist/umami
           cp -r _umami/* dist/umami/
+      # --- Studio « RestoWebPro » -> /Oral/restowebpro/ ---
+      - name: Copie studio RestoWebPro
+        run: |
+          mkdir -p dist/restowebpro
+          cp -r _restowebpro/* dist/restowebpro/
       - uses: actions/upload-pages-artifact@v3
         with:
           path: dist
