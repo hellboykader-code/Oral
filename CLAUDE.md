@@ -664,6 +664,25 @@ appliquer ces règles SANS exception (les rappeler mentalement avant d'agir) :
    Téléphone, Email) + version lisible ; les e-mails introuvables restent « — ».
    Ces e-mails alimentent la prospection e-mail (drafts Gmail préparés par
    l'assistant, envoi MANUEL par le propriétaire, 20-30/jour, mention STOP CNIL).
+0ter-vert. **⭐ DÉCLENCHEUR « ( الامر الاخضر ) » (« l'ordre vert »)** = comme l'ordre
+   rouge MAIS pour les **RESTAURANTS** : quand le propriétaire écrit cette expression,
+   envoyer une liste de **EXACTEMENT 150 RESTAURANTS SANS site web** (⚠️ 150, pas 100),
+   en appliquant TOUTES les règles ci-dessous transposées au secteur restauration :
+   - **Uniquement les restaurants SANS vrai site web.** Google Places `website` vide.
+     Un lien **TheFork / UberEats / Deliveroo / Facebook / Instagram** n'est **PAS** un
+     site web → on les **garde** (prospects). Un **domaine propre** = exclure.
+     (Équivalent resto du Doctolib pour les dentistes.)
+   - **Ordre géographique identique** : Paris → Île-de-France → reste de la France.
+   - **⛔ ZÉRO doublon, jamais, y compris entre les jours** — dédup par numéro
+     normalisé. **Registre SÉPARÉ de celui des dentistes** (les restaurants sont un
+     autre secteur → leur propre liste anti-doublon). Ce registre = les téléphones du
+     secteur **`resto`** de l'espace DentWebPro (`secteur:resto`). Appliquer la RÈGLE
+     ABSOLUE 0ter : **charger TOUT le registre resto AVANT de générer**, re-vérifier
+     0 doublon avant d'envoyer. Ne jamais se fier à un registre local vide.
+   - Requête Places `places:searchText` type « restaurant … » (au lieu de « dentiste »),
+     `MAX=150`. Outil à préparer/réutiliser : `scratchpad/prospect-green.py` (calqué sur
+     `prospect.py`, MAX=150, secteur resto). Livrer CSV (Restaurant, Ville, Téléphone)
+     + version lisible. Ces prospects alimentent le secteur **Restauration** de l'espace.
 1. **Uniquement les dentistes SANS site web.** Interroger Google Places, récupérer
    le champ `website`. **Ne garder QUE ceux dont `website` est vide.** S'ils ont un
    **Doctolib** ou une page **Facebook/Instagram** mais **pas de vrai site web**, on
