@@ -420,7 +420,7 @@
 .apd-frame .apd-badge i{width:7px;height:7px;border-radius:50%;background:#38d47a;animation:apdPulse 2s infinite;}
 @keyframes apdPulse{0%{box-shadow:0 0 0 0 rgba(56,212,122,.55)}70%{box-shadow:0 0 0 8px rgba(56,212,122,0)}100%{box-shadow:0 0 0 0 rgba(56,212,122,0)}}
 .apd-frame .apd-hit{position:absolute;inset:0;z-index:5;cursor:pointer;}
-.apd-frame .apd-load{position:absolute;inset:0;z-index:1;display:flex;align-items:center;justify-content:center;color:#9a9184;font-size:13px;}
+.apd-frame .apd-load{position:absolute;inset:0;z-index:1;display:flex;flex-direction:column;gap:4px;align-items:center;justify-content:center;background:linear-gradient(135deg,#1b1b19,#2b2622 60%,#3a2f22);color:#fff;text-align:center;}.apd-frame .apd-load span{font-size:15px;font-weight:700;letter-spacing:.02em;}.apd-frame .apd-load small{font-size:11px;letter-spacing:.08em;text-transform:uppercase;color:#b9b1a4;}
 </style><script id="apd-script">
 (function(){
  'use strict';
@@ -450,19 +450,19 @@
    if(imgbox && !imgbox.querySelector('.apd-frame')){
     imgbox.style.position=imgbox.style.position||'relative';
     var fr=document.createElement('div'); fr.className='apd-frame';
-    fr.innerHTML='<div class="apd-load">Aperçu…</div>'+
+    fr.innerHTML='<div class="apd-load"><span>Aperçu du site</span><small>Survolez pour charger</small></div>'+
       '<iframe title="'+site.name+'" scrolling="no" tabindex="-1" aria-hidden="true"></iframe>'+
       '<span class="apd-badge"><i></i> En ligne</span>'+
       '<span class="apd-hit" data-url="'+site.url+'"></span>';
     imgbox.appendChild(fr);
     var f=fr.querySelector('iframe');
-    var io=new IntersectionObserver(function(es,ob){
-     es.forEach(function(e){ if(e.isIntersecting){ fit(fr); f.src=site.url;
-       f.addEventListener('load',function(){ var l=fr.querySelector('.apd-load'); if(l)l.remove(); fit(fr); });
-       ob.disconnect(); }});
-    },{rootMargin:'400px'});
-    io.observe(fr);
-    fr.querySelector('.apd-hit').addEventListener('click',function(ev){
+    // aperçu chargé UNIQUEMENT au survol (0 iframe au chargement -> page rapide)
+    function load(){ if(f.src) return; fit(fr); f.src=site.url;
+      f.addEventListener('load',function(){ var l=fr.querySelector('.apd-load'); if(l)l.remove(); fit(fr); }); }
+    card.addEventListener('mouseenter',load);
+    var hit=fr.querySelector('.apd-hit');
+    hit.addEventListener('mouseenter',load);
+    hit.addEventListener('click',function(ev){
      ev.preventDefault(); ev.stopPropagation(); window.open(site.url,'_blank','noopener');
     });
    }
@@ -486,25 +486,27 @@
  if(document.readyState==='loading') document.addEventListener('DOMContentLoaded',boot); else boot();
 })();
 </script><style id="apd-modal-style">
+[data-framer-name="Social Links"]{display:none !important;}
+
 #apd-modal{position:fixed;inset:0;z-index:99999;display:none;align-items:center;justify-content:center;padding:20px;
   font-family:"Inter Display","Inter",system-ui,-apple-system,sans-serif;}
 #apd-modal.open{display:flex;}
 #apd-modal .apd-ov{position:absolute;inset:0;background:rgba(10,8,6,.62);backdrop-filter:blur(4px);animation:apdFade .25s ease;}
 #apd-modal .apd-box{position:relative;z-index:1;width:100%;max-width:520px;max-height:92vh;overflow-y:auto;background:#fff;
-  border-radius:22px;box-shadow:0 40px 90px rgba(0,0,0,.4);padding:34px 34px 30px;animation:apdPop .3s cubic-bezier(.2,.8,.3,1);}
+  border-radius:16px;box-shadow:0 40px 90px rgba(0,0,0,.4);padding:34px 34px 30px;animation:apdPop .3s cubic-bezier(.2,.8,.3,1);}
 @keyframes apdFade{from{opacity:0}to{opacity:1}}
 @keyframes apdPop{from{opacity:0;transform:translateY(18px) scale(.97)}to{opacity:1;transform:none}}
-#apd-modal .apd-x{position:absolute;top:16px;right:16px;width:38px;height:38px;border:0;border-radius:50%;background:#f2efe9;
+#apd-modal .apd-x{position:absolute;top:16px;right:16px;width:38px;height:38px;border:0;border-radius:50%;background:#f0f0ef;
   color:#1a1712;font-size:20px;line-height:1;cursor:pointer;display:flex;align-items:center;justify-content:center;transition:background .2s,transform .2s;}
-#apd-modal .apd-x:hover{background:#e7e2da;transform:rotate(90deg);}
+#apd-modal .apd-x:hover{background:#e6e6e4;transform:rotate(90deg);}
 #apd-modal .apd-kick{display:inline-block;font-size:12px;letter-spacing:.16em;text-transform:uppercase;font-weight:700;color:#ff3700;margin-bottom:10px;}
 #apd-modal h3{margin:0 0 8px;font-size:26px;line-height:1.15;font-weight:700;color:#141210;letter-spacing:-.01em;}
 #apd-modal .apd-sub{margin:0 0 22px;font-size:15px;line-height:1.5;color:#6c665d;}
 #apd-modal label{display:block;font-size:13px;font-weight:600;color:#2a2620;margin:0 0 6px;}
 #apd-modal .apd-field{margin-bottom:15px;}
 #apd-modal input,#apd-modal select{width:100%;box-sizing:border-box;font:inherit;font-size:15px;color:#141210;
-  background:#faf8f4;border:1.5px solid #e6e0d6;border-radius:12px;padding:12px 14px;transition:border-color .18s,box-shadow .18s,background .18s;}
-#apd-modal input::placeholder{color:#a49c8f;}
+  background:#f6f6f5;border:1.5px solid #e4e3df;border-radius:12px;padding:12px 14px;transition:border-color .18s,box-shadow .18s,background .18s;}
+#apd-modal input::placeholder{color:#a6a29a;}
 #apd-modal input:focus,#apd-modal select:focus{outline:none;border-color:#ff3700;background:#fff;box-shadow:0 0 0 3px rgba(255,55,0,.12);}
 #apd-modal select{appearance:none;-webkit-appearance:none;cursor:pointer;
   background-image:url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='14' height='14' viewBox='0 0 24 24' fill='none' stroke='%236c665d' stroke-width='2.5' stroke-linecap='round' stroke-linejoin='round'><polyline points='6 9 12 15 18 9'/></svg>");
@@ -553,6 +555,8 @@
        '<input name="Type de cuisine" type="text" required placeholder="Ex : italien, marocain, japonais…"></div>'+
      '<div class="apd-field"><label>Ville <span class="apd-req">*</span></label>'+
        '<input name="Ville" type="text" required></div>'+
+     '<div class="apd-field"><label>Adresse complète <span class="apd-req">*</span></label>'+
+       '<input name="Adresse complète" type="text" required placeholder="N°, rue, code postal"></div>'+
      '<div class="apd-field"><label>Votre numéro WhatsApp <span class="apd-req">*</span></label>'+
        '<input name="WhatsApp" type="tel" required placeholder="06 12 34 56 78"></div>'+
      '<div class="apd-field"><label>Style préféré</label>'+
