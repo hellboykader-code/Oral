@@ -78,6 +78,11 @@ jobs:
         run: |
           mkdir -p dist/restowebpro
           cp -r _restowebpro/* dist/restowebpro/
+      # --- Studio « L’Appétit Digital » (export Framer Hanzo) -> /Oral/appetit-digital/ ---
+      - name: Copie studio Appetit Digital
+        run: |
+          mkdir -p dist/appetit-digital
+          cp -r _appetit/* dist/appetit-digital/
       - uses: actions/upload-pages-artifact@v3
         with:
           path: dist
