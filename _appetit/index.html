@@ -485,4 +485,125 @@
  }
  if(document.readyState==='loading') document.addEventListener('DOMContentLoaded',boot); else boot();
 })();
+</script><style id="apd-modal-style">
+#apd-modal{position:fixed;inset:0;z-index:99999;display:none;align-items:center;justify-content:center;padding:20px;
+  font-family:"Inter Display","Inter",system-ui,-apple-system,sans-serif;}
+#apd-modal.open{display:flex;}
+#apd-modal .apd-ov{position:absolute;inset:0;background:rgba(10,8,6,.62);backdrop-filter:blur(4px);animation:apdFade .25s ease;}
+#apd-modal .apd-box{position:relative;z-index:1;width:100%;max-width:520px;max-height:92vh;overflow-y:auto;background:#fff;
+  border-radius:22px;box-shadow:0 40px 90px rgba(0,0,0,.4);padding:34px 34px 30px;animation:apdPop .3s cubic-bezier(.2,.8,.3,1);}
+@keyframes apdFade{from{opacity:0}to{opacity:1}}
+@keyframes apdPop{from{opacity:0;transform:translateY(18px) scale(.97)}to{opacity:1;transform:none}}
+#apd-modal .apd-x{position:absolute;top:16px;right:16px;width:38px;height:38px;border:0;border-radius:50%;background:#f2efe9;
+  color:#1a1712;font-size:20px;line-height:1;cursor:pointer;display:flex;align-items:center;justify-content:center;transition:background .2s,transform .2s;}
+#apd-modal .apd-x:hover{background:#e7e2da;transform:rotate(90deg);}
+#apd-modal .apd-kick{display:inline-block;font-size:12px;letter-spacing:.16em;text-transform:uppercase;font-weight:700;color:#ff3700;margin-bottom:10px;}
+#apd-modal h3{margin:0 0 8px;font-size:26px;line-height:1.15;font-weight:700;color:#141210;letter-spacing:-.01em;}
+#apd-modal .apd-sub{margin:0 0 22px;font-size:15px;line-height:1.5;color:#6c665d;}
+#apd-modal label{display:block;font-size:13px;font-weight:600;color:#2a2620;margin:0 0 6px;}
+#apd-modal .apd-field{margin-bottom:15px;}
+#apd-modal input,#apd-modal select{width:100%;box-sizing:border-box;font:inherit;font-size:15px;color:#141210;
+  background:#faf8f4;border:1.5px solid #e6e0d6;border-radius:12px;padding:12px 14px;transition:border-color .18s,box-shadow .18s,background .18s;}
+#apd-modal input::placeholder{color:#a49c8f;}
+#apd-modal input:focus,#apd-modal select:focus{outline:none;border-color:#ff3700;background:#fff;box-shadow:0 0 0 3px rgba(255,55,0,.12);}
+#apd-modal select{appearance:none;-webkit-appearance:none;cursor:pointer;
+  background-image:url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='14' height='14' viewBox='0 0 24 24' fill='none' stroke='%236c665d' stroke-width='2.5' stroke-linecap='round' stroke-linejoin='round'><polyline points='6 9 12 15 18 9'/></svg>");
+  background-repeat:no-repeat;background-position:right 14px center;padding-right:38px;}
+#apd-modal .apd-submit{width:100%;margin-top:8px;font:inherit;font-size:16px;font-weight:700;color:#fff;background:#ff3700;
+  border:0;border-radius:999px;padding:15px 20px;cursor:pointer;transition:transform .15s,box-shadow .2s,opacity .2s;box-shadow:0 12px 26px rgba(255,55,0,.32);}
+#apd-modal .apd-submit:hover{transform:translateY(-2px);box-shadow:0 16px 32px rgba(255,55,0,.4);}
+#apd-modal .apd-submit:active{transform:translateY(0);}
+#apd-modal .apd-submit[disabled]{opacity:.6;cursor:default;transform:none;box-shadow:none;}
+#apd-modal .apd-note{margin:14px 0 0;font-size:12px;color:#9a9285;text-align:center;line-height:1.5;}
+#apd-modal .apd-req{color:#ff3700;}
+#apd-modal .apd-success{display:none;text-align:center;padding:14px 4px 6px;}
+#apd-modal .apd-success .apd-check{width:70px;height:70px;margin:0 auto 20px;border-radius:50%;background:#eafaef;
+  display:flex;align-items:center;justify-content:center;animation:apdPop .4s cubic-bezier(.2,.8,.3,1);}
+#apd-modal .apd-success .apd-check svg{width:34px;height:34px;stroke:#22a35a;stroke-width:3;fill:none;}
+#apd-modal .apd-success h3{margin-bottom:12px;}
+#apd-modal .apd-success p{font-size:16px;line-height:1.55;color:#4a453d;margin:0 auto;max-width:380px;}
+#apd-modal.done .apd-form{display:none;} #apd-modal.done .apd-success{display:block;}
+@media(max-width:560px){#apd-modal .apd-box{padding:28px 22px 24px;border-radius:18px;} #apd-modal h3{font-size:22px;}}
+</style><script id="apd-modal-script">
+(function(){
+ 'use strict';
+ var ENDPOINT='https://formsubmit.co/ajax/contact@dentwebpro.site';
+ var TRIGGERS=['commandez maintenant','recevoir mon site gratuit'];
+ function norm(el){
+  var t=(el.textContent||'').split('{')[0];               // retire le CSS injecté par Framer
+  t=t.replace(/[«»↗→’']/g,' ').replace(/\s+/g,' ').trim().toLowerCase();
+  var half=t.slice(0,Math.floor(t.length/2));              // dé-duplication (Framer double le libellé)
+  if(t.length && t.length%2===0 && half.trim()===t.slice(Math.ceil(t.length/2)).trim()) t=half.trim();
+  return t;
+ }
+ function build(){
+  if(document.getElementById('apd-modal')) return;
+  var m=document.createElement('div'); m.id='apd-modal'; m.setAttribute('role','dialog'); m.setAttribute('aria-modal','true');
+  m.innerHTML=
+   '<div class="apd-ov" data-close></div>'+
+   '<div class="apd-box">'+
+    '<button class="apd-x" type="button" data-close aria-label="Fermer">×</button>'+
+    '<form class="apd-form" novalidate>'+
+     '<span class="apd-kick">Offre studio</span>'+
+     '<h3>Recevez votre site d’exemple gratuit</h3>'+
+     '<p class="apd-sub">Répondez à ces questions, nous créons votre site sous 7 jours.</p>'+
+     '<div class="apd-field"><label>Nom du restaurant <span class="apd-req">*</span></label>'+
+       '<input name="Nom du restaurant" type="text" required></div>'+
+     '<div class="apd-field"><label>Type de cuisine <span class="apd-req">*</span></label>'+
+       '<input name="Type de cuisine" type="text" required placeholder="Ex : italien, marocain, japonais…"></div>'+
+     '<div class="apd-field"><label>Ville <span class="apd-req">*</span></label>'+
+       '<input name="Ville" type="text" required></div>'+
+     '<div class="apd-field"><label>Votre numéro WhatsApp <span class="apd-req">*</span></label>'+
+       '<input name="WhatsApp" type="tel" required placeholder="06 12 34 56 78"></div>'+
+     '<div class="apd-field"><label>Style préféré</label>'+
+       '<select name="Style préféré">'+
+         '<option value="">— Choisir (optionnel) —</option>'+
+         '<option>Élégant</option><option>Chaleureux</option><option>Moderne</option>'+
+         '<option>Méditerranéen</option><option>Minimaliste</option><option>Familial</option>'+
+       '</select></div>'+
+     '<input type="hidden" name="_subject" value="Nouveau prospect — site d’exemple gratuit (L’Appétit Digital)">'+
+     '<input type="hidden" name="_template" value="table">'+
+     '<input type="hidden" name="_captcha" value="false">'+
+     '<button class="apd-submit" type="submit">Recevoir mon site gratuit</button>'+
+     '<p class="apd-note">En 24h, nous revenons vers vous sur WhatsApp. Sans engagement.</p>'+
+    '</form>'+
+    '<div class="apd-success">'+
+     '<div class="apd-check"><svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg></div>'+
+     '<h3>Merci !</h3>'+
+     '<p>Nous revenons vers vous sous 24h avec votre site d’exemple.</p>'+
+    '</div>'+
+   '</div>';
+  document.body.appendChild(m);
+  m.querySelectorAll('[data-close]').forEach(function(b){ b.addEventListener('click',close); });
+  m.querySelector('.apd-form').addEventListener('submit',submit);
+ }
+ function open(){ build(); var m=document.getElementById('apd-modal'); m.classList.remove('done'); m.classList.add('open');
+   document.documentElement.style.overflow='hidden';
+   var f=m.querySelector('input[name="Nom du restaurant"]'); if(f) setTimeout(function(){f.focus();},60); }
+ function close(){ var m=document.getElementById('apd-modal'); if(!m)return; m.classList.remove('open');
+   document.documentElement.style.overflow='';
+   var fm=m.querySelector('.apd-form'); if(fm && m.classList.contains('done')){ fm.reset(); m.classList.remove('done'); } }
+ function submit(e){
+  e.preventDefault();
+  var form=e.currentTarget, m=document.getElementById('apd-modal');
+  if(!form.checkValidity()){ form.reportValidity&&form.reportValidity(); return; }
+  var btn=form.querySelector('.apd-submit'), old=btn.textContent;
+  btn.disabled=true; btn.textContent='Envoi…';
+  var data=new FormData(form), body={};
+  data.forEach(function(v,k){ body[k]=v; });
+  function done(){ m.classList.add('done'); btn.disabled=false; btn.textContent=old; }
+  fetch(ENDPOINT,{method:'POST',headers:{'Content-Type':'application/json','Accept':'application/json'},body:JSON.stringify(body)})
+   .then(function(r){ return r.json().catch(function(){return{};}); }).then(done).catch(done);
+ }
+ // ouvrir le popup au clic sur les CTA (Framer vide les href -> on intercepte en capture)
+ document.addEventListener('click',function(e){
+  var el=e.target.closest&&e.target.closest('a,button,[role="button"],[role="link"],[data-framer-name="Primary"]');
+  if(!el) return;
+  if(el.closest('#apd-modal')) return;
+  var t=norm(el);
+  for(var i=0;i<TRIGGERS.length;i++){ if(t.indexOf(TRIGGERS[i])===0){ e.preventDefault(); e.stopImmediatePropagation(); open(); return; } }
+ },true);
+ document.addEventListener('keydown',function(e){ if(e.key==='Escape') close(); });
+ if(document.readyState==='loading') document.addEventListener('DOMContentLoaded',build); else build();
+})();
 </script><script>window.__NCE_PAGE__={path:"/",root:"./"};</script><script src="./nce-runtime.js"></script></body></html>
