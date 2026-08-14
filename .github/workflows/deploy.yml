@@ -68,6 +68,11 @@ jobs:
         run: |
           mkdir -p dist/umami
           cp -r _umami/* dist/umami/
+      # --- Aperçu « La Régalade » (export Framer Foodee, FR) -> /Oral/regalade/ ---
+      - name: Copie aperçu Régalade
+        run: |
+          mkdir -p dist/regalade
+          cp -r _regalade/* dist/regalade/
       # --- Studio « RestoWebPro » -> /Oral/restowebpro/ ---
       - name: Copie studio RestoWebPro
         run: |
