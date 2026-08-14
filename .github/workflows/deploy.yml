@@ -63,11 +63,6 @@ jobs:
         run: |
           mkdir -p dist/foodly
           cp -r _foodly/* dist/foodly/
-      # --- Aperçu « Savora » (export Framer) -> /Oral/savora/ ---
-      - name: Copie aperçu Savora
-        run: |
-          mkdir -p dist/savora
-          cp -r _savora/* dist/savora/
       # --- Aperçu « Umami » (export Framer) -> /Oral/umami/ ---
       - name: Copie aperçu Umami
         run: |
