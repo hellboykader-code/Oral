@@ -73,6 +73,11 @@ jobs:
         run: |
           mkdir -p dist/regalade
           cp -r _regalade/* dist/regalade/
+      # --- Aperçu « Le Festin » (export Framer Sofra, FR) -> /Oral/lefestin/ ---
+      - name: Copie aperçu Le Festin
+        run: |
+          mkdir -p dist/lefestin
+          cp -r _lefestin/* dist/lefestin/
       # --- Studio « RestoWebPro » -> /Oral/restowebpro/ ---
       - name: Copie studio RestoWebPro
         run: |
