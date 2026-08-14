@@ -423,70 +423,68 @@
 .apd-frame .apd-load{position:absolute;inset:0;z-index:1;display:flex;flex-direction:column;gap:4px;align-items:center;justify-content:center;background:linear-gradient(135deg,#1b1b19,#2b2622 60%,#3a2f22);color:#fff;text-align:center;}.apd-frame .apd-load span{font-size:15px;font-weight:700;letter-spacing:.02em;}.apd-frame .apd-load small{font-size:11px;letter-spacing:.08em;text-transform:uppercase;color:#b9b1a4;}
 </style><script id="apd-script">
 (function(){
- 'use strict';
- var SITES=[{"key": "aLickQcDkn7", "name": "Slice Town", "tags": ["Pizzas", "Burgers"], "url": "/Oral/slice/"}, {"key": "ISAjHKBwJV6", "name": "Foodly", "tags": ["Restaurant", "Cuisine du chef"], "url": "/Oral/foodly/"}, {"key": "nT9mTBoP2h9", "name": "Umami", "tags": ["Restaurant", "Bistro"], "url": "/Oral/umami/"}, {"key": "vzQsCEYy7zN", "name": "La R\u00e9galade", "tags": ["Bistrot", "Cuisine g\u00e9n\u00e9reuse"], "url": "/Oral/regalade/"}];
- var REMOVED=[];
- function fit(fr){
-  var box=fr.parentNode, f=fr.querySelector('iframe'); if(!box||!f) return;
+ "use strict";
+ var SITES=[{"key": "aLickQcDkn7", "name": "Slice Town", "tags": ["Pizzas", "Burgers"], "url": "/Oral/slice/"}, {"key": "ISAjHKBwJV6", "name": "Foodly", "tags": ["Restaurant", "Cuisine du chef"], "url": "/Oral/foodly/"}, {"key": "nT9mTBoP2h9", "name": "Umami", "tags": ["Restaurant", "Bistro"], "url": "/Oral/umami/"}, {"key": "vzQsCEYy7zN", "name": "La Régalade", "tags": ["Bistrot", "Cuisine généreuse"], "url": "/Oral/regalade/"}, {"key": "__clone__", "name": "Le Festin", "tags": ["Restaurant", "Cuisine généreuse"], "url": "/Oral/lefestin/"}];
+ var TKEYS=["aLickQcDkn7","ISAjHKBwJV6","nT9mTBoP2h9","vzQsCEYy7zN"];
+
+ function fit(fr){ var box=fr.parentNode,f=fr.querySelector("iframe"); if(!box||!f)return;
   var w=box.clientWidth||400,h=box.clientHeight||300,BASE=1280,s=w/BASE;
-  f.style.width=BASE+'px'; f.style.height=(h/s)+'px'; f.style.transform='scale('+s+')';
- }
- function fitAll(){ document.querySelectorAll('.apd-frame').forEach(fit); }
- function cardFor(site){
-  var img=document.querySelector('#main img[src*="'+site.key+'"]');
-  return img?img.closest('a'):null;
+  f.style.width=BASE+"px"; f.style.height=(h/s)+"px"; f.style.transform="scale("+s+")"; }
+ function fitAll(){ document.querySelectorAll(".apd-frame").forEach(fit); }
+ function nativeCard(i){ var im=document.querySelector('#main img[src*="'+TKEYS[i]+'"]'); return im?im.closest("a"):null; }
+ function gridEl(){ var c=nativeCard(0); return c?c.parentNode:null; }
+ function decorate(card,site){
+  card.style.display="";
+  card.setAttribute("data-apd",site.url);
+  var h4=card.querySelector("h4"); if(h4 && h4.textContent!==site.name) h4.textContent=site.name;
+  var ps=card.querySelectorAll('[data-framer-name="Tags"] p.framer-text');
+  if(ps[0] && ps[0].textContent!==site.tags[0]) ps[0].textContent=site.tags[0];
+  if(ps[1] && ps[1].textContent!==site.tags[1]) ps[1].textContent=site.tags[1];
+  var imgbox=card.querySelector('[data-framer-name="image"]')||card.querySelector('[data-framer-name="Image"]');
+  if(imgbox && !imgbox.querySelector(".apd-frame")){
+   imgbox.style.position=imgbox.style.position||"relative";
+   var fr=document.createElement("div"); fr.className="apd-frame";
+   fr.innerHTML='<div class="apd-load"><span>Aperçu du site</span><small>Survolez pour charger</small></div>'+
+     '<iframe title="'+site.name+'" scrolling="no" tabindex="-1" aria-hidden="true"></iframe>'+
+     '<span class="apd-badge"><i></i> En ligne</span>'+
+     '<span class="apd-hit" data-url="'+site.url+'"></span>';
+   imgbox.appendChild(fr);
+   var f=fr.querySelector("iframe");
+   function load(){ if(f.src)return; fit(fr); f.src=site.url;
+     f.addEventListener("load",function(){ var l=fr.querySelector(".apd-load"); if(l)l.remove(); fit(fr); }); }
+   card.addEventListener("mouseenter",load);
+   var hit=fr.querySelector(".apd-hit");
+   hit.addEventListener("mouseenter",load);
+   hit.addEventListener("click",function(ev){ ev.preventDefault(); ev.stopPropagation(); window.open(site.url,"_blank","noopener"); });
+  }
  }
  function apply(){
-  // masquer les cartes de sites retirés
-  REMOVED.forEach(function(k){ var im=document.querySelector('#main img[src*="'+k+'"]'); var c=im&&im.closest('a'); if(c) c.style.display='none'; });
-  SITES.forEach(function(site){
-   var card=cardFor(site); if(!card) return;
-   card.setAttribute('data-apd', site.url);
-   // titre
-   var h4=card.querySelector('h4'); if(h4 && h4.textContent!==site.name) h4.textContent=site.name;
-   // tags
-   var ps=card.querySelectorAll('[data-framer-name="Tags"] p.framer-text');
-   if(ps[0] && ps[0].textContent!==site.tags[0]) ps[0].textContent=site.tags[0];
-   if(ps[1] && ps[1].textContent!==site.tags[1]) ps[1].textContent=site.tags[1];
-   // aperçu live dans la zone image
-   var imgbox=card.querySelector('[data-framer-name="image"]') || card.querySelector('[data-framer-name="Image"]');
-   if(imgbox && !imgbox.querySelector('.apd-frame')){
-    imgbox.style.position=imgbox.style.position||'relative';
-    var fr=document.createElement('div'); fr.className='apd-frame';
-    fr.innerHTML='<div class="apd-load"><span>Aperçu du site</span><small>Survolez pour charger</small></div>'+
-      '<iframe title="'+site.name+'" scrolling="no" tabindex="-1" aria-hidden="true"></iframe>'+
-      '<span class="apd-badge"><i></i> En ligne</span>'+
-      '<span class="apd-hit" data-url="'+site.url+'"></span>';
-    imgbox.appendChild(fr);
-    var f=fr.querySelector('iframe');
-    // aperçu chargé UNIQUEMENT au survol (0 iframe au chargement -> page rapide)
-    function load(){ if(f.src) return; fit(fr); f.src=site.url;
-      f.addEventListener('load',function(){ var l=fr.querySelector('.apd-load'); if(l)l.remove(); fit(fr); }); }
-    card.addEventListener('mouseenter',load);
-    var hit=fr.querySelector('.apd-hit');
-    hit.addEventListener('mouseenter',load);
-    hit.addEventListener('click',function(ev){
-     ev.preventDefault(); ev.stopPropagation(); window.open(site.url,'_blank','noopener');
-    });
+  var g=gridEl(); if(!g) return;
+  SITES.forEach(function(site,i){
+   var card;
+   if(i<4){ card=nativeCard(i); }
+   else {
+    card=g.querySelector('[data-apd-clone="'+i+'"]');
+    if(!card){ var base=nativeCard(i%4)||nativeCard(0); if(!base) return;
+      card=base.cloneNode(true); card.setAttribute("data-apd-clone",i);
+      var of=card.querySelector(".apd-frame"); if(of) of.remove();
+      g.appendChild(card); }
    }
+   if(card) decorate(card,site);
   });
-  // kicker
-  document.querySelectorAll('#main em.framer-text').forEach(function(em){
-   if((em.textContent||'').trim()==='Our Projects') em.textContent='Nos réalisations';
-  });
+  document.querySelectorAll("#main em.framer-text").forEach(function(em){
+   if((em.textContent||"").trim()==="Our Projects") em.textContent="Nos réalisations"; });
  }
- // intercepteur de clic global (Framer vide les href)
- document.addEventListener('click',function(e){
-  var a=e.target.closest && e.target.closest('a[data-apd]'); if(!a) return;
-  var u=a.getAttribute('data-apd'); if(u){ e.preventDefault(); e.stopPropagation(); window.open(u,'_blank','noopener'); }
+ document.addEventListener("click",function(e){
+  var a=e.target.closest && e.target.closest("a[data-apd]"); if(!a)return;
+  var u=a.getAttribute("data-apd"); if(u){ e.preventDefault(); e.stopPropagation(); window.open(u,"_blank","noopener"); }
  },true);
- function boot(){
-  apply();
+ function boot(){ apply();
   new MutationObserver(function(){ apply(); }).observe(document.body,{childList:true,subtree:true});
   var n=0,iv=setInterval(function(){ apply(); fitAll(); if(++n>60)clearInterval(iv); },500);
-  window.addEventListener('resize',function(){ clearTimeout(window.__apdRz); window.__apdRz=setTimeout(fitAll,150); });
+  window.addEventListener("resize",function(){ clearTimeout(window.__apdRz); window.__apdRz=setTimeout(fitAll,150); });
  }
- if(document.readyState==='loading') document.addEventListener('DOMContentLoaded',boot); else boot();
+ if(document.readyState==="loading") document.addEventListener("DOMContentLoaded",boot); else boot();
 })();
 </script><style id="apd-modal-style">
 [data-framer-name="Social Links"]{display:none !important;}
