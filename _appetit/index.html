@@ -439,6 +439,7 @@
   var imgbox=card.querySelector('[data-framer-name="image"]')||card.querySelector('[data-framer-name="Image"]');
   if(imgbox && !imgbox.querySelector(".apd-poster")){
    imgbox.style.position=imgbox.style.position||"relative";
+   var bg=imgbox.querySelector('[data-framer-background-image-wrapper]')||imgbox.querySelector('img'); if(bg && bg.style) bg.style.opacity="0";
    var d=document.createElement("div"); d.className="apd-poster";
    d.innerHTML='<img src="'+site.poster+'" alt="'+site.name+'" loading="lazy">'+
      '<span class="apd-badge"><i></i> En ligne</span>'+
