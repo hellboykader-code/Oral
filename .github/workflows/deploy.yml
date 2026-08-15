@@ -73,6 +73,11 @@ jobs:
         run: |
           mkdir -p dist/inspiration
           cp -r _inspiration/* dist/inspiration/
+      # --- Aperçu « Pastora » (export Framer multi-pages, tel quel) -> /Oral/pastora/ ---
+      - name: Copie aperçu Pastora
+        run: |
+          mkdir -p dist/pastora
+          cp -r _pastora/* dist/pastora/
       # --- Aperçu « Le Festin » (export Framer Sofra, FR) -> /Oral/lefestin/ ---
       - name: Copie aperçu Le Festin
         run: |
