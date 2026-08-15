@@ -424,13 +424,9 @@
 </style><script id="apd-script">
 (function(){
  "use strict";
- var SITES=[{"key": "aLickQcDkn7", "name": "Slice Town", "tags": ["Pizzas", "Burgers"], "url": "/Oral/slice/"}, {"key": "ISAjHKBwJV6", "name": "Foodly", "tags": ["Restaurant", "Cuisine du chef"], "url": "/Oral/foodly/"}, {"key": "nT9mTBoP2h9", "name": "Umami", "tags": ["Restaurant", "Bistro"], "url": "/Oral/umami/"}, {"key": "vzQsCEYy7zN", "name": "La Régalade", "tags": ["Bistrot", "Cuisine généreuse"], "url": "/Oral/regalade/"}, {"key": "__clone__", "name": "Le Festin", "tags": ["Restaurant", "Cuisine généreuse"], "url": "/Oral/lefestin/"}];
+ var SITES=[{"key": "aLickQcDkn7", "name": "Slice Town", "tags": ["Pizzas", "Burgers"], "url": "/Oral/slice/", "poster": "assets/posters/slice.jpg"}, {"key": "ISAjHKBwJV6", "name": "Foodly", "tags": ["Restaurant", "Cuisine du chef"], "url": "/Oral/foodly/", "poster": "assets/posters/foodly.jpg"}, {"key": "nT9mTBoP2h9", "name": "Umami", "tags": ["Restaurant", "Bistro"], "url": "/Oral/umami/", "poster": "assets/posters/umami.jpg"}, {"key": "vzQsCEYy7zN", "name": "La Régalade", "tags": ["Bistrot", "Cuisine généreuse"], "url": "/Oral/regalade/", "poster": "assets/posters/regalade.jpg"}, {"key": "__clone__", "name": "Le Festin", "tags": ["Restaurant", "Cuisine généreuse"], "url": "/Oral/lefestin/", "poster": "assets/posters/lefestin.jpg"}];
  var TKEYS=["aLickQcDkn7","ISAjHKBwJV6","nT9mTBoP2h9","vzQsCEYy7zN"];
 
- function fit(fr){ var box=fr.parentNode,f=fr.querySelector("iframe"); if(!box||!f)return;
-  var w=box.clientWidth||400,h=box.clientHeight||300,BASE=1280,s=w/BASE;
-  f.style.width=BASE+"px"; f.style.height=(h/s)+"px"; f.style.transform="scale("+s+")"; }
- function fitAll(){ document.querySelectorAll(".apd-frame").forEach(fit); }
  function nativeCard(i){ var im=document.querySelector('#main img[src*="'+TKEYS[i]+'"]'); return im?im.closest("a"):null; }
  function gridEl(){ var c=nativeCard(0); return c?c.parentNode:null; }
  function decorate(card,site){
@@ -441,21 +437,13 @@
   if(ps[0] && ps[0].textContent!==site.tags[0]) ps[0].textContent=site.tags[0];
   if(ps[1] && ps[1].textContent!==site.tags[1]) ps[1].textContent=site.tags[1];
   var imgbox=card.querySelector('[data-framer-name="image"]')||card.querySelector('[data-framer-name="Image"]');
-  if(imgbox && !imgbox.querySelector(".apd-frame")){
+  if(imgbox && !imgbox.querySelector(".apd-poster")){
    imgbox.style.position=imgbox.style.position||"relative";
-   var fr=document.createElement("div"); fr.className="apd-frame";
-   fr.innerHTML='<div class="apd-load"><span>Aperçu du site</span><small>Survolez pour charger</small></div>'+
-     '<iframe title="'+site.name+'" scrolling="no" tabindex="-1" aria-hidden="true"></iframe>'+
+   var d=document.createElement("div"); d.className="apd-poster";
+   d.innerHTML='<img src="'+site.poster+'" alt="'+site.name+'" loading="lazy">'+
      '<span class="apd-badge"><i></i> En ligne</span>'+
-     '<span class="apd-hit" data-url="'+site.url+'"></span>';
-   imgbox.appendChild(fr);
-   var f=fr.querySelector("iframe");
-   function load(){ if(f.src)return; fit(fr); f.src=site.url;
-     f.addEventListener("load",function(){ var l=fr.querySelector(".apd-load"); if(l)l.remove(); fit(fr); }); }
-   card.addEventListener("mouseenter",load);
-   var hit=fr.querySelector(".apd-hit");
-   hit.addEventListener("mouseenter",load);
-   hit.addEventListener("click",function(ev){ ev.preventDefault(); ev.stopPropagation(); window.open(site.url,"_blank","noopener"); });
+     '<span class="apd-view">Voir le site &rarr;</span>';
+   imgbox.appendChild(d);
   }
  }
  function apply(){
@@ -463,31 +451,33 @@
   SITES.forEach(function(site,i){
    var card;
    if(i<4){ card=nativeCard(i); }
-   else {
-    card=g.querySelector('[data-apd-clone="'+i+'"]');
+   else { card=g.querySelector('[data-apd-clone="'+i+'"]');
     if(!card){ var base=nativeCard(i%4)||nativeCard(0); if(!base) return;
-      card=base.cloneNode(true); card.setAttribute("data-apd-clone",i);
-      var of=card.querySelector(".apd-frame"); if(of) of.remove();
-      g.appendChild(card); }
-   }
+     card=base.cloneNode(true); card.setAttribute("data-apd-clone",i);
+     var of=card.querySelector(".apd-poster"); if(of) of.remove();
+     g.appendChild(card); } }
    if(card) decorate(card,site);
   });
   document.querySelectorAll("#main em.framer-text").forEach(function(em){
    if((em.textContent||"").trim()==="Our Projects") em.textContent="Nos réalisations"; });
+  // retrait des icônes sociales (menu + footer) même si Framer renomme le calque
+  document.querySelectorAll('[data-framer-name]').forEach(function(el){
+   var n=(el.getAttribute("data-framer-name")||"").toLowerCase();
+   if(n.indexOf("social")>=0) el.style.display="none"; });
  }
+ // clic global -> ouvrir le site
  document.addEventListener("click",function(e){
   var a=e.target.closest && e.target.closest("a[data-apd]"); if(!a)return;
   var u=a.getAttribute("data-apd"); if(u){ e.preventDefault(); e.stopPropagation(); window.open(u,"_blank","noopener"); }
  },true);
  function boot(){ apply();
   new MutationObserver(function(){ apply(); }).observe(document.body,{childList:true,subtree:true});
-  var n=0,iv=setInterval(function(){ apply(); fitAll(); if(++n>60)clearInterval(iv); },500);
-  window.addEventListener("resize",function(){ clearTimeout(window.__apdRz); window.__apdRz=setTimeout(fitAll,150); });
+  var n=0,iv=setInterval(function(){ apply(); if(++n>60)clearInterval(iv); },500);
  }
  if(document.readyState==="loading") document.addEventListener("DOMContentLoaded",boot); else boot();
 })();
 </script><style id="apd-modal-style">
-[data-framer-name="Social Links"]{display:none !important;}
+[data-framer-name="Social Links"],[data-framer-name*="Social"],[data-framer-name*="social"]{display:none !important;}
 
 #apd-modal{position:fixed;inset:0;z-index:99999;display:none;align-items:center;justify-content:center;padding:20px;
   font-family:"Inter Display","Inter",system-ui,-apple-system,sans-serif;}
