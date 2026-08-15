@@ -78,6 +78,11 @@ jobs:
         run: |
           mkdir -p dist/pastora
           cp -r _pastora/* dist/pastora/
+      # --- Nouveau studio « L’Appétit Digital » (export Framer) -> /Oral/studio/ ---
+      - name: Copie studio (nouveau)
+        run: |
+          mkdir -p dist/studio
+          cp -r _studio/* dist/studio/
       # --- Aperçu « Le Festin » (export Framer Sofra, FR) -> /Oral/lefestin/ ---
       - name: Copie aperçu Le Festin
         run: |
