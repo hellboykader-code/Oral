@@ -68,11 +68,11 @@ jobs:
         run: |
           mkdir -p dist/umami
           cp -r _umami/* dist/umami/
-      # --- Aperçu « La Régalade » (export Framer Foodee, FR) -> /Oral/regalade/ ---
-      - name: Copie aperçu Régalade
+      # --- Aperçu « Inspiration » (export Framer, tel quel) -> /Oral/inspiration/ ---
+      - name: Copie aperçu Inspiration
         run: |
-          mkdir -p dist/regalade
-          cp -r _regalade/* dist/regalade/
+          mkdir -p dist/inspiration
+          cp -r _inspiration/* dist/inspiration/
       # --- Aperçu « Le Festin » (export Framer Sofra, FR) -> /Oral/lefestin/ ---
       - name: Copie aperçu Le Festin
         run: |
