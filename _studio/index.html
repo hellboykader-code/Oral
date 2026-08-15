@@ -438,23 +438,107 @@
   function norm(s){return (s||"").replace(/[«»↗→]/g,"").replace(/\s+/g," ").trim().toLowerCase();}
   function btnText(el){var t=(el.textContent||"").split("{")[0];t=norm(t);
     var h=t.length>>1;if(h>0&&t.slice(0,h).trim()===t.slice(h).trim())t=t.slice(0,h).trim();return t;}
-  function destFor(el){
-    var t=btnText(el);
-    if(t.indexOf("commandez")!==-1||t.indexOf("commander")!==-1)return WA;
-    var href=el.getAttribute&&el.getAttribute("href")||"";
-    if(href.indexOf("kaderhb33")!==-1)return "mailto:kaderhb33@gmail.com";
-    if(href.indexOf("/fr/about")!==-1||el.getAttribute&&el.getAttribute("data-framer-name")==="Variant 2")return PASTORA;
-    return null;
+  function isForm(t){return t.indexOf("commandez")!==-1||t.indexOf("commander")!==-1||
+    (t.indexOf("recevoir")!==-1&&t.indexOf("site")!==-1);}
+  // Capture des vraies URL AVANT que Framer ne les vide en javascript:void(0)
+  function captureHrefs(){
+    var as=document.querySelectorAll("a[href]");
+    for(var i=0;i<as.length;i++){var a=as[i],h=a.getAttribute("href")||"";
+      if(/^(https?:|mailto:)/.test(h)&&h.indexOf("void(0)")===-1)a.setAttribute("data-apd-dest",h);}
   }
+  function destFor(el){
+    var c=el.closest&&el.closest("[data-apd-dest]");
+    return c?c.getAttribute("data-apd-dest"):null;
+  }
+  // === FORMULAIRE (modal) — s'ouvre sur « Commandez » / « Recevoir mon site » ===
+  var WA_BASE="https://wa.me/33745929520?text=";
+  function buildModal(){
+    if(document.getElementById("apd-modal"))return;
+    var css=document.createElement("style");
+    css.textContent=
+    "#apd-modal{position:fixed;inset:0;z-index:2147483000;display:none;align-items:center;justify-content:center;"+
+    "background:rgba(8,7,6,.72);backdrop-filter:blur(6px);padding:20px;font-family:'Figtree','Jost',system-ui,sans-serif}"+
+    "#apd-modal.on{display:flex}"+
+    "#apd-card{width:100%;max-width:460px;max-height:92vh;overflow:auto;background:#141210;color:#f4efe9;"+
+    "border:1px solid rgba(255,255,255,.09);border-radius:18px;padding:26px 24px;box-shadow:0 24px 70px rgba(0,0,0,.6);"+
+    "animation:apdIn .28s cubic-bezier(.2,.8,.2,1)}"+
+    "@keyframes apdIn{from{opacity:0;transform:translateY(14px) scale(.98)}to{opacity:1;transform:none}}"+
+    "#apd-card h3{margin:0 0 4px;font-size:22px;font-weight:600;letter-spacing:-.01em}"+
+    "#apd-card p.apd-sub{margin:0 0 18px;font-size:13.5px;line-height:1.5;color:#a49e96}"+
+    "#apd-card label{display:block;font-size:12px;color:#a49e96;margin:12px 0 5px;font-weight:500}"+
+    "#apd-card input,#apd-card select,#apd-card textarea{width:100%;box-sizing:border-box;background:#1e1b18;"+
+    "border:1px solid rgba(255,255,255,.11);border-radius:11px;padding:11px 13px;color:#f4efe9;font-size:14px;"+
+    "font-family:inherit;outline:none;transition:border-color .15s}"+
+    "#apd-card input:focus,#apd-card select:focus,#apd-card textarea:focus{border-color:#ff3700}"+
+    "#apd-card textarea{resize:vertical;min-height:58px}"+
+    ".apd-row{display:flex;gap:10px}.apd-row>div{flex:1}"+
+    "#apd-send{margin-top:18px;width:100%;background:#ff3700;color:#fff;border:0;border-radius:12px;"+
+    "padding:14px;font-size:15px;font-weight:600;cursor:pointer;font-family:inherit;transition:filter .15s}"+
+    "#apd-send:hover{filter:brightness(1.08)}"+
+    "#apd-x{position:absolute;top:14px;right:16px;background:none;border:0;color:#a49e96;font-size:26px;"+
+    "line-height:1;cursor:pointer}"+
+    "#apd-card .apd-note{margin-top:12px;font-size:11.5px;color:#7c766e;text-align:center}"+
+    ".apd-ok{text-align:center;padding:14px 0}.apd-ok .apd-ic{font-size:46px}"+
+    ".apd-ok h3{margin:10px 0 6px}.apd-ok p{color:#a49e96;font-size:14px;margin:0 0 18px}";
+    document.head.appendChild(css);
+    var m=document.createElement("div");m.id="apd-modal";
+    m.innerHTML='<div id="apd-card" style="position:relative"><button id="apd-x" aria-label="Fermer">×</button><div id="apd-body"></div></div>';
+    document.body.appendChild(m);
+    function close(){m.classList.remove("on")}
+    m.addEventListener("click",function(e){if(e.target===m)close()});
+    m.querySelector("#apd-x").addEventListener("click",close);
+    document.addEventListener("keydown",function(e){if(e.key==="Escape")close()});
+    m._close=close;m._reset=fillForm;
+  }
+  var FORM_HTML=
+    '<h3>Recevez votre site d\'exemple</h3>'+
+    '<p class="apd-sub">Dites-nous en deux mots votre restaurant. On vous envoie votre site d\'exemple — gratuitement, sans engagement.</p>'+
+    '<form id="apd-form">'+
+    '<label>Nom du restaurant *</label><input name="nom" required placeholder="Ex : Le Petit Comptoir">'+
+    '<div class="apd-row"><div><label>Type de cuisine</label><input name="type" placeholder="Pizza, bistrot…"></div>'+
+    '<div><label>Ville</label><input name="ville" placeholder="Votre ville"></div></div>'+
+    '<label>Adresse</label><input name="adresse" placeholder="Votre adresse">'+
+    '<label>Téléphone / WhatsApp *</label><input name="tel" required inputmode="tel" placeholder="06 12 34 56 78">'+
+    '<label>Style qui vous plaît</label><select name="style">'+
+    '<option value="">— Peu importe —</option><option>Slice</option><option>Foodly</option>'+
+    '<option>Umami</option><option>Le Festin</option><option>Pastora</option><option>Autre / à discuter</option></select>'+
+    '<label>Message (facultatif)</label><textarea name="msg" placeholder="Une précision ?"></textarea>'+
+    '<button id="apd-send" type="submit">Envoyer sur WhatsApp</button>'+
+    '<div class="apd-note">Réponse rapide • Aucun paiement à cette étape</div>'+
+    '</form>';
+  function fillForm(){
+    var m=document.getElementById("apd-modal");var body=m.querySelector("#apd-body");
+    body.innerHTML=FORM_HTML;
+    body.querySelector("#apd-form").addEventListener("submit",function(e){
+      e.preventDefault();var f=e.target;var g=function(n){var el=f.querySelector('[name="'+n+'"]');return el?(el.value||"").trim():"";};
+      var L=["Bonjour, je souhaite recevoir mon site d'exemple gratuit."];
+      L.push("Restaurant : "+g("nom"));
+      if(g("type"))L.push("Type : "+g("type"));
+      if(g("ville"))L.push("Ville : "+g("ville"));
+      if(g("adresse"))L.push("Adresse : "+g("adresse"));
+      L.push("Téléphone : "+g("tel"));
+      if(g("style"))L.push("Style : "+g("style"));
+      if(g("msg"))L.push("Message : "+g("msg"));
+      window.open(WA_BASE+encodeURIComponent(L.join("\n")),"_blank");
+      body.innerHTML='<div class="apd-ok"><div class="apd-ic">✅</div>'+
+        '<h3>Merci'+(g("nom")?" "+g("nom").replace(/[<>]/g,""):"")+' !</h3>'+
+        '<p>Votre demande est prête. Finalisez l\'envoi dans WhatsApp — on vous répond très vite.</p>'+
+        '<button id="apd-send" type="button">Fermer</button></div>';
+      body.querySelector("#apd-send").addEventListener("click",m._close);
+    });
+  }
+  function openModal(){buildModal();fillForm();document.getElementById("apd-modal").classList.add("on");}
   // 3) Intercepteur de clic GLOBAL (capture) — Framer vide tous les href post-hydratation
   document.addEventListener("click",function(e){
     var el=e.target.closest&&e.target.closest('a,button,[role="link"],[role="button"]');
-    if(!el)return;var d=destFor(el);if(!d)return;
+    if(!el)return;
+    if(isForm(btnText(el))){e.preventDefault();e.stopImmediatePropagation();openModal();return;}
+    var d=destFor(el);if(!d)return;
     e.preventDefault();e.stopImmediatePropagation();
     if(d.indexOf("mailto:")===0){window.location.href=d;}else{window.open(d,"_blank");}
   },true);
-  function run(){try{fixText(document.body);}catch(e){}}
-  run();
+  function run(){try{fixText(document.body);captureHrefs();}catch(e){}}
+  captureHrefs();run();
   new MutationObserver(function(){run();}).observe(document.documentElement,{childList:true,subtree:true,characterData:true});
   var c=0,iv=setInterval(function(){run();if(++c>40)clearInterval(iv);},250);
 })();</script>
