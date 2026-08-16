@@ -112,4 +112,64 @@
     <!-- End of bodyEnd -->
 
 
-<script>window.__NCE_PAGE__={path:"/fr",root:"../"};</script><script src="../nce-runtime.js"></script></body></html>
+<script>window.__NCE_PAGE__={path:"/fr",root:"../"};</script><script src="../nce-runtime.js"></script>
+<script>/* PASTORA-NAV-FIX : les sous-pages FR n'existent pas (routeur Framer -> /fr/menu = 404).
+   On transforme le site en page unique : chaque lien de nav défile vers la bonne section. */
+(function(){
+  // route interne -> texte d'un titre présent sur l'accueil (ancre stable, pas le nom de calque)
+  var TARGET={
+    about:"artisanat italien guidé",
+    menu:"Menu italien artisanal",
+    blogs:"Célébrez",              // Événement
+    recipes:"favoris italiens",
+    reservation:"Réservez dès maintenant",
+    contact:"__bottom__",
+    home:"__top__"
+  };
+  function routeFromHref(h){
+    if(!h)return null;
+    if(/\/fr\/?(index\.html)?(#|$)/.test(h)||h==="../"||h==="./"||h==="..")return "home";
+    var m=h.match(/\/(about|menu|contact|reservation|blogs|recipes)(\/|$|#|index)/i);
+    return m?m[1].toLowerCase():null;
+  }
+  function capture(){
+    var as=document.querySelectorAll("a[href]");
+    for(var i=0;i<as.length;i++){var a=as[i],h=a.getAttribute("href")||"";
+      if(h.indexOf("void(0)")!==-1)continue;
+      var r=routeFromHref(h); if(r)a.setAttribute("data-pnav",r);}
+  }
+  function headingFor(sub){
+    var hs=document.querySelectorAll("h1,h2,h3,h4");
+    for(var i=0;i<hs.length;i++){if((hs[i].textContent||"").toLowerCase().indexOf(sub.toLowerCase())!==-1)return hs[i];}
+    return null;
+  }
+  function go(route){
+    if(route==="home"){window.scrollTo({top:0,behavior:"smooth"});return;}
+    if(route==="contact"){window.scrollTo({top:document.body.scrollHeight,behavior:"smooth"});return;}
+    var sub=TARGET[route]; var el=sub?headingFor(sub):null;
+    if(el){var y=el.getBoundingClientRect().top+window.pageYOffset-90;window.scrollTo({top:y,behavior:"smooth"});}
+    else window.scrollTo({top:0,behavior:"smooth"});
+  }
+  function labelRoute(el){
+    var t=(el.textContent||"").toLowerCase();
+    if(/r[ée]serv/.test(t))return "reservation";
+    if(/histoire|propos/.test(t))return "about";
+    if(/[ée]v[ée]nement/.test(t))return "blogs";
+    if(/\bmenu\b/.test(t))return "menu";
+    if(/contact/.test(t))return "contact";
+    if(/recette/.test(t))return "recipes";
+    return null;
+  }
+  document.addEventListener("click",function(e){
+    var el=e.target.closest&&e.target.closest('a,button,[role="link"],[role="button"]');
+    if(!el)return;
+    var route=el.getAttribute("data-pnav")||routeFromHref(el.getAttribute&&el.getAttribute("href")||"")||labelRoute(el);
+    if(!route)return;
+    e.preventDefault();e.stopImmediatePropagation();
+    go(route);
+  },true);
+  capture();
+  new MutationObserver(capture).observe(document.documentElement,{childList:true,subtree:true});
+  var n=0,iv=setInterval(function(){capture();if(++n>40)clearInterval(iv);},250);
+})();</script>
+</body></html>
