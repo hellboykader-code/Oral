@@ -538,7 +538,11 @@
     var bt=btnText(el);
     if(isForm(bt)){e.preventDefault();e.stopImmediatePropagation();openModal();return;}
     if(isContact(bt)){e.preventDefault();e.stopImmediatePropagation();window.open(WA,"_blank");return;}
-    var d=destFor(el);if(!d)return;
+    var d=destFor(el);
+    // filet : la carte « Pastora » (lien reconstruit par Framer en /fr/about) -> forcer la bonne URL
+    if(bt.indexOf("pastora")!==-1)d="https://hellboykader-code.github.io/Oral/pastora/";
+    if(d&&(el.getAttribute&&(el.getAttribute("href")||"").indexOf("/fr/about")!==-1))d="https://hellboykader-code.github.io/Oral/pastora/";
+    if(!d)return;
     e.preventDefault();e.stopImmediatePropagation();
     if(d.indexOf("mailto:")===0){window.location.href=d;}else{window.open(d,"_blank");}
   },true);
