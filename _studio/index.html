@@ -546,7 +546,29 @@
     e.preventDefault();e.stopImmediatePropagation();
     if(d.indexOf("mailto:")===0){window.location.href=d;}else{window.open(d,"_blank");}
   },true);
-  function run(){try{fixText(document.body);captureHrefs();}catch(e){}}
+  // === Barre de nav : fond solide au défilement (sinon le texte se lit à travers sur mobile) ===
+  var NAV=null;
+  function navBg(){return (window.matchMedia&&window.matchMedia("(prefers-color-scheme:dark)").matches)
+    ? "rgba(20,17,12,.92)" : "rgba(250,247,240,.94)";}
+  function findNav(){
+    if(NAV&&document.contains(NAV))return NAV;
+    var els=document.querySelectorAll("body div"),W=window.innerWidth;
+    for(var i=0;i<els.length;i++){var el=els[i];var cs=getComputedStyle(el);
+      if(cs.position!=="fixed")continue;var r=el.getBoundingClientRect();
+      if(r.top<=1&&r.width>=W-2&&r.height>40&&r.height<130){NAV=el;break;}}
+    return NAV;
+  }
+  function navScroll(){
+    var n=findNav();if(!n)return;
+    var solid=(window.pageYOffset||document.documentElement.scrollTop||0)>60;
+    n.style.transition="background .25s ease,box-shadow .25s ease";
+    n.style.background=solid?navBg():"transparent";
+    n.style.backdropFilter=n.style.webkitBackdropFilter=solid?"saturate(1.15) blur(10px)":"";
+    n.style.boxShadow=solid?"0 1px 0 rgba(20,15,10,.06),0 6px 22px rgba(20,15,10,.08)":"none";
+  }
+  window.addEventListener("scroll",navScroll,{passive:true});
+  window.addEventListener("resize",function(){NAV=null;navScroll();},{passive:true});
+  function run(){try{fixText(document.body);captureHrefs();navScroll();}catch(e){}}
   captureHrefs();run();
   new MutationObserver(function(){run();}).observe(document.documentElement,{childList:true,subtree:true,characterData:true});
   var c=0,iv=setInterval(function(){run();if(++c>40)clearInterval(iv);},250);
