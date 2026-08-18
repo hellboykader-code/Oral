@@ -119,6 +119,25 @@ header.solid{background:rgba(250,250,250,.86);backdrop-filter:saturate(1.2) blur
 .step p{color:var(--muted);font-size:14.5px}
 .steps-cta{text-align:center;margin-top:48px}
 
+/* ===== PRICING ===== */
+.pricing{background:var(--bg)}
+.price-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:24px;align-items:stretch}
+.plan{position:relative;background:var(--card);border:1px solid var(--line);border-radius:22px;padding:34px 28px;display:flex;flex-direction:column;box-shadow:var(--shadow-s);transition:transform .25s,box-shadow .25s}
+.plan:hover{transform:translateY(-6px);box-shadow:var(--shadow)}
+.plan.pop{border:2px solid var(--blue);box-shadow:0 20px 44px rgba(37,99,235,.18)}
+.plan .badge{position:absolute;top:-13px;left:50%;transform:translateX(-50%);background:var(--blue);color:#fff;font:600 12px var(--font);letter-spacing:.05em;padding:6px 16px;border-radius:999px;box-shadow:0 8px 18px rgba(37,99,235,.35)}
+.plan .pname{font:700 20px var(--disp);color:var(--ink)}
+.plan .pdesc{color:var(--muted);font-size:14px;margin-top:4px;min-height:40px}
+.plan .amount{display:flex;align-items:baseline;gap:4px;margin:18px 0 6px}
+.plan .amount .cur{font:700 22px var(--disp);color:var(--ink)}
+.plan .amount .val{font:800 46px var(--disp);color:var(--ink);letter-spacing:-.02em}
+.plan .amount .per{font-size:13px;color:var(--muted)}
+.plan ul{list-style:none;margin:18px 0 26px;display:flex;flex-direction:column;gap:12px}
+.plan li{display:flex;align-items:flex-start;gap:10px;font-size:14.5px;color:var(--ink-2)}
+.plan li svg{flex:none;width:20px;height:20px;margin-top:1px}
+.plan .btn{margin-top:auto;justify-content:center}
+.price-note{text-align:center;color:var(--muted);font-size:13.5px;margin-top:26px}
+
 /* ===== INSTRUCTORS ===== */
 .team{background:#fff}
 .team-track{display:grid;grid-auto-flow:column;grid-auto-columns:minmax(270px,1fr);gap:22px;overflow-x:auto;scroll-snap-type:x mandatory;padding:6px 2px 20px;scrollbar-width:none}
@@ -205,6 +224,7 @@ footer{background:var(--blue);color:#fff;border-radius:34px 34px 0 0;margin-top:
     </a>
     <nav class="nav-menu">
       <a href="#formations">Formations</a>
+      <a href="#tarifs">Tarifs</a>
       <a href="#deroulement">Déroulement</a>
       <a href="#moniteurs">Moniteurs</a>
       <a href="#contact">Contact</a>
@@ -218,6 +238,7 @@ footer{background:var(--blue);color:#fff;border-radius:34px 34px 0 0;margin-top:
 
 <div class="mobile" id="mobile">
   <a href="#formations">Formations</a>
+  <a href="#tarifs">Tarifs</a>
   <a href="#deroulement">Déroulement</a>
   <a href="#moniteurs">Moniteurs</a>
   <a href="#contact">Contact</a>
@@ -290,6 +311,57 @@ footer{background:var(--blue);color:#fff;border-radius:34px 34px 0 0;margin-top:
       </div>
     </div>
     <div class="steps-cta reveal"><a class="btn btn-blue" href="#contact">Commencer maintenant</a></div>
+  </div>
+</section>
+
+<!-- PRICING -->
+<section class="pricing" id="tarifs">
+  <div class="wrap">
+    <div class="sec-head reveal">
+      <span class="tag"><span class="dot"></span> Tarifs</span>
+      <h2>Des formules claires</h2>
+      <p>Pas de mauvaise surprise : un tarif transparent pour chaque parcours.</p>
+    </div>
+    <div class="price-grid">
+      <div class="plan reveal d1">
+        <div class="pname">Forfait Code</div>
+        <div class="pdesc">Pour préparer et passer le code sereinement.</div>
+        <div class="amount"><span class="cur">€</span><span class="val">290</span></div>
+        <ul>
+          <li><svg viewBox="0 0 24 24" fill="none" stroke="#22c55e" stroke-width="2.6"><path d="M5 13l4 4L19 7" stroke-linecap="round" stroke-linejoin="round"/></svg> Accès illimité au code en ligne</li>
+          <li><svg viewBox="0 0 24 24" fill="none" stroke="#22c55e" stroke-width="2.6"><path d="M5 13l4 4L19 7" stroke-linecap="round" stroke-linejoin="round"/></svg> Cours en salle avec moniteur</li>
+          <li><svg viewBox="0 0 24 24" fill="none" stroke="#22c55e" stroke-width="2.6"><path d="M5 13l4 4L19 7" stroke-linecap="round" stroke-linejoin="round"/></svg> Examens blancs illimités</li>
+          <li><svg viewBox="0 0 24 24" fill="none" stroke="#22c55e" stroke-width="2.6"><path d="M5 13l4 4L19 7" stroke-linecap="round" stroke-linejoin="round"/></svg> Passage de l'examen du code inclus</li>
+        </ul>
+        <a class="btn btn-ghost" href="#contact">Choisir</a>
+      </div>
+      <div class="plan pop reveal d2">
+        <div class="badge">Le plus choisi</div>
+        <div class="pname">Permis B — 20 h</div>
+        <div class="pdesc">La formule complète code + conduite.</div>
+        <div class="amount"><span class="cur">€</span><span class="val">1 190</span></div>
+        <ul>
+          <li><svg viewBox="0 0 24 24" fill="none" stroke="#22c55e" stroke-width="2.6"><path d="M5 13l4 4L19 7" stroke-linecap="round" stroke-linejoin="round"/></svg> Tout le Forfait Code</li>
+          <li><svg viewBox="0 0 24 24" fill="none" stroke="#22c55e" stroke-width="2.6"><path d="M5 13l4 4L19 7" stroke-linecap="round" stroke-linejoin="round"/></svg> 20 h de conduite avec moniteur</li>
+          <li><svg viewBox="0 0 24 24" fill="none" stroke="#22c55e" stroke-width="2.6"><path d="M5 13l4 4L19 7" stroke-linecap="round" stroke-linejoin="round"/></svg> Accompagnement le jour de l'examen</li>
+          <li><svg viewBox="0 0 24 24" fill="none" stroke="#22c55e" stroke-width="2.6"><path d="M5 13l4 4L19 7" stroke-linecap="round" stroke-linejoin="round"/></svg> Suivi de progression personnalisé</li>
+        </ul>
+        <a class="btn btn-blue" href="#contact">Choisir cette formule</a>
+      </div>
+      <div class="plan reveal d3">
+        <div class="pname">Conduite accompagnée</div>
+        <div class="pdesc">L'AAC dès 15 ans, pour aborder l'examen en confiance.</div>
+        <div class="amount"><span class="cur">€</span><span class="val">1 390</span></div>
+        <ul>
+          <li><svg viewBox="0 0 24 24" fill="none" stroke="#22c55e" stroke-width="2.6"><path d="M5 13l4 4L19 7" stroke-linecap="round" stroke-linejoin="round"/></svg> Formation initiale complète</li>
+          <li><svg viewBox="0 0 24 24" fill="none" stroke="#22c55e" stroke-width="2.6"><path d="M5 13l4 4L19 7" stroke-linecap="round" stroke-linejoin="round"/></svg> 20 h de conduite + phase accompagnée</li>
+          <li><svg viewBox="0 0 24 24" fill="none" stroke="#22c55e" stroke-width="2.6"><path d="M5 13l4 4L19 7" stroke-linecap="round" stroke-linejoin="round"/></svg> Rendez-vous pédagogiques inclus</li>
+          <li><svg viewBox="0 0 24 24" fill="none" stroke="#22c55e" stroke-width="2.6"><path d="M5 13l4 4L19 7" stroke-linecap="round" stroke-linejoin="round"/></svg> Livret d'apprentissage fourni</li>
+        </ul>
+        <a class="btn btn-ghost" href="#contact">Choisir</a>
+      </div>
+    </div>
+    <p class="price-note">Heure de conduite supplémentaire : 46 € · Tarifs indicatifs, à personnaliser selon votre agence.</p>
   </div>
 </section>
 
