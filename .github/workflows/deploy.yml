@@ -98,6 +98,11 @@ jobs:
         run: |
           mkdir -p dist/appetit-digital
           cp -r _appetit/* dist/appetit-digital/
+      # --- Site auto-école « Permia » -> /Oral/permia/ ---
+      - name: Copie site Permia
+        run: |
+          mkdir -p dist/permia
+          cp -r _permia/* dist/permia/
       - uses: actions/upload-pages-artifact@v3
         with:
           path: dist
