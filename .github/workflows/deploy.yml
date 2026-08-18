@@ -108,6 +108,11 @@ jobs:
         run: |
           mkdir -p dist/rouleo
           cp -r _rouleo/* dist/rouleo/
+      # --- Site auto-école « Vialo » -> /Oral/vialo/ ---
+      - name: Copie site Vialo
+        run: |
+          mkdir -p dist/vialo
+          cp -r _vialo/* dist/vialo/
       - uses: actions/upload-pages-artifact@v3
         with:
           path: dist
