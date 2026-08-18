@@ -103,6 +103,11 @@ jobs:
         run: |
           mkdir -p dist/permia
           cp -r _permia/* dist/permia/
+      # --- Site auto-école « Rouléo » -> /Oral/rouleo/ ---
+      - name: Copie site Rouleo
+        run: |
+          mkdir -p dist/rouleo
+          cp -r _rouleo/* dist/rouleo/
       - uses: actions/upload-pages-artifact@v3
         with:
           path: dist
