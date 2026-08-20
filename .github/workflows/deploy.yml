@@ -113,6 +113,11 @@ jobs:
         run: |
           mkdir -p dist/vialo
           cp -r _vialo/* dist/vialo/
+      # --- Landing « Cercle 500 » -> /Oral/cercle500/ ---
+      - name: Copie Cercle 500
+        run: |
+          mkdir -p dist/cercle500
+          cp -r _cercle500/* dist/cercle500/
       - uses: actions/upload-pages-artifact@v3
         with:
           path: dist

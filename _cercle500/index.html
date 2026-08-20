@@ -1,0 +1,314 @@
+<!doctype html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Cercle 500</title>
+<meta name="description" content="Cercle 500 — Sur cooptation uniquement. 500 sièges dans le monde. L'admission n'est pas un achat. C'est un jugement.">
+<meta name="robots" content="noindex, nofollow">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 48 48'%3E%3Crect width='48' height='48' fill='%230A0A0B'/%3E%3Ccircle cx='24' cy='24' r='16' fill='none' stroke='%23B79A5E' stroke-width='1'/%3E%3Ctext x='24' y='29' font-family='monospace' font-size='11' fill='%23B79A5E' text-anchor='middle' letter-spacing='1'%3E500%3C/text%3E%3C/svg%3E">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;1,300;1,400&family=IBM+Plex+Mono:wght@300;400;500&display=swap" rel="stylesheet">
+<style>
+:root{
+  --bg:#0A0A0B; --bg-2:#0d0d0f; --ivory:#E7E3D8; --ivory-dim:#9c988d;
+  --gold:#B79A5E; --gold-dim:#8a7647; --line:rgba(231,227,216,.12); --line-gold:rgba(183,154,94,.28);
+  --serif:"Cormorant Garamond",Georgia,serif; --mono:"IBM Plex Mono",ui-monospace,monospace;
+  --wrap:1080px;
+}
+*{margin:0;padding:0;box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{background:var(--bg);color:var(--ivory);font-family:var(--serif);font-size:19px;line-height:1.7;-webkit-font-smoothing:antialiased;overflow-x:hidden;position:relative}
+/* grain */
+body::before{content:"";position:fixed;inset:0;z-index:9999;pointer-events:none;opacity:.05;mix-blend-mode:overlay;
+  background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='140' height='140'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='2'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E")}
+a{color:inherit;text-decoration:none}
+.wrap{max-width:var(--wrap);margin:0 auto;padding:0 28px}
+.mono{font-family:var(--mono);font-weight:400;letter-spacing:.16em;text-transform:uppercase;font-size:12px;color:var(--ivory-dim)}
+.gold{color:var(--gold)}
+.hair{height:1px;background:var(--line);border:0;width:100%}
+section{padding:120px 0;position:relative}
+h1,h2,h3{font-family:var(--serif);font-weight:300;line-height:1.04;letter-spacing:.005em}
+
+/* reveal (slow) */
+.rv{opacity:0;transform:translateY(18px);transition:opacity 2s cubic-bezier(.2,.6,.2,1),transform 2s cubic-bezier(.2,.6,.2,1)}
+.rv.in{opacity:1;transform:none}
+.rv.d1{transition-delay:.25s}.rv.d2{transition-delay:.5s}.rv.d3{transition-delay:.75s}.rv.d4{transition-delay:1s}
+@media(prefers-reduced-motion:reduce){.rv{transition:none;opacity:1;transform:none}*{animation:none!important}}
+
+/* header */
+header{position:fixed;top:0;left:0;right:0;z-index:50;transition:background .6s,backdrop-filter .6s}
+header.solid{background:rgba(10,10,11,.72);backdrop-filter:blur(10px);border-bottom:1px solid var(--line)}
+.nav{display:flex;align-items:center;justify-content:space-between;height:74px}
+.seal{font-family:var(--mono);font-weight:500;letter-spacing:.3em;font-size:14px;color:var(--ivory)}
+.seal b{color:var(--gold);font-weight:500}
+.nav .mini{font-family:var(--mono);font-size:11px;letter-spacing:.18em;color:var(--ivory-dim);text-transform:uppercase}
+
+/* HERO */
+.hero{min-height:100vh;display:flex;flex-direction:column;justify-content:center;align-items:center;text-align:center;position:relative;padding:120px 28px 90px}
+.hero .tag{margin-bottom:34px;opacity:0;animation:fadeSlow 2s ease .3s forwards}
+.hero h1{font-size:clamp(48px,9vw,132px);font-weight:300;letter-spacing:-.01em;max-width:15ch}
+.hero h1 .w{display:inline-block;opacity:0;transform:translateY(20px);animation:wUp 1.6s cubic-bezier(.2,.6,.2,1) forwards}
+.hero h1 em{font-style:italic;color:var(--gold)}
+.hero .sub{margin-top:34px;opacity:0;animation:fadeSlow 2s ease 1.4s forwards}
+.hero .cta{margin-top:52px;opacity:0;animation:fadeSlow 2s ease 1.8s forwards}
+@keyframes wUp{to{opacity:1;transform:none}}
+@keyframes fadeSlow{to{opacity:1}}
+.btn{display:inline-flex;align-items:center;gap:14px;font-family:var(--mono);font-size:12px;letter-spacing:.18em;text-transform:uppercase;color:var(--ivory);border:1px solid var(--line-gold);padding:18px 34px;border-radius:0;background:transparent;cursor:pointer;transition:background .5s,color .5s,border-color .5s}
+.btn:hover{background:var(--gold);color:var(--bg);border-color:var(--gold)}
+.btn .ln{width:26px;height:1px;background:currentColor;display:inline-block}
+.scrolld{position:absolute;bottom:34px;left:50%;transform:translateX(-50%);display:flex;flex-direction:column;align-items:center;gap:12px;opacity:0;animation:fadeSlow 2s ease 2.4s forwards}
+.scrolld .ring{width:34px;height:34px;border:1px solid var(--line-gold);border-radius:50%;display:grid;place-items:center;animation:bob 2.6s ease-in-out infinite}
+.scrolld .ring svg{width:13px;height:13px;stroke:var(--gold)}
+@keyframes bob{0%,100%{transform:translateY(0)}50%{transform:translateY(6px)}}
+
+/* TICKER */
+.ticker{border-top:1px solid var(--line);border-bottom:1px solid var(--line);padding:22px 0;overflow:hidden}
+.ticker .line{display:flex;align-items:center;justify-content:center;gap:16px;min-height:24px}
+.ticker .diamond{color:var(--gold);font-size:10px}
+.ticker .msg{font-family:var(--mono);font-size:12.5px;letter-spacing:.1em;color:var(--ivory-dim);text-transform:uppercase;transition:opacity 1.4s ease}
+.ticker .msg.out{opacity:0}
+
+/* section head numbering */
+.sec-num{display:flex;align-items:center;gap:16px;margin-bottom:40px}
+.sec-num .rn{font-family:var(--mono);font-size:12px;letter-spacing:.2em;color:var(--gold)}
+.sec-num .ln{flex:1;height:1px;background:var(--line)}
+
+/* REGISTRE */
+.registre{text-align:center}
+.reg-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:0;border:1px solid var(--line);margin:10px 0 48px}
+.reg-grid .cell{padding:56px 24px;border-right:1px solid var(--line)}
+.reg-grid .cell:last-child{border-right:0}
+.reg-grid .num{font-family:var(--serif);font-weight:300;font-size:clamp(56px,8vw,96px);line-height:1;color:var(--ivory)}
+.reg-grid .num .u{color:var(--gold);font-size:.5em;vertical-align:super}
+.reg-grid .lbl{margin-top:18px}
+.reg-key{font-family:var(--serif);font-style:italic;font-weight:300;font-size:clamp(26px,4vw,42px);color:var(--ivory);max-width:22ch;margin:0 auto}
+.reg-key em{color:var(--gold);font-style:italic}
+
+/* PROTOCOLE */
+.proto h2{font-size:clamp(34px,5vw,60px);margin-bottom:8px}
+.proto .intro{color:var(--ivory-dim);margin-bottom:20px;max-width:52ch}
+.article{display:grid;grid-template-columns:120px 1fr;gap:30px;padding:34px 0;border-top:1px solid var(--line);align-items:baseline}
+.article:last-child{border-bottom:1px solid var(--line)}
+.article .art{font-family:var(--mono);font-size:12px;letter-spacing:.2em;color:var(--gold);text-transform:uppercase}
+.article p{font-size:22px;font-weight:300;color:var(--ivory);line-height:1.5}
+
+/* FORM */
+.dossier{background:var(--bg-2)}
+.dossier h2{font-size:clamp(34px,5vw,60px);margin-bottom:10px}
+.dossier .intro{color:var(--ivory-dim);max-width:54ch;margin-bottom:48px}
+.field{margin-bottom:38px}
+.field label{display:block;font-family:var(--serif);font-size:23px;font-weight:400;color:var(--ivory);margin-bottom:6px}
+.field .note{font-family:var(--mono);font-size:11px;letter-spacing:.08em;color:var(--gold-dim);text-transform:uppercase;margin-bottom:14px}
+.field input,.field textarea{width:100%;background:transparent;border:0;border-bottom:1px solid var(--line);color:var(--ivory);font-family:var(--serif);font-size:19px;padding:12px 2px;transition:border-color .5s}
+.field input::placeholder,.field textarea::placeholder{color:#57544c;font-style:italic}
+.field input:focus,.field textarea:focus{outline:0;border-color:var(--gold)}
+.field textarea{resize:vertical;min-height:64px;line-height:1.6}
+.submit-row{margin-top:44px}
+.warn{font-family:var(--mono);font-size:11px;letter-spacing:.06em;color:var(--ivory-dim);text-transform:uppercase;line-height:1.9;margin-top:26px;max-width:56ch}
+.sealed{display:none;border:1px solid var(--line-gold);padding:48px 40px;text-align:center}
+.sealed.show{display:block;animation:fadeSlow 1.6s ease forwards}
+.sealed .ref{font-family:var(--mono);font-size:22px;letter-spacing:.3em;color:var(--gold);margin:18px 0}
+.sealed .cold{font-family:var(--mono);font-size:12px;letter-spacing:.12em;color:var(--ivory-dim);text-transform:uppercase}
+
+/* FOOTER */
+footer{padding:70px 0 50px;border-top:1px solid var(--line);text-align:center}
+footer .fseal{font-family:var(--mono);letter-spacing:.3em;font-size:14px;color:var(--ivory)}
+footer .fseal b{color:var(--gold);font-weight:500}
+footer .meta{font-family:var(--mono);font-size:11px;letter-spacing:.14em;color:var(--ivory-dim);text-transform:uppercase;line-height:2.1;margin-top:22px}
+
+@media(max-width:720px){
+  section{padding:84px 0}
+  .nav .mini{display:none}
+  .reg-grid{grid-template-columns:1fr}
+  .reg-grid .cell{border-right:0;border-bottom:1px solid var(--line);padding:40px 24px}
+  .reg-grid .cell:last-child{border-bottom:0}
+  .article{grid-template-columns:1fr;gap:12px}
+}
+</style>
+</head>
+<body id="top">
+
+<header id="hdr">
+  <div class="wrap nav">
+    <span class="seal">CERCLE&nbsp;<b>500</b></span>
+    <span class="mini">Sur cooptation uniquement</span>
+  </div>
+</header>
+
+<!-- HERO -->
+<section class="hero" id="hero">
+  <span class="tag mono">500 sièges dans le monde · Sur cooptation uniquement</span>
+  <h1 id="h1">Votre argent <em>ne suffit pas.</em></h1>
+  <p class="sub mono" style="letter-spacing:.14em;font-size:12.5px">L'admission n'est pas un achat. C'est un jugement.</p>
+  <div class="cta"><a class="btn" href="#dossier">Demander l'examen de mon dossier <span class="ln"></span></a></div>
+  <div class="scrolld"><span class="mono" style="font-size:10px">Descendre</span>
+    <span class="ring"><svg viewBox="0 0 24 24" fill="none" stroke-width="1.6"><path d="M6 9l6 6 6-6" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
+  </div>
+</section>
+
+<!-- TICKER -->
+<div class="ticker"><div class="wrap"><div class="line">
+  <span class="diamond">◆</span><span class="msg" id="tick">Dernière opération conclue entre membres : 4,2&nbsp;M€ — secteur non divulgué</span><span class="diamond">◆</span>
+</div></div></div>
+
+<!-- REGISTRE -->
+<section class="registre" id="registre">
+  <div class="wrap">
+    <div class="sec-num rv"><span class="rn">I — État du registre</span><span class="ln"></span></div>
+    <div class="reg-grid rv d1">
+      <div class="cell"><div class="num"><span id="seats">27</span></div><div class="lbl mono">Sièges restants</div></div>
+      <div class="cell"><div class="num">94<span class="u">%</span></div><div class="lbl mono">Candidatures refusées</div></div>
+      <div class="cell"><div class="num">1</div><div class="lbl mono">Projet par membre / an</div></div>
+    </div>
+    <p class="reg-key rv d2">L'admission n'est pas un achat. <em>C'est un jugement.</em></p>
+  </div>
+</section>
+
+<!-- PROTOCOLE -->
+<section class="proto" id="protocole">
+  <div class="wrap">
+    <div class="sec-num rv"><span class="rn">II — Le Protocole</span><span class="ln"></span></div>
+    <h2 class="rv">Le règlement du Cercle.</h2>
+    <p class="intro mono rv d1" style="text-transform:none;letter-spacing:.04em">Cinq articles. Ils ne se négocient pas.</p>
+    <div class="rv d1">
+      <div class="article"><span class="art">Article I</span><p>Nul ne rejoint en payant. La cotisation n'est due qu'après acceptation du dossier.</p></div>
+      <div class="article"><span class="art">Article II</span><p>Un projet par membre et par an. Un seul.</p></div>
+      <div class="article"><span class="art">Article III</span><p>Identité vérifiée par un tiers indépendant, puis scellée. Pseudonymes à l'intérieur.</p></div>
+      <div class="article"><span class="art">Article IV</span><p>Confidentialité absolue. Aucune capture, aucun archivage.</p></div>
+      <div class="article"><span class="art">Article V</span><p>L'application n'est sur aucun store public. Elle se transmet.</p></div>
+    </div>
+  </div>
+</section>
+
+<!-- DOSSIER -->
+<section class="dossier" id="dossier">
+  <div class="wrap" style="max-width:820px">
+    <div class="sec-num rv"><span class="rn">III — Dépôt de dossier</span><span class="ln"></span></div>
+    <h2 class="rv">Soumettez-vous à l'examen.</h2>
+    <p class="intro mono rv d1" style="text-transform:none;letter-spacing:.04em">Ce n'est pas un formulaire. C'est un premier jugement.</p>
+
+    <form id="dossierForm" class="rv d1" novalidate>
+      <div class="field">
+        <label>Quelle est la transaction dont vous êtes le plus fier&nbsp;?</label>
+        <textarea name="q1" rows="2" placeholder="Montant, année, rôle exact." required></textarea>
+      </div>
+      <div class="field">
+        <label>Qui, parmi nos membres, peut se porter garant de vous&nbsp;?</label>
+        <div class="note">Les dossiers sans répondant sont examinés en dernier.</div>
+        <input name="q2" placeholder="Nom du répondant, ou —" required>
+      </div>
+      <div class="field">
+        <label>Qu'apportez-vous que l'argent ne remplace pas&nbsp;?</label>
+        <textarea name="q3" rows="2" placeholder="Trois lignes maximum." required></textarea>
+      </div>
+      <div class="field">
+        <label>Adresse de correspondance</label>
+        <div class="note">Une seule réponse vous sera adressée.</div>
+        <input type="email" name="email" placeholder="vous@domaine" required>
+      </div>
+      <div class="submit-row">
+        <button class="btn" type="submit">Soumettre au Comité <span class="ln"></span></button>
+        <p class="warn">Délai d'examen : 4 à 6 semaines. Nous ne répondons pas aux relances. Le Comité ne motive pas ses refus.</p>
+      </div>
+    </form>
+
+    <div class="sealed" id="sealed">
+      <div class="mono" style="letter-spacing:.14em">Dossier enregistré</div>
+      <div class="ref" id="ref">C500-0000</div>
+      <div class="cold">Aucune relance ne sera lue.</div>
+    </div>
+  </div>
+</section>
+
+<footer>
+  <div class="wrap">
+    <div class="fseal">CERCLE&nbsp;<b>500</b></div>
+    <div class="meta">
+      Sur cooptation uniquement · Paris — Genève — Dubaï<br>
+      Le Comité ne s'exprime pas publiquement.<br>
+      <span style="color:#57544c">© <span id="yr"></span> Cercle 500 · Mentions légales · Confidentialité</span>
+    </div>
+  </div>
+</footer>
+
+<script>
+(function(){
+  var reduce=window.matchMedia&&window.matchMedia("(prefers-reduced-motion:reduce)").matches;
+  document.getElementById('yr').textContent=new Date().getFullYear();
+
+  // header solid
+  var hdr=document.getElementById('hdr');
+  function os(){hdr.classList.toggle('solid',window.pageYOffset>40);}
+  window.addEventListener('scroll',os,{passive:true});os();
+
+  // hero: split heading into words (keep <em> intact)
+  (function(){
+    var h1=document.getElementById('h1');
+    var nodes=[].slice.call(h1.childNodes),out=[],i=0;
+    h1.innerHTML='';
+    nodes.forEach(function(n){
+      if(n.nodeType===3){ // text
+        n.textContent.split(/(\s+)/).forEach(function(tok){
+          if(tok.trim()===''){h1.appendChild(document.createTextNode(tok));return;}
+          var s=document.createElement('span');s.className='w';s.textContent=tok;
+          s.style.animationDelay=(0.5+ (i++)*0.14)+'s';h1.appendChild(s);
+        });
+      }else{ // <em>
+        var em=n.cloneNode(true);em.classList&&em.classList.add('w');
+        em.className=(em.className?em.className+' ':'')+'w';
+        em.style.display='inline-block';em.style.animationDelay=(0.5+(i++)*0.14)+'s';
+        h1.appendChild(em);
+      }
+    });
+    if(reduce){[].forEach.call(h1.querySelectorAll('.w'),function(w){w.style.opacity=1;w.style.transform='none';w.style.animation='none';});}
+  })();
+
+  // reveal
+  var io=new IntersectionObserver(function(es){es.forEach(function(e){if(e.isIntersecting){e.target.classList.add('in');io.unobserve(e.target);}});},{threshold:.16});
+  document.querySelectorAll('.rv').forEach(function(el){io.observe(el);});
+
+  // ticker fantôme — rotate every 7s
+  var msgs=[
+    "Dernière opération conclue entre membres : 4,2 M€ — secteur non divulgué",
+    "Cession hors marché : montant non divulgué — Genève",
+    "Partenariat industriel signé entre 2 membres — clause de silence",
+    "Prochaine assemblée annuelle : lieu communiqué 72 h avant"
+  ];
+  var tick=document.getElementById('tick'),ti=0;
+  if(!reduce) setInterval(function(){
+    tick.classList.add('out');
+    setTimeout(function(){ti=(ti+1)%msgs.length;tick.innerHTML=msgs[ti];tick.classList.remove('out');},1400);
+  },7000);
+
+  // seats counter — decrease very slowly, randomly, floor 19
+  var seats=document.getElementById('seats'),n=27;
+  function nextTick(){
+    var wait=45000+Math.random()*70000; // 45s–115s
+    setTimeout(function(){
+      if(n>19){n--;seats.style.transition='opacity .8s';seats.style.opacity='.3';
+        setTimeout(function(){seats.textContent=n;seats.style.opacity='1';},400);}
+      nextTick();
+    },wait);
+  }
+  if(!reduce) nextTick();
+
+  // form → sealed dossier + reference
+  var form=document.getElementById('dossierForm'),sealed=document.getElementById('sealed');
+  form.addEventListener('submit',function(e){
+    e.preventDefault();
+    var ok=true;
+    form.querySelectorAll('[required]').forEach(function(f){if(!f.value.trim()){f.style.borderColor='#7a2b2b';ok=false;}else{f.style.borderColor='';}});
+    var em=form.email;if(em.value&&!/^[^@\s]+@[^@\s]+\.[^@\s]+$/.test(em.value)){em.style.borderColor='#7a2b2b';ok=false;}
+    if(!ok)return;
+    var ref='C500-'+Math.floor(1000+Math.random()*8999);
+    document.getElementById('ref').textContent=ref;
+    form.style.transition='opacity 1s';form.style.opacity='0';
+    setTimeout(function(){form.style.display='none';sealed.classList.add('show');
+      sealed.scrollIntoView({behavior:'smooth',block:'center'});},1000);
+  });
+})();
+</script>
+</body>
+</html>
