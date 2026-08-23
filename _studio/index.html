@@ -4,6 +4,14 @@
 	
 	<title>L'Appétit Digital — Sites web pour restaurants</title>
     <meta name="description" content="L'Appétit Digital conçoit des sites web modernes et sur mesure pour les restaurants. Livré en 3 jours, prêt à recevoir vos réservations.">
+<meta property="og:type" content="website">
+<meta property="og:title" content="L'Appétit Digital — Sites web pour restaurants">
+<meta property="og:description" content="Sites web modernes et sur mesure pour restaurants. Livré en 3 jours, hébergement à vie.">
+<meta property="og:image" content="https://lappetit.digital/og-cover.jpg">
+<meta property="og:url" content="https://lappetit.digital/">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="L'Appétit Digital — Sites web pour restaurants">
+<meta name="twitter:image" content="https://lappetit.digital/og-cover.jpg">
     <meta name="framer-search-index" content="/Oral/studio/assets/framer/sites/5tb5J9zAv1NjfojPmjpis9/searchIndex-oX4Mm5Fme4w5.json">
     <meta name="framer-search-index-fallback" content="/Oral/studio/assets/framer/sites/5tb5J9zAv1NjfojPmjpis9/searchIndex-kcVEBcOtWqYq.json">
     <link href="/Oral/studio/assets/framer/sites/icons/default-favicon-light.v1.png" rel="icon" media="(prefers-color-scheme: light)">
@@ -420,6 +428,7 @@
   // 1) Remplacements de texte (mot -> mot / phrase -> phrase). Phrases longues d'abord.
   var TXT=[
     ["Our Projects","Nos réalisations"],["Our Project","Nos réalisations"],
+    ["Notre Project","Nos réalisations"],["Notre project","Nos réalisations"],
     ["Nos réalisations","Nos réalisations"],["Notre Projet","Nos réalisations"],
     ["Kader Studio","L'Appétit Digital"],
     ["Livré en 7 jours","Livré en 3 jours"],["7 jours","3 jours"],
@@ -568,7 +577,15 @@
   }
   window.addEventListener("scroll",navScroll,{passive:true});
   window.addEventListener("resize",function(){NAV=null;navScroll();},{passive:true});
-  function run(){try{fixText(document.body);captureHrefs();navScroll();}catch(e){}}
+  // Corrige le lien e-mail cassé (Framer génère parfois https://kaderhb33@gmail.com au lieu de mailto:)
+  function fixMailto(){
+    document.querySelectorAll('a[href]').forEach(function(a){
+      var h=a.getAttribute('href')||'';
+      var m=h.match(/^https?:\/\/([^\/@?#]+@[^\/?#]+)/i);
+      if(m){ a.setAttribute('href','mailto:'+m[1]); }
+    });
+  }
+  function run(){try{fixText(document.body);captureHrefs();navScroll();fixMailto();}catch(e){}}
   captureHrefs();run();
   new MutationObserver(function(){run();}).observe(document.documentElement,{childList:true,subtree:true,characterData:true});
   var c=0,iv=setInterval(function(){run();if(++c>40)clearInterval(iv);},250);
