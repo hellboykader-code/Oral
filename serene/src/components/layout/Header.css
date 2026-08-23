@@ -1,0 +1,127 @@
+.site-header {
+  position: fixed;
+  inset: 0 0 auto 0;
+  z-index: 100;
+  display: flex;
+  justify-content: center;
+  /* 16px du haut, marges latérales larges — fidèle au modèle Oralcare */
+  padding: 16px clamp(1rem, 4.8vw, 70px);
+  pointer-events: none;
+}
+
+/* La barre blanche flottante (rectangle à coins doux, PAS une pilule) */
+.site-header__pill {
+  position: relative;
+  pointer-events: auto;
+  width: 100%;
+  max-width: 1360px;
+  display: flex;
+  align-items: center;
+  gap: 1.5rem;
+  height: 64px;
+  padding: 0 0.6rem 0 1.5rem;
+  background: var(--color-white);
+  border-radius: 8px;
+  box-shadow: 0 2px 4px rgba(3, 3, 3, 0.2);
+  transition: box-shadow 0.3s var(--ease-out);
+}
+.site-header__pill.is-scrolled {
+  box-shadow: 0 4px 14px rgba(3, 3, 3, 0.16);
+}
+
+.site-header__brand {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.6rem;
+  color: var(--color-ink);
+}
+.site-header__wordmark {
+  display: flex;
+  flex-direction: column;
+  line-height: 1;
+}
+.site-header__name {
+  font-family: var(--font-display);
+  font-weight: 800;
+  font-size: 1.3rem;
+  letter-spacing: -0.02em;
+}
+.site-header__brandline {
+  font-family: var(--font-body);
+  font-weight: 600;
+  font-size: 0.56rem;
+  letter-spacing: 0.28em;
+  color: var(--text-muted);
+  margin-top: 0.28rem;
+}
+
+/* Liens de navigation parfaitement centrés dans la capsule */
+.site-header__nav {
+  position: absolute;
+  left: 50%;
+  transform: translateX(-50%);
+  display: flex;
+  align-items: center;
+  gap: 0.25rem;
+}
+.site-header__cta {
+  margin-left: auto;
+}
+.site-header__link {
+  display: inline-flex;
+  align-items: center;
+  padding: 0.45rem 0.9rem;
+  font-weight: 500;
+  font-size: 0.95rem;
+  color: var(--color-ink);
+  border-radius: 6px;
+  transition: background-color 0.2s var(--ease-out), color 0.2s;
+}
+.site-header__link:hover {
+  color: var(--color-accent);
+}
+/* Onglet actif : pastille verte, texte foncé — signature du modèle */
+.site-header__link.is-active,
+.site-header__link.is-active:hover {
+  background: var(--color-accent);
+  color: var(--color-accent-ink);
+}
+
+.burger {
+  display: none;
+  flex-direction: column;
+  gap: 6px;
+  width: 46px;
+  height: 46px;
+  align-items: center;
+  justify-content: center;
+  border-radius: 50%;
+}
+.burger span {
+  display: block;
+  width: 22px;
+  height: 2px;
+  background: var(--color-ink);
+  border-radius: 2px;
+  transition: transform 0.3s var(--ease-out), opacity 0.3s;
+}
+.burger.is-open span:first-child {
+  transform: translateY(4px) rotate(45deg);
+}
+.burger.is-open span:last-child {
+  transform: translateY(-4px) rotate(-45deg);
+}
+
+@media (max-width: 940px) {
+  .site-header__nav,
+  .site-header__cta {
+    display: none;
+  }
+  .burger {
+    display: flex;
+    margin-left: auto;
+  }
+  .site-header__pill {
+    height: 60px;
+  }
+}

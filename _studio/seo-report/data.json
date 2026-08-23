@@ -1,0 +1,50 @@
+[
+  {
+    "url": "https://studiooo1.framer.website/",
+    "score": 85,
+    "issues": [
+      {
+        "type": "warning",
+        "message": "Multiple <h1> tags found (4). Best practice is to have only one."
+      },
+      {
+        "type": "warning",
+        "message": "20 image(s) missing alt text"
+      }
+    ],
+    "passed": [
+      "Title tag is properly configured",
+      "Meta description is properly configured",
+      "Canonical URL is set",
+      "Open Graph meta tags present",
+      "Viewport meta tag present",
+      "Language attribute set"
+    ],
+    "meta": {
+      "title": "Hanzo — a Design Craftsman's Portfolio Template",
+      "description": "Hanzo is a free minimal and elegant portfolio template made for product, software, and digital designers to share their work quickly and effectively.",
+      "canonical": "https://studiooo1.framer.website/",
+      "ogImage": null
+    }
+  },
+  {
+    "url": "https://studiooo1.framer.website/404",
+    "score": 100,
+    "issues": [],
+    "passed": [
+      "Title tag is properly configured",
+      "Meta description is properly configured",
+      "Single H1 heading present",
+      "Canonical URL is set",
+      "Open Graph meta tags present",
+      "Viewport meta tag present",
+      "Language attribute set"
+    ],
+    "meta": {
+      "title": "Hanzo — a Design Craftsman's Portfolio Template",
+      "description": "Hanzo is a free minimal and elegant portfolio template made for product, software, and digital designers to share their work quickly and effectively.",
+      "canonical": "https://studiooo1.framer.website/404",
+      "ogImage": null
+    }
+  }
+]

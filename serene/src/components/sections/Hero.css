@@ -1,0 +1,138 @@
+/* Hero « Dentiva » — texte à gauche, GRANDE image pleine hauteur à droite
+   (l'image déborde jusqu'au bord droit de l'écran, comme l'original). */
+.hero {
+  background: var(--color-cream);
+  overflow: hidden;
+}
+.hero__grid {
+  display: grid;
+  grid-template-columns: minmax(auto, 620px) 1fr;
+  align-items: stretch;
+  min-height: 88vh;
+  gap: clamp(1.5rem, 3vw, 3rem);
+}
+.hero__content {
+  min-width: 0;
+  align-self: center;
+  padding-top: calc(var(--header-h) + clamp(1rem, 3vw, 2rem));
+  padding-bottom: clamp(2rem, 4vw, 3rem);
+  /* aligne le texte sur la marge du conteneur central */
+  padding-left: clamp(1.2rem, 4vw, 2.5rem);
+  padding-right: clamp(1rem, 2vw, 2rem);
+  margin-left: max(0px, calc((100vw - var(--container)) / 2));
+}
+.hero__eyebrow {
+  display: inline-block;
+  font-family: var(--font-alt);
+  font-weight: 600;
+  font-size: 0.82rem;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--color-accent);
+  background: var(--color-mint);
+  padding: 0.4rem 0.9rem;
+  border-radius: var(--radius-pill);
+}
+.hero__title {
+  margin-top: 1.2rem;
+  font-size: clamp(2.2rem, 3.8vw, 3.4rem);
+  font-weight: 700;
+  line-height: 1.08;
+  letter-spacing: -0.02em;
+  color: var(--color-ink);
+}
+.hero__title > span { white-space: nowrap; }
+.hero__lead {
+  margin-top: 1.4rem;
+  font-size: var(--fs-lead);
+  color: var(--text-muted);
+  max-width: 34rem;
+}
+.hero__actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.9rem;
+  margin-top: 2rem;
+}
+.hero__stats {
+  display: flex;
+  gap: clamp(1.5rem, 4vw, 3rem);
+  margin-top: 2.6rem;
+  padding-top: 2rem;
+  border-top: 1px solid var(--color-line);
+}
+.hero__stat dt {
+  font-family: var(--font-display);
+  font-weight: 800;
+  font-size: clamp(1.8rem, 3vw, 2.4rem);
+  color: var(--color-accent);
+  line-height: 1;
+}
+.hero__stat dd {
+  margin-top: 0.4rem;
+  font-size: 0.9rem;
+  color: var(--text-muted);
+  max-width: 16ch;
+}
+
+/* GRANDE image pleine hauteur, débordant jusqu'au bord droit */
+.hero__media {
+  position: relative;
+  align-self: stretch;
+}
+.hero__img {
+  width: 100%;
+  height: 100%;
+  min-height: 88vh;
+  object-fit: cover;
+  object-position: center;
+  border-bottom-left-radius: var(--radius-lg);
+  border-top-left-radius: var(--radius-lg);
+}
+.hero__badge {
+  position: absolute;
+  left: -1.4rem;
+  bottom: 2.4rem;
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  background: var(--color-white);
+  padding: 0.85rem 1.1rem;
+  border-radius: var(--radius);
+  box-shadow: var(--shadow);
+}
+.hero__badge-icon {
+  display: grid;
+  place-items: center;
+  width: 42px;
+  height: 42px;
+  border-radius: 12px;
+  background: var(--color-accent);
+  flex-shrink: 0;
+}
+.hero__badge strong {
+  display: block;
+  font-family: var(--font-display);
+  font-size: 0.98rem;
+  color: var(--color-ink);
+}
+.hero__badge span {
+  font-size: 0.82rem;
+  color: var(--text-muted);
+}
+
+@media (max-width: 900px) {
+  .hero__grid { grid-template-columns: 1fr; min-height: 0; }
+  .hero__content {
+    margin-left: 0;
+    padding-inline: clamp(1.2rem, 5vw, 2rem);
+    order: 2;
+  }
+  .hero__media { order: 1; }
+  .hero__img {
+    min-height: 0;
+    aspect-ratio: 4 / 3.2;
+    border-radius: 0;
+  }
+  .hero__badge { left: 1rem; }
+}

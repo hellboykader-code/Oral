@@ -1,0 +1,76 @@
+<!doctype html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Espace Praticien — Sérène</title>
+<meta name="description" content="Espace de gestion du cabinet dentaire Sérène : rendez-vous, messages, contenu du site.">
+<meta name="robots" content="noindex,nofollow">
+<meta name="theme-color" content="#030303">
+<link rel="manifest" href="manifest.webmanifest">
+<link rel="icon" href="icons/icon-192.png">
+<link rel="apple-touch-icon" href="icons/icon-192.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Red+Hat+Display:wght@400;700;800&family=Inter:wght@400;600;700&display=swap">
+<link rel="stylesheet" href="admin.css">
+</head>
+<body>
+
+<!-- ================= Connexion ================= -->
+<div class="login-wrap" id="login">
+  <div class="login-card">
+    <svg class="logo" width="54" height="54" viewBox="0 0 54 54" fill="none" aria-hidden="true">
+      <rect width="54" height="54" rx="16" fill="#963f36"/>
+      <path d="M27 12c-6 0-10 4-10 10 0 4 1 8 2.4 12.4 1 3.2 1.8 7.6 3.6 7.6 2 0 1.6-5 2-8 .2-1.6.8-3 2-3s1.8 1.4 2 3c.4 3 0 8 2 8 1.8 0 2.6-4.4 3.6-7.6C34 30 36 26 36 22c0-6-4-10-9-10Z" fill="#faf7f5"/>
+    </svg>
+    <h1>Espace Praticien</h1>
+    <p class="sub">Cabinet dentaire <b>Sérène</b> — accès réservé à l'équipe</p>
+    <form id="login-form">
+      <div class="field"><label for="login-pass">Mot de passe</label>
+        <input type="password" id="login-pass" autocomplete="current-password" required placeholder="••••••••">
+      </div>
+      <button class="btn btn-p" style="justify-content:center">Se connecter</button>
+    </form>
+    <div class="login-hint">🔑 Version de démonstration — mot de passe : <b>serene2026</b></div>
+  </div>
+</div>
+
+<!-- ================= Application ================= -->
+<div class="app" id="app">
+  <aside class="sidebar" id="sidebar">
+    <div class="sb-brand">
+      <svg width="34" height="34" viewBox="0 0 54 54" fill="none" aria-hidden="true">
+        <rect width="54" height="54" rx="16" fill="#963f36"/>
+        <path d="M27 12c-6 0-10 4-10 10 0 4 1 8 2.4 12.4 1 3.2 1.8 7.6 3.6 7.6 2 0 1.6-5 2-8 .2-1.6.8-3 2-3s1.8 1.4 2 3c.4 3 0 8 2 8 1.8 0 2.6-4.4 3.6-7.6C34 30 36 26 36 22c0-6-4-10-9-10Z" fill="#faf7f5"/>
+      </svg>
+      <div><span class="t">Sérène</span><span class="b">ESPACE PRATICIEN</span></div>
+    </div>
+    <nav id="nav"></nav>
+    <div class="sb-foot">
+      <button class="nav-btn" id="logout"><span class="ic">🚪</span>Se déconnecter</button>
+      <div style="padding:10px 12px 0">v1.0 — Sérène</div>
+    </div>
+  </aside>
+  <div class="scrim" id="scrim"></div>
+  <main class="main">
+    <div class="topbar">
+      <button class="hamb" id="hamb" aria-label="Menu">☰</button>
+      <h2 id="title">Tableau de bord</h2>
+      <span class="spacer"></span>
+      <span class="chip" id="today-chip"></span>
+    </div>
+    <div id="view"></div>
+  </main>
+</div>
+
+<div class="toast" id="toast"></div>
+
+<script src="vendor/qrcode.js"></script>
+<script>
+  document.addEventListener('DOMContentLoaded',()=>{ const c=document.getElementById('today-chip');
+    const d=new Date(); c.textContent='📅 '+d.toLocaleDateString('fr-FR',{weekday:'long',day:'numeric',month:'long'}); });
+</script>
+<script src="admin.js"></script>
+</body>
+</html>

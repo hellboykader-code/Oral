@@ -1,0 +1,2 @@
+import{t as e}from"./rolldown-runtime.Dh6celcD.mjs";var t,n;e((()=>{t=`Utiliser gratuitement`,n={exports:{v0:{type:`variable`,annotations:{framerContractVersion:`1`}},__FramerMetadata__:{type:`variable`}}}}))();export{n as __FramerMetadata__,t as v0};
+//# sourceMappingURL=ltH_ZdTCK-0.Ct6d8g5N.mjs.map

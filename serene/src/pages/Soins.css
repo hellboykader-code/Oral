@@ -1,0 +1,62 @@
+.soins-hero {
+  padding-top: calc(var(--header-h) + clamp(2rem, 5vw, 4rem));
+  padding-bottom: clamp(1.5rem, 3vw, 2.5rem);
+  background: radial-gradient(
+      100% 80% at 0% 0%,
+      rgba(209, 252, 113, 0.16),
+      transparent 55%
+    ),
+    var(--bg);
+}
+.soins-hero__title {
+  font-size: var(--fs-hero);
+  max-width: 18ch;
+  margin: 1rem 0;
+}
+.soins-hero__lead {
+  font-size: var(--fs-lead);
+  color: var(--text-muted);
+  max-width: 54ch;
+}
+
+.soins-filters {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.6rem;
+  margin-bottom: 2.4rem;
+}
+.soins-filter {
+  padding: 0.6rem 1.1rem;
+  border-radius: var(--radius-pill);
+  border: 1.5px solid var(--border);
+  font-weight: 500;
+  font-size: 0.9rem;
+  color: var(--text);
+  background: transparent;
+  transition: all 0.2s var(--ease-out);
+}
+.soins-filter:hover {
+  border-color: var(--color-ink);
+}
+.soins-filter.is-active {
+  background: var(--color-ink);
+  border-color: var(--color-ink);
+  color: var(--color-cream);
+}
+
+.soins-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 1.5rem;
+}
+
+@media (max-width: 1000px) {
+  .soins-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+@media (max-width: 600px) {
+  .soins-grid {
+    grid-template-columns: 1fr;
+  }
+}
