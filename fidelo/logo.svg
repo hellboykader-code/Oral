@@ -1,0 +1,15 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" width="64" height="64"><defs>
+ <linearGradient id="flg" x1="0" y1="0" x2="1" y2="1">
+  <stop offset="0" stop-color="#06B6D4"/><stop offset=".55" stop-color="#22D3EE"/><stop offset="1" stop-color="#FF6B6B"/>
+ </linearGradient>
+ <linearGradient id="fls" x1="0" y1="0" x2="1" y2="1">
+  <stop offset="0" stop-color="#fff" stop-opacity=".3"/><stop offset=".5" stop-color="#fff" stop-opacity="0"/>
+ </linearGradient>
+</defs><g transform="translate(0.00,0.00) scale(1.0)">
+  <rect x="3" y="13" width="58" height="40" rx="11" fill="url(#flg)"/>
+  <rect x="3" y="13" width="58" height="40" rx="11" fill="url(#fls)"/>
+  <rect x="11" y="24" width="24" height="4.4" rx="2.2" fill="#fff" opacity=".95"/>
+  <rect x="11" y="33" width="14" height="4.4" rx="2.2" fill="#fff" opacity=".6"/>
+  <path d="M45 16.4C46.536 22.736,48.264 24.464,54.6 26C48.264 27.536,46.536 29.264,45 35.6C43.464 29.264,41.736 27.536,35.4 26C41.736 24.464,43.464 22.736,45 16.4Z" fill="#fff"/>
+  <path d="M53.4 34.1C54.104 37.004,54.896 37.796,57.8 38.5C54.896 39.204,54.104 39.996,53.4 42.9C52.696 39.996,51.903999999999996 39.204,49.0 38.5C51.903999999999996 37.796,52.696 37.004,53.4 34.1Z" fill="#fff" opacity=".88"/>
+</g></svg>

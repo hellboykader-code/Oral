@@ -1,0 +1,123 @@
+╔══════════════════════════════════════════════════════════════════════╗
+║  FIDELO — installation et mise en route                              ║
+╚══════════════════════════════════════════════════════════════════════╝
+
+────────────────────────────────────────────────────────────────────────
+1. METTRE EN LIGNE
+────────────────────────────────────────────────────────────────────────
+  • cPanel → Gestionnaire de fichiers → public_html
+  • Envoyer fidelo-site.zip → Extraire → « Overwrite All »
+  • Vos données ne sont JAMAIS écrasées : le paquet ne contient pas
+    data/db.json. Vos commerces et vos clients restent en place.
+  • Vérifier que le dossier data/ est accessible en écriture (755).
+
+────────────────────────────────────────────────────────────────────────
+2. SÉCURISER LA CONSOLE (à faire tout de suite)
+────────────────────────────────────────────────────────────────────────
+  a) Ouvrir  https://VOTRE-SITE/console.php?k=LA_CLÉ
+     (la clé figure dans le message de livraison, et dans lib.php ligne 17)
+  b) Un bandeau rouge s'affiche → « Définir un mot de passe »
+     → e-mail + mot de passe (10 caractères minimum)
+  c) Ensuite, la console s'ouvre simplement sur /console.php
+     La clé ne sert plus qu'en secours si le mot de passe est perdu.
+  d) Cliquer « 🛡️ Sécurité » → le diagnostic vérifie 8 points et indique
+     quoi corriger. Tout doit être vert.
+
+  Protections en place : 10 tentatives / 15 min, session close après
+  8 h d'inactivité, bouton « Quitter », clé de secours elle aussi limitée.
+
+────────────────────────────────────────────────────────────────────────
+3. CRÉER UN COMMERCE
+────────────────────────────────────────────────────────────────────────
+  Console → « Ajouter un commerce » → nom, type, e-mail du gérant.
+  Fidelo affiche un mot de passe et un code provisoires : transmettez-les
+  au commerçant, il pourra les changer dans ses Réglages.
+
+  Cliquer sur le NOM d'un commerce ouvre sa fiche :
+  renommer · voir ses clients · ouvrir son espace (dépannage) ·
+  réinitialiser l'accès · supprimer.
+
+────────────────────────────────────────────────────────────────────────
+4. CÔTÉ COMMERÇANT
+────────────────────────────────────────────────────────────────────────
+  • Scanner  : il scanne le QR du client, le point est ajouté côté serveur
+               (le client ne peut pas s'ajouter de points lui-même).
+  • Clients  : ajouter, modifier, supprimer, message groupé, QR d'inscription.
+  • Cadeaux  : paliers de récompenses, remise avec déduction des points.
+  • Réglages : logo du commerce, export Excel des clients, appareils
+               connectés, mot de passe, code à 4 chiffres.
+
+────────────────────────────────────────────────────────────────────────
+5. CÔTÉ CLIENT
+────────────────────────────────────────────────────────────────────────
+  • Il scanne l'affichette du commerce (affiche.php) ou reçoit le lien.
+  • Sa carte s'ouvre : points, QR, récompenses, messages du commerce.
+  • « Ajouter à l'écran d'accueil » → la carte devient une application.
+  • Sur Android, « Ajouter à Google Wallet » (voir §6).
+
+────────────────────────────────────────────────────────────────────────
+6. GOOGLE WALLET (facultatif, gratuit)
+────────────────────────────────────────────────────────────────────────
+  Console → « 💳 Google Wallet » :
+    - Issuer ID       (pay.google.com/business/console)
+    - Clé JSON        (compte de service Google Cloud)
+    - « Tester » doit répondre ✅
+  La case « Google a accordé l'accès en publication » reste DÉCOCHÉE
+  tant que Google n'a pas validé votre demande : le bouton reste masqué
+  chez les clients, ils ne voient jamais de message « carte de test ».
+  Le jour de l'accord : cocher la case. Rien d'autre à faire.
+
+────────────────────────────────────────────────────────────────────────
+7. SAUVEGARDES ET SÉCURITÉ DES DONNÉES
+────────────────────────────────────────────────────────────────────────
+  • Archive automatique compressée, rafraîchie toutes les 4 h :
+    14 quotidiennes + 1 par mois sur 12 mois (data/backups/*.json.gz).
+  • Console → 🛡️ Sécurité → 💾 Sauvegardes : lister, RESTAURER, ou créer
+    une sauvegarde immédiate avant une manipulation risquée.
+    Une restauration archive d'abord l'état actuel : elle est réversible.
+  • Si le fichier de données devient illisible (disque plein, coupure),
+    Fidelo NE repart PAS de zéro : il met le fichier de côté et restaure
+    la dernière sauvegarde valable. Sans sauvegarde exploitable, le site
+    répond 503 plutôt que d'effacer vos clients.
+  • Un client supprimé par erreur reste 30 jours dans la corbeille
+    (Réglages du commerçant → 🗑 Corbeille).
+
+────────────────────────────────────────────────────────────────────────
+8. COMMENT LES DONNÉES SONT RANGÉES
+────────────────────────────────────────────────────────────────────────
+  data/db.json          index léger : réglages + fiche de chaque commerce
+  data/shops/<id>.json  les clients d'UN commerce
+  data/cards.json       carte → commerce
+  data/backups/         archives compressées
+
+  Chaque page ne lit que ce dont elle a besoin. C'est ce qui permet de
+  tenir plusieurs centaines de commerces sans ralentir : mesuré à
+  50 commerces / 20 000 clients → 1 ms par requête, 2 Mo de mémoire.
+  La migration depuis l'ancien format se fait toute seule au premier accès.
+
+  Le diagnostic (🛡️ Sécurité) surveille le volume et prévient bien avant
+  qu'un problème n'arrive.
+
+────────────────────────────────────────────────────────────────────────
+9. ABONNEMENTS
+────────────────────────────────────────────────────────────────────────
+  • Essai : 10 jours. Le commerçant voit un compte à rebours à partir de J-3.
+  • À la fin de l'essai ou en cas d'impayé, un délai de grâce s'applique
+    (14 jours par défaut, réglable dans 🛡️ Sécurité).
+  • Passé ce délai : l'espace reste consultable (le commerçant voit ses
+    clients, personne ne perd rien) mais plus aucun point ne s'ajoute.
+  • Remettre le statut « Actif » rétablit tout immédiatement.
+
+────────────────────────────────────────────────────────────────────────
+10. EN CAS DE PROBLÈME
+────────────────────────────────────────────────────────────────────────
+  • « Console fermée »      → clé trop courte dans lib.php, ou mot de
+                              passe non défini. Utiliser ?k=LA_CLÉ.
+  • « Trop de tentatives »  → 15 minutes d'attente (protection anti-attaque).
+  • Caméra qui ne lit rien  → autoriser la caméra, HTTPS obligatoire.
+  • Logo absent             → créer data/brand en 755.
+  • Page blanche            → regarder les logs d'erreur PHP dans cPanel.
+  • Client supprimé par erreur → Réglages → 🗑 Corbeille (30 jours).
+  • Données perdues         → Console → 🛡️ Sécurité → 💾 Sauvegardes → Restaurer.
+  • « Déjà crédité »        → normal : le client a eu un point il y a moins
+                              de 90 s. « Créditer quand même » si c'est voulu.

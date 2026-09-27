@@ -1,0 +1,9 @@
+# Données réelles des commerces — jamais suivies par git.
+*.json
+*.json.gz
+.lock*
+.dblock
+brand/
+backups/
+shops/
+!.gitignore
