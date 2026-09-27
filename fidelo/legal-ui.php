@@ -17,59 +17,86 @@ function legal_open(string $titre, string $desc, string $chapeau): void {
 <link rel="icon" href="<?= e($base) ?>/favicon.ico" sizes="any"><link rel="icon" type="image/svg+xml" href="<?= e($base) ?>/logo.svg"><link rel="apple-touch-icon" href="<?= e($base) ?>/apple-touch-icon.png">
 <title><?= e($titre) ?> — Fidelo</title>
 <meta name="description" content="<?= e($desc) ?>">
-<meta name="theme-color" content="#06B6D4">
+<meta name="theme-color" content="#080F0D">
+<link rel="icon" href="<?= e($base) ?>/icon-192.png">
 <link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,400..800&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=IBM+Plex+Mono:wght@400;500&display=swap">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,500;0,600;0,700;0,800;0,900;1,400;1,500;1,600&family=Inter:wght@400;500;600;700;800&family=IBM+Plex+Mono:wght@400;500&display=swap">
 <style>
 :root{
-  --tq:#06B6D4;--tq-d:#0891B2;--co:#FF6B6B;--am-d:#F7B500;
-  --ink-fixed:#0A2E38;--accent-txt:#0B7C97;
-  --bg:#F3FCFD;--bg-2:#E7F8FA;--card:#ffffff;--line:#D6EEF1;
-  --text:#0F343D;--muted:#4e767f;--faint:#7d9ea7;
-  --disp:"Bricolage Grotesque",-apple-system,system-ui,sans-serif;
-  --body:"Plus Jakarta Sans",-apple-system,system-ui,sans-serif;--mono:"IBM Plex Mono",monospace;
-  --grad:linear-gradient(118deg,#06B6D4 0%,#22D3EE 38%,#FF6B6B 100%);
+  --ink:#080F0D;--ink-2:#122019;
+  --paper:#F5F2EA;--card:#FFFFFF;--line:#E4DFD0;
+  --tq:#0EA5B7;--tq-d:#0A7A88;--tq-l:#3FC6D6;
+  --gold:#C99A3E;--gold-l:#E4C583;
+  --coral:#E24E3F;--coral-d:#B93B2F;
+  --text:#141A16;--muted:#5C6259;--faint:#8C9188;
+  --disp:"Playfair Display",Georgia,"Times New Roman",serif;
+  --body:"Inter",-apple-system,system-ui,sans-serif;
+  --mono:"IBM Plex Mono",monospace;
+  --s1:.5rem;--s2:1rem;--s3:1.5rem;--s4:2rem;--s5:3rem;--s6:4rem;--s7:6rem;--s8:9rem;
+  --ease:cubic-bezier(.16,1,.3,1);
+  --co:var(--coral);--accent-txt:var(--tq-d);--bg-2:#ECE7D8;
+  --grad:linear-gradient(118deg,var(--tq) 0%,var(--tq-l) 45%,var(--coral) 100%);
 }
 @media(prefers-color-scheme:dark){:root{
-  --tq:#22D3EE;--tq-d:#06B6D4;--co:#FF8080;--accent-txt:#7DE9FB;--ink-fixed:#04161c;
-  --bg:#07222a;--bg-2:#0b2c35;--card:#0e323c;--line:#1c4650;
-  --text:#EAFBFD;--muted:#9fc4cc;--faint:#6f939b;}}
+  --ink:#F5F2EA;--ink-2:#e8e3d3;--paper:#0B100D;--card:#141A16;--line:#262C25;
+  --tq:#3FC6D6;--tq-d:#7BDCE7;--tq-l:#9EE8F0;--gold:#E4C583;--gold-l:#F3DFA6;
+  --coral:#FF8577;--coral-d:#FFA89E;
+  --text:#F1EFE6;--muted:#A7ACA0;--faint:#6E7368;
+  --co:var(--coral);--accent-txt:var(--tq-l);--bg-2:#1A211A;}}
 *{box-sizing:border-box}
-body{margin:0;background:var(--bg);color:var(--text);font-family:var(--body);-webkit-font-smoothing:antialiased;line-height:1.7}
+html{scroll-behavior:auto;overflow-x:hidden}
+body{margin:0;background:var(--paper);color:var(--text);font-family:var(--body);-webkit-font-smoothing:antialiased;line-height:1.7;overflow-x:hidden}
 a{color:var(--accent-txt);text-decoration:none;font-weight:600}
 a:hover{text-decoration:underline}
-.wrap{max-width:820px;margin:0 auto;padding:0 22px}
+.wrap{max-width:820px;margin:0 auto;padding:0 var(--s3)}
 .flogo{width:1.25em;height:1.25em;display:inline-block;vertical-align:-.28em;margin-right:.3em}
-.top{display:flex;align-items:center;gap:16px;padding:20px 0;max-width:1180px;margin:0 auto}
-.brand{font-family:var(--disp);font-weight:800;font-size:23px;letter-spacing:-.02em;color:var(--text);text-decoration:none}
-.brand .d{color:var(--co)}
-.top .sp{margin-left:auto}
-.btn{display:inline-flex;align-items:center;justify-content:center;gap:9px;padding:11px 19px;border-radius:12px;font-weight:700;font-size:14.5px;border:0;text-decoration:none}
+.btn{display:inline-flex;align-items:center;justify-content:center;gap:9px;padding:11px 19px;border-radius:999px;font-weight:700;font-size:14.5px;border:0;text-decoration:none}
 .btn-g{background:var(--card);border:1.6px solid var(--line);color:var(--text)}
-.head{padding:34px 0 8px}
+
+#fnav{animation:navFade .6s var(--ease) both;transition:box-shadow .3s ease}
+@keyframes navFade{from{opacity:0}to{opacity:1}}
+#fnav.scrolled{box-shadow:0 1px 0 var(--line)}
+@media(prefers-reduced-motion:reduce){#fnav{animation:none}}
+
+.head{padding:var(--s5) 0 var(--s2)}
 .eyebrow{font-family:var(--mono);font-size:12px;letter-spacing:.16em;text-transform:uppercase;color:var(--accent-txt);font-weight:600}
-h1{font-family:var(--disp);font-weight:800;font-size:clamp(30px,5vw,44px);line-height:1.08;letter-spacing:-.03em;margin:12px 0 0}
-.chapeau{color:var(--muted);font-size:17px;margin-top:14px}
-.maj{font-family:var(--mono);font-size:12.5px;color:var(--faint);margin-top:18px}
-h2{font-family:var(--disp);font-weight:700;font-size:23px;letter-spacing:-.02em;margin:42px 0 0;padding-top:22px;border-top:1px solid var(--line)}
-h3{font-family:var(--disp);font-weight:600;font-size:17.5px;margin:26px 0 0}
-p{color:var(--text);font-size:15.5px;margin:12px 0 0}
-ul{margin:12px 0 0;padding-left:20px}
-li{font-size:15.5px;margin-top:7px}
-.box{background:var(--card);border:1.5px solid var(--line);border-radius:16px;padding:20px 22px;margin-top:18px}
+h1{font-family:var(--disp);font-weight:700;font-size:clamp(1.9rem,5vw,2.9rem);line-height:1.08;letter-spacing:-.015em;margin:var(--s2) 0 0}
+.chapeau{color:var(--muted);font-size:1.05rem;margin-top:var(--s2)}
+.maj{font-family:var(--mono);font-size:12.5px;color:var(--faint);margin-top:var(--s3)}
+h2{font-family:var(--disp);font-weight:700;font-size:1.4rem;letter-spacing:-.01em;margin:var(--s5) 0 0;padding-top:var(--s3);border-top:1px solid var(--line)}
+h3{font-family:var(--disp);font-weight:600;font-size:1.1rem;margin:var(--s3) 0 0}
+p{color:var(--text);font-size:.98rem;margin:.8rem 0 0}
+ul{margin:.8rem 0 0;padding-left:20px}
+li{font-size:.98rem;margin-top:.45rem}
+.box{background:var(--card);border:1.5px solid var(--line);border-radius:16px;padding:var(--s3);margin-top:var(--s3)}
 .box.key{border-color:var(--tq);background:var(--bg-2)}
 .box p:first-child,.box ul:first-child{margin-top:0}
-table{width:100%;border-collapse:collapse;margin-top:16px;background:var(--card);border-radius:14px;overflow:hidden;font-size:14.5px;border:1px solid var(--line)}
-th,td{padding:12px 14px;text-align:left;border-bottom:1px solid var(--line);vertical-align:top}
-thead th{background:var(--ink-fixed);color:#EAFBFD;font-family:var(--disp);font-weight:600;font-size:14.5px}
+table{width:100%;border-collapse:collapse;margin-top:var(--s3);background:var(--card);border-radius:14px;overflow:hidden;font-size:.92rem;border:1px solid var(--line)}
+th,td{padding:.75rem .85rem;text-align:left;border-bottom:1px solid var(--line);vertical-align:top}
+thead th{background:var(--ink);color:var(--paper);font-family:var(--disp);font-weight:600;font-size:.92rem}
 tbody tr:last-child td{border-bottom:0}
-@media(max-width:700px){table{font-size:13px}th,td{padding:9px 10px}}
-.foot{padding:46px 0 60px;margin-top:56px;border-top:2px solid var(--line);color:var(--muted);font-size:13.5px;text-align:center}
-.foot .l{display:flex;gap:18px;justify-content:center;flex-wrap:wrap;margin-bottom:12px}
-</style></head><body>
+@media(max-width:700px){table{font-size:.82rem}th,td{padding:.55rem .6rem}}
 
+.footcta{background:var(--ink);color:var(--paper);padding:var(--s6) 0;margin-top:var(--s6)}
+.footcta h2{border-top:0;color:var(--paper);font-size:clamp(1.8rem,4vw,2.6rem);margin:0}
+.footcta p{color:rgba(245,242,234,.7);margin-top:var(--s2)}
+.footcta .btn{background:var(--tq-l);color:var(--ink);margin-top:var(--s3);font-weight:700}
+
+footer.site{padding:var(--s5) 0 var(--s6);border-top:1px solid var(--line);margin-top:var(--s5)}
+.foot-grid{display:flex;justify-content:space-between;align-items:center;gap:var(--s3);flex-wrap:wrap;color:var(--muted);font-size:.85rem}
+.foot-grid a{color:var(--muted);font-weight:600}
+.foot-grid .brand{color:var(--text);font-family:var(--disp);font-weight:800;font-size:1.1rem;text-decoration:none}.foot-grid .brand .d{color:var(--tq-d)}
+
+#scrollbar{position:fixed;top:0;left:0;height:2px;width:0;z-index:200;background:var(--tq-d);transition:width .12s linear}
+.up{position:fixed;right:20px;bottom:20px;z-index:150;width:46px;height:46px;border-radius:14px;background:var(--ink);color:var(--paper);display:grid;place-items:center;opacity:0;transform:translateY(18px);pointer-events:none;transition:opacity .25s,transform .25s,background .2s}
+.up.on{opacity:1;transform:none;pointer-events:auto}
+.up:hover{background:var(--tq-d)}.up svg{width:20px;height:20px}
+@media(prefers-reduced-motion:reduce){#scrollbar{display:none}.up{transition:none}}
+</style></head><body>
+<div id="scrollbar"></div>
 <?php nav_bar($base, ''); ?>
 
+<main>
 <div class="wrap">
   <div class="head">
     <span class="eyebrow">Informations légales</span>
@@ -85,16 +112,35 @@ function legal_close(): void {
   $E = EDITEUR;
   ?>
 </div>
-<footer class="foot"><div class="wrap">
-  <div class="l">
-    <a href="<?= e($base) ?>/">Accueil</a>
+
+<section class="footcta"><div class="wrap">
+  <h2>Une question sur vos données ou votre compte ?</h2>
+  <p>Écrivez-nous, nous répondons vite et en français.</p>
+  <a href="<?= e($base) ?>/contact.php" class="btn">Nous contacter →</a>
+</div></section>
+</main>
+
+<button id="up" class="up" aria-label="Remonter en haut"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M12 19V5M5 12l7-7 7 7"/></svg></button>
+
+<footer class="site"><div class="wrap foot-grid">
+  <a class="brand" href="<?= e($base) ?>/accueil.php">Fidelo<span class="d">.</span></a>
+  <span style="display:flex;gap:15px;flex-wrap:wrap">
+    <a href="<?= e($base) ?>/accueil.php">Accueil</a>
     <a href="<?= e($base) ?>/tarifs.php">Nos offres</a>
     <a href="<?= e($base) ?>/confidentialite.php">Confidentialité</a>
     <a href="<?= e($base) ?>/mentions-legales.php">Mentions légales</a>
     <a href="mailto:<?= e($E['email']) ?>"><?= e($E['email']) ?></a>
-  </div>
-  <p style="margin:0">© <?= date('Y') ?> <?= e($E['marque']) ?> — <?= e($E['societe']) ?>. <?= e($E['tva']) ?>.</p>
+  </span>
+  <span class="mono" style="font-size:12px;color:var(--faint)">© <?= date('Y') ?> <?= e($E['marque']) ?> — <?= e($E['societe']) ?>. <?= e($E['tva']) ?>.</span>
 </div></footer>
+
+<script id="pageScript">
+window.__fideloPageInit=function(){
+const reduce=matchMedia('(prefers-reduced-motion:reduce)').matches;
+window.__fideloPageTeardown=function(){};
+};
+if(document.readyState!=='loading')window.__fideloPageInit();else document.addEventListener('DOMContentLoaded',window.__fideloPageInit);
+</script>
 </body></html>
 <?php
 }

@@ -49,6 +49,8 @@ function nav_css_once(): string {
   .fnav .drop .sep{height:1px;background:var(--line);margin:8px 0}
   .fnav .drop .b{width:100%;margin-top:4px;padding:14px;font-size:15px}
 }
+::view-transition-old(root),::view-transition-new(root){animation-duration:.45s;animation-timing-function:cubic-bezier(.16,1,.3,1)}
+@media(prefers-reduced-motion:reduce){::view-transition-old(root),::view-transition-new(root){animation:none!important}}
 </style>
 CSS;
 }
@@ -72,7 +74,7 @@ function nav_bar(string $base, string $active = ''): void {
   <div class="in">
     <a class="lg" href="<?= e($base) ?>/accueil.php"><?= nav_logo_svg() ?>Fidelo<span class="d">.</span></a>
     <nav class="lk">
-      <?php foreach ($links as [$k,$href,$lbl]): ?><a href="<?= e($href) ?>"<?= $on($k) ?>><?= e($lbl) ?></a><?php endforeach; ?>
+      <?php foreach ($links as [$k,$href,$lbl]): ?><a href="<?= e($href) ?>" data-key="<?= e($k) ?>"<?= $on($k) ?>><?= e($lbl) ?></a><?php endforeach; ?>
     </nav>
     <span class="sp"></span>
     <div class="act">
@@ -82,7 +84,7 @@ function nav_bar(string $base, string $active = ''): void {
     <button class="burger" id="fnavBurger" aria-label="Menu" aria-expanded="false"><span></span><span></span><span></span></button>
   </div>
   <div class="drop"><div class="din">
-    <?php foreach ($links as [$k,$href,$lbl]): ?><a href="<?= e($href) ?>"<?= $on($k) ?>><?= e($lbl) ?></a><?php endforeach; ?>
+    <?php foreach ($links as [$k,$href,$lbl]): ?><a href="<?= e($href) ?>" data-key="<?= e($k) ?>"<?= $on($k) ?>><?= e($lbl) ?></a><?php endforeach; ?>
     <div class="sep"></div>
     <a class="b g" href="<?= e($base) ?>/index.php">Se connecter</a>
     <a class="b p" href="<?= e($base) ?>/inscription.php">Essai gratuit</a>
@@ -99,6 +101,135 @@ function nav_bar(string $base, string $active = ''): void {
   n.querySelectorAll('.drop a').forEach(function(a){
     a.addEventListener('click',function(){n.classList.remove('open');b.setAttribute('aria-expanded','false');});
   });
+})();
+
+/* ===== chrome persistant — barre de progression, bouton remonter, nav qui rétrécit =====
+   Lié UNE SEULE FOIS au chargement réel de la page ; ne redémarre jamais lors d'une
+   navigation pseudo-SPA (seul <main> est remplacé, ce bloc et #fnav restent en vie). */
+(function(){
+  var reduce=matchMedia('(prefers-reduced-motion:reduce)').matches;
+  var bar=document.getElementById('scrollbar'),up=document.getElementById('up'),fnav=document.getElementById('fnav');
+  var tick=false;
+  function onScroll(){
+    var h=document.documentElement,sc=h.scrollTop||document.body.scrollTop;
+    var max=h.scrollHeight-h.clientHeight;
+    if(bar)bar.style.width=(max>0?sc/max*100:0)+'%';
+    if(up)up.classList.toggle('on',sc>520);
+    if(fnav)fnav.classList.toggle('scrolled',sc>10);
+    tick=false;
+  }
+  addEventListener('scroll',function(){if(!tick){tick=true;requestAnimationFrame(onScroll);}},{passive:true});
+  onScroll();
+  if(up)up.onclick=function(){scrollTo({top:0,behavior:reduce?'auto':'smooth'});};
+})();
+
+/* ===== navigation pseudo-SPA (fetch + remplacement de <main>) =====
+   Périmètre : uniquement les pages marketing (accueil/tarifs/contact/légal).
+   Tout lien hors périmètre (connexion, inscription, app commerçant…) navigue
+   normalement. Les formulaires ne sont JAMAIS interceptés (ce ne sont pas des <a>). */
+(function(){
+  var SCOPE=['accueil.php','tarifs.php','contact.php','confidentialite.php','mentions-legales.php'];
+  var ACTIVE={'accueil.php':'accueil','tarifs.php':'tarifs','contact.php':'contact','confidentialite.php':'','mentions-legales.php':''};
+  var BASE=<?= json_encode($base) ?>;
+  var reduce=matchMedia('(prefers-reduced-motion:reduce)').matches;
+  /* NB : ne PAS mettre <main> en cache ici — nav_bar() s'exécute AVANT que <main>
+     existe dans le DOM (le script tourne au moment du parse, juste après <body>).
+     On le relit à chaque usage. */
+  if(!window.fetch||!window.history||!history.pushState)return;
+
+  try{history.scrollRestoration='manual';}catch(e){}
+  try{history.replaceState({fidelo:true,y:window.scrollY||0},'',location.href);}catch(e){}
+
+  function fileOf(pathname){var p=pathname.split('/');return p[p.length-1]||'accueil.php';}
+  function setActive(file){
+    var key=ACTIVE[file];
+    document.querySelectorAll('.fnav .lk a[data-key], .fnav .drop a[data-key]').forEach(function(a){
+      a.classList.toggle('on', !!key && a.dataset.key===key);
+    });
+  }
+  var depLoading=null;
+  function ensureDeps(doc){
+    var needsQr=!!doc.querySelector('script[src*="qrcode.min.js"]');
+    if(!needsQr||typeof qrcode!=='undefined')return Promise.resolve();
+    if(depLoading)return depLoading;
+    depLoading=new Promise(function(res){
+      var s=document.createElement('script');s.src=BASE+'/qrcode.min.js';
+      s.onload=res;s.onerror=res;document.body.appendChild(s);
+    });
+    return depLoading;
+  }
+
+  var navToken=0;
+  function go(url,opts){
+    opts=opts||{};
+    var push=opts.push!==false,anchor=opts.anchor||'',restoreY=opts.restoreY;
+    var myToken=++navToken;
+    fetch(url,{credentials:'same-origin'}).then(function(res){
+      if(!res.ok)throw new Error('http '+res.status);
+      return res.text();
+    }).then(function(html){
+      if(myToken!==navToken)return;
+      var doc=new DOMParser().parseFromString(html,'text/html');
+      var newMain=doc.querySelector('main');
+      if(!newMain){location.href=url;return;}
+      return ensureDeps(doc).then(function(){
+        if(myToken!==navToken)return;
+        var newScript=doc.getElementById('pageScript');
+        var apply=function(){
+          try{window.__fideloPageTeardown&&window.__fideloPageTeardown();}catch(e){}
+          document.title=doc.title;
+          var main=document.querySelector('main');
+          if(main)main.innerHTML=newMain.innerHTML;
+          var old=document.getElementById('pageScript');if(old)old.remove();
+          if(newScript){
+            var s=document.createElement('script');s.id='pageScript';s.textContent=newScript.textContent;
+            document.body.appendChild(s);
+          }
+          setActive(fileOf(new URL(url,location.href).pathname));
+          if(anchor){var el=document.getElementById(anchor);if(el)el.scrollIntoView({behavior:reduce?'auto':'smooth',block:'start'});}
+          else window.scrollTo(0,typeof restoreY==='number'?restoreY:0);
+        };
+        if(!reduce&&document.startViewTransition){
+          try{document.startViewTransition(apply);}catch(e){apply();}
+        }else{
+          apply();
+        }
+        if(push){
+          try{history.replaceState({fidelo:true,y:window.scrollY||0},'',location.href);}catch(e){}
+          var u=new URL(url,location.href);
+          try{history.pushState({fidelo:true,y:0},'',u.pathname+u.search+(anchor?'#'+anchor:''));}catch(e){}
+        }
+      });
+    }).catch(function(){location.href=url;});
+  }
+
+  document.addEventListener('click',function(e){
+    if(e.defaultPrevented||e.button!==0||e.metaKey||e.ctrlKey||e.shiftKey||e.altKey)return;
+    var a=e.target.closest('a[href]');
+    if(!a)return;
+    if(a.target&&a.target!=='_self')return;
+    if(a.hasAttribute('download'))return;
+    var href=a.getAttribute('href');
+    if(!href||/^(mailto:|tel:|javascript:|#)/.test(href))return;
+    var url;
+    try{url=new URL(href,location.href);}catch(e){return;}
+    if(url.origin!==location.origin)return;
+    if(SCOPE.indexOf(fileOf(url.pathname))===-1)return;
+    var samePath=url.pathname===location.pathname;
+    var anchor=url.hash?url.hash.slice(1):'';
+    if(samePath&&anchor)return;
+    e.preventDefault();
+    if(samePath&&!anchor)return;
+    go(url.href,{push:true,anchor:anchor});
+  });
+
+  addEventListener('popstate',function(ev){
+    var anchor=location.hash?location.hash.slice(1):'';
+    var y=ev.state&&typeof ev.state.y==='number'?ev.state.y:0;
+    go(location.href,{push:false,anchor:anchor,restoreY:y});
+  });
+
+  setActive(fileOf(location.pathname));
 })();
 </script>
   <?php
