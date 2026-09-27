@@ -626,7 +626,7 @@ function brand_colors(array $shop): array {
   ];
   $t = $shop['type'] ?? '';
   if (isset($byType[$t])) return $byType[$t];
-  $pal = [['#0A2E38', '#2B7A8C'], ['#1E3A5F', '#4E7FB8'], ['#2F4F3E', '#5E9B76'],
+  $pal = [['#241A12', '#2B7A8C'], ['#1E3A5F', '#4E7FB8'], ['#2F4F3E', '#5E9B76'],
           ['#4A2D45', '#9A6A90'], ['#5A3A22', '#B07A4A']];
   return $pal[hexdec(substr(md5($shop['id']), 0, 2)) % count($pal)];
 }

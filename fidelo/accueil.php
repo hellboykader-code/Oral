@@ -3,35 +3,47 @@
 require __DIR__ . '/lib.php';
 require __DIR__ . '/nav.php';
 $base = rtrim(dirname($_SERVER['SCRIPT_NAME']), '/');
+$origin = (is_https() ? 'https' : 'http') . '://' . ($_SERVER['HTTP_HOST'] ?? 'fidelo.site');
 ?>
 <!doctype html><html lang="fr"><head>
 <meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
 <link rel="icon" href="<?= e($base) ?>/favicon.ico" sizes="any"><link rel="icon" type="image/svg+xml" href="<?= e($base) ?>/logo.svg"><link rel="apple-touch-icon" href="<?= e($base) ?>/apple-touch-icon.png">
 <title>Fidelo — La fidélité qui fait revenir vos clients</title>
 <meta name="description" content="Le programme de fidélité sans carte et sans appli pour cafés, restaurants et commerces. Inscription gratuite, 10 jours d'essai.">
-<meta name="theme-color" content="#0A2E38">
+<meta name="theme-color" content="#241A12">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="Fidelo">
+<meta property="og:title" content="Fidelo — La fidélité qui fait revenir vos clients">
+<meta property="og:description" content="Le programme de fidélité sans carte et sans appli pour cafés, restaurants et commerces. Inscription gratuite, 10 jours d'essai.">
+<meta property="og:image" content="<?= e($origin . $base) ?>/og-image.png">
+<meta property="og:image:width" content="1200"><meta property="og:image:height" content="630">
+<meta property="og:url" content="<?= e($origin . $base) ?>/accueil.php">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="Fidelo — La fidélité qui fait revenir vos clients">
+<meta name="twitter:description" content="Le programme de fidélité sans carte et sans appli pour cafés, restaurants et commerces.">
+<meta name="twitter:image" content="<?= e($origin . $base) ?>/og-image.png">
 <link rel="icon" href="<?= e($base) ?>/icon-192.png">
 <link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,400..800&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=IBM+Plex+Mono:wght@400;500&display=swap">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Calistoga&family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500&display=swap">
 <style>
 /* ============================================================
    TOKENS — palette disciplinée (encre + un seul accent),
    grille d'espacement 8px, échelle typographique nette.
    ============================================================ */
 :root{
-  --ink:#0A2E38;--ink-2:#123B47;
-  --tq:#06B6D4;--tq-d:#0980A0;--tq-l:#22D3EE;
+  --ink:#241A12;--ink-2:#3A2A1D;
+  --tq:#C1552F;--tq-d:#9C4024;--tq-l:#E08A5D;
   --gold:#B8863A;--gold-l:#E4C583;
-  --bg:#F6F8F7;--card:#FFFFFF;--line:#DCE6E4;
-  --text:#12262A;--muted:#5B7278;--faint:#8AA0A4;
-  --disp:"Bricolage Grotesque",-apple-system,system-ui,sans-serif;
-  --body:"Plus Jakarta Sans",-apple-system,system-ui,sans-serif;
-  --mono:"IBM Plex Mono",monospace;
+  --bg:#FBF3E7;--card:#FFFFFF;--line:#E9DAC3;
+  --text:#241A12;--muted:#6E5B47;--faint:#9C8B74;
+  --disp:"Calistoga",-apple-system,system-ui,sans-serif;
+  --body:"Inter",-apple-system,system-ui,sans-serif;
+  --mono:"JetBrains Mono",monospace;
   --s1:.5rem;--s2:1rem;--s3:1.5rem;--s4:2rem;--s5:3rem;--s6:4rem;--s7:6rem;--s8:8rem;
 }
 @media(prefers-color-scheme:dark){:root{
-  --ink:#EAF4F5;--ink-2:#cfe6e8;--tq:#22D3EE;--tq-d:#67E8F9;--tq-l:#8FF1FF;--gold:#E4C583;--gold-l:#F3DFA6;
-  --bg:#0A1618;--card:#0F2226;--line:#1D3438;--text:#EAF4F5;--muted:#9AB4B8;--faint:#5F797D;}}
+  --ink:#F3E8D8;--ink-2:#E4D5BE;--tq:#E08A5D;--tq-d:#F0AE85;--tq-l:#F5C6A5;--gold:#E4C583;--gold-l:#F3DFA6;
+  --bg:#0A1618;--card:#0F2226;--line:#1D3438;--text:#F3E8D8;--muted:#C9B79E;--faint:#8F7C64;}}
 *{box-sizing:border-box}
 body{margin:0;background:var(--bg);color:var(--text);font-family:var(--body);-webkit-font-smoothing:antialiased;overflow-x:hidden}
 h1,h2,h3,h4{font-family:var(--disp);font-weight:700;line-height:1.02;letter-spacing:-.025em;text-wrap:balance;margin:0}
@@ -73,48 +85,8 @@ img{max-width:100%}[hidden]{display:none!important}.mono{font-family:var(--mono)
 /* panneau démo : encre pleine, plate, sans halo de couleur */
 .demo{position:relative;background:var(--ink);border-radius:20px;padding:var(--s5) var(--s4);opacity:0;transform:translateY(30px) scale(1.02);animation:demoIn 1s .2s cubic-bezier(.22,1,.36,1) forwards}
 @keyframes demoIn{to{opacity:1;transform:none}}
-.phone{position:relative;width:280px;max-width:100%;margin:0 auto;aspect-ratio:280/560;background:#08181d;border-radius:34px;padding:10px;box-shadow:0 30px 60px -24px rgba(0,0,0,.55)}
-.phone .notch{position:absolute;top:10px;left:50%;transform:translateX(-50%);width:84px;height:18px;background:#08181d;border-radius:0 0 12px 12px;z-index:5}
-.screen{position:relative;width:100%;height:100%;border-radius:26px;overflow:hidden;background:#F3FCFD;display:flex;flex-direction:column}
-.sc-head{padding:22px 14px 10px;display:flex;align-items:center;gap:8px;color:#0A2E38;background:#fff}
-.sc-head .ic{width:26px;height:26px;border-radius:8px;background:#0A2E38;color:#fff;display:grid;place-items:center;font-family:var(--disp);font-weight:800;font-size:12px}
-.sc-head .nm{font-family:var(--disp);font-weight:700;font-size:13px;text-align:left;color:#0A2E38}
-.sc-head .sb{font-size:8.5px;color:#7d9ea7;font-family:var(--mono)}
-.sc-body{flex:1;padding:11px;overflow:hidden}
-.mcard{position:relative;border-radius:16px;overflow:hidden;color:#fff;padding:15px;background:linear-gradient(155deg,#0A2E38,#0980A0 130%);cursor:pointer;user-select:none;-webkit-tap-highlight-color:transparent;transition:transform .12s}
-.mcard:active{transform:scale(.985)}
-.mcard>*{position:relative;z-index:2}
-.mc-top{display:flex;justify-content:space-between;align-items:flex-start}
-.mc-tier{padding:3px 8px;border-radius:6px;background:rgba(228,197,131,.2);border:1px solid rgba(228,197,131,.5);color:var(--gold-l);font-size:8.5px;font-weight:700;letter-spacing:.03em}
-.mc-chip{width:26px;height:20px;border-radius:4px;background:linear-gradient(135deg,var(--gold-l),var(--gold))}
-.mc-name{font-family:var(--disp);font-weight:700;font-size:16px;margin-top:11px}
-.mc-since{font-size:8.5px;color:rgba(255,255,255,.68);font-family:var(--mono)}
-.mc-bot{display:flex;align-items:flex-end;justify-content:space-between;margin-top:13px;gap:10px}
-.mc-k{font-size:7.5px;letter-spacing:.12em;text-transform:uppercase;color:rgba(255,255,255,.6)}
-.mc-v{display:inline-block;transform-origin:left center;font-family:var(--disp);font-weight:800;font-size:35px;line-height:.85}.mc-v small{font-size:11px;color:var(--gold-l)}
-.mc-v.bump{animation:ptbump .4s cubic-bezier(.2,1.6,.4,1)}
-@keyframes ptbump{0%{transform:scale(1)}40%{transform:scale(1.28)}100%{transform:scale(1)}}
-.mc-qr{background:#fff;border-radius:8px;padding:5px;flex-shrink:0}.mc-qr svg{display:block;width:48px;height:48px}
-.hgoal{margin-top:11px;font-size:8.5px;font-family:var(--mono);color:rgba(255,255,255,.55);display:flex;justify-content:space-between;gap:8px}
-.hprog{margin-top:5px;height:5px;border-radius:99px;background:rgba(255,255,255,.16);overflow:hidden}
-.hprog i{display:block;height:100%;width:0;border-radius:99px;background:var(--tq-l);transition:width .5s cubic-bezier(.2,.8,.3,1)}
-.sc-rew{margin-top:11px}
-.sc-rew .r{display:flex;align-items:center;gap:8px;padding:8px 10px;border-radius:10px;background:#fff;border:1px solid #D6EEF1;margin-bottom:6px;transition:border-color .3s}
-.sc-rew .r .p{width:30px;height:30px;border-radius:8px;background:#E7F8FA;color:#0980A0;display:grid;place-items:center;font-family:var(--mono);font-weight:700;font-size:11px;flex-shrink:0}
-.sc-rew .r.ok .p{background:linear-gradient(140deg,var(--gold-l),var(--gold));color:#3a2a05}
-.sc-rew .r .t{font-size:10.5px;font-weight:600;color:#0A2E38}
-.sc-rew .r .st{margin-left:auto;font-size:8.5px;font-weight:700;color:#7d9ea7}
-.sc-rew .r.ok .st{color:var(--gold);font-weight:800}
-.sc-rew .r.pop{animation:rwpop .55s cubic-bezier(.2,1.5,.4,1)}
-@keyframes rwpop{0%{transform:scale(1)}30%{transform:scale(1.05)}100%{transform:scale(1)}}
-#confetti{position:absolute;inset:0;z-index:4;pointer-events:none}
-.coin{position:absolute;z-index:6;width:30px;height:30px;border-radius:50%;background:radial-gradient(circle at 35% 30%,var(--gold-l),var(--gold));color:#3a2a05;display:grid;place-items:center;font-family:var(--disp);font-weight:800;font-size:12px;pointer-events:none;opacity:0}
-@keyframes rise{0%{opacity:0;transform:translateY(0) scale(.5)}20%{opacity:1}100%{opacity:0;transform:translateY(-160px) scale(1)}}
-.tapwrap{position:relative;z-index:5;margin-top:var(--s4);display:flex;flex-direction:column;align-items:center;gap:.5rem;opacity:0;animation:pop .6s 1.05s ease forwards}
-.tapcta{background:transparent;color:#fff;font-family:var(--body);font-weight:700;font-size:.85rem;padding:.7rem 1.2rem;border-radius:9px;border:1.5px solid rgba(255,255,255,.4);cursor:pointer;transition:border-color .2s,background .2s}
-.tapcta:hover{border-color:#fff;background:rgba(255,255,255,.08)}
-.taphint{color:rgba(255,255,255,.65);font-size:.75rem;font-family:var(--mono);min-height:16px}
-@media(prefers-reduced-motion:reduce){.tapcta,.hprog i,.mc-v.bump,.hero h1 .w,.hero .lead,.hero .cta,.hero .proof,.demo,.tapwrap{animation:none!important;opacity:1!important;transform:none!important}#confetti{display:none}}
+.heroVid{display:block;width:100%;max-width:380px;margin:0 auto;border-radius:20px;box-shadow:0 30px 60px -24px rgba(0,0,0,.55);background:#241A12}
+@media(prefers-reduced-motion:reduce){.hero h1 .w,.hero .lead,.hero .cta,.hero .proof,.demo{animation:none!important;opacity:1!important;transform:none!important}}
 
 /* ticker discret, une ligne, sans bandeau sombre */
 .ticker{border-top:1px solid var(--line);border-bottom:1px solid var(--line);padding:var(--s3) 0;overflow:hidden;white-space:nowrap}
@@ -275,34 +247,13 @@ footer.site{padding:var(--s5) 0 var(--s6);border-top:1px solid var(--line)}
     <div class="proof"><span><b>0 €</b> pour démarrer</span><span><b>5 min</b> d'installation</span><span><b>0</b> matériel à acheter</span></div>
   </div>
 
-  <!-- démo jouable -->
+  <!-- motion graphic : le geste en 8 secondes -->
   <div class="demo" id="stage">
-    <div class="phone">
-      <div class="notch"></div>
-      <div class="screen">
-        <div class="sc-head"><div class="ic">C</div><div><div class="nm">Café des Amis</div><div class="sb">CARTE DE FIDÉLITÉ</div></div></div>
-        <div class="sc-body">
-          <div class="mcard" id="hcard">
-            <canvas id="confetti"></canvas>
-            <div class="mc-top"><span class="mc-tier" id="htier">⭐ FIDÈLE</span><span class="mc-chip"></span></div>
-            <div class="mc-name">Sarah B.</div><div class="mc-since" id="hsince">14 visites</div>
-            <div class="mc-bot"><div><div class="mc-k">Points</div><div class="mc-v" id="hptsWrap"><span id="hpts">0</span><small>pts</small></div></div>
-              <div class="mc-qr"><div id="hqr"></div></div></div>
-            <div class="hgoal"><span id="hgLabel">Prochain palier</span><span id="hgCount">0/6</span></div>
-            <div class="hprog"><i id="hgFill"></i></div>
-          </div>
-          <div class="sc-rew" id="hrew">
-            <div class="r" data-pts="3"><span class="p">3</span><span class="t">☕ Boisson offerte</span><span class="st">3 pts</span></div>
-            <div class="r" data-pts="6"><span class="p">6</span><span class="t">🍰 Dessert maison</span><span class="st">6 pts</span></div>
-            <div class="r" data-pts="10"><span class="p">10</span><span class="t">💸 −15 % addition</span><span class="st">10 pts</span></div>
-          </div>
-        </div>
-      </div>
-    </div>
-    <div class="tapwrap">
-      <button class="tapcta" id="tapBtn" type="button">Touchez la carte pour tester</button>
-      <span class="taphint" id="tapHint">Comme le fera votre commerçant, à chaque passage.</span>
-    </div>
+    <video class="heroVid" poster="<?= e($base) ?>/fidelo-hero-poster.jpg"
+      autoplay muted loop playsinline aria-label="Animation : un client gagne des points et débloque une récompense sur sa carte Fidelo">
+      <source src="<?= e($base) ?>/fidelo-hero-motion.webm" type="video/webm">
+      <source src="<?= e($base) ?>/fidelo-hero-motion.mp4" type="video/mp4">
+    </video>
   </div>
 </div></section>
 
@@ -429,94 +380,13 @@ footer.site{padding:var(--s5) 0 var(--s6);border-top:1px solid var(--line)}
   <span class="mono" style="font-size:12px;color:var(--faint)">© 2026 Fidelo</span>
 </div></footer>
 
-<script src="qrcode.min.js"></script>
 <script>
 const $=s=>document.querySelector(s),$$=s=>[...document.querySelectorAll(s)];
 $$('#h1 .w').forEach((w,i)=>w.style.animationDelay=(0.05+i*0.09)+'s');
-try{const q=qrcode(0,'M');q.addData('FIDELO:DEMO12');q.make();$('#hqr').innerHTML=q.createSvgTag(2,0);const s=$('#hqr svg');if(s){s.setAttribute('width','48');s.setAttribute('height','48');}}catch(e){}
-const stage=$('#stage');
-
-/* ===== carte de fidélité JOUABLE : on laisse le visiteur essayer le geste ===== */
-(function(){
-  const card=$('#hcard'),ptsEl=$('#hpts'),ptsWrap=$('#hptsWrap'),fill=$('#hgFill'),
-        gCount=$('#hgCount'),gLabel=$('#hgLabel'),tier=$('#htier'),since=$('#hsince'),
-        rows=$$('#hrew .r'),tapBtn=$('#tapBtn'),tapHint=$('#tapHint'),canvas=$('#confetti');
-  if(!card||!canvas)return;
-  const reduce=matchMedia('(prefers-reduced-motion:reduce)').matches;
-  const rewards=rows.map(r=>({pts:+r.dataset.pts,el:r}));
-  const maxPts=rewards[rewards.length-1].pts;
-  let points=0,visits=14,busy=false;
-
-  /* mini-confetti maison (canvas, sans librairie externe) */
-  const ctx=canvas.getContext('2d');let parts=[],raf=null;
-  function resize(){canvas.width=card.clientWidth;canvas.height=card.clientHeight;}
-  resize();addEventListener('resize',resize);
-  const COLORS=['#E4C583','#22D3EE','#B8863A','#67E8F9'];
-  function loop(){
-    ctx.clearRect(0,0,canvas.width,canvas.height);
-    parts.forEach(p=>{p.x+=p.vx;p.y+=p.vy;p.vy+=p.g;p.r+=p.vr;p.life--;
-      ctx.save();ctx.translate(p.x,p.y);ctx.rotate(p.r);ctx.globalAlpha=Math.max(0,p.life/70);
-      ctx.fillStyle=p.c;ctx.fillRect(-p.s/2,-p.s/2,p.s,p.s*.6);ctx.restore();});
-    parts=parts.filter(p=>p.life>0&&p.y<canvas.height+20);
-    if(parts.length)raf=requestAnimationFrame(loop);else{raf=null;ctx.clearRect(0,0,canvas.width,canvas.height);}
-  }
-  function burst(){
-    if(reduce)return;
-    for(let i=0;i<22;i++)parts.push({x:canvas.width*.78,y:canvas.height*.32,
-      vx:(Math.random()-.5)*7,vy:-Math.random()*7-2,g:.22+Math.random()*.08,s:3+Math.random()*3,
-      c:COLORS[i%COLORS.length],r:Math.random()*Math.PI,vr:(Math.random()-.5)*.3,life:60+Math.random()*20});
-    if(!raf)loop();
-  }
-
-  function coin(){
-    if(reduce)return;
-    const c=document.createElement('div');c.className='coin';c.textContent='+1';
-    c.style.left=(38+Math.random()*24)+'%';c.style.top='42%';
-    c.style.animation='rise '+(1.7+Math.random()*.6)+'s ease-out forwards';
-    stage.appendChild(c);setTimeout(()=>c.remove(),2600);
-  }
-
-  function nextReward(){return rewards.find(r=>r.pts>points)||null;}
-  function render(justUnlocked){
-    ptsEl.textContent=points;
-    const nx=nextReward();
-    if(nx){gLabel.textContent='Prochain palier';gCount.textContent=points+'/'+nx.pts;fill.style.width=Math.min(100,points/nx.pts*100)+'%';}
-    else{gLabel.textContent='Palier maximum';gCount.textContent=points+'/'+maxPts;fill.style.width='100%';}
-    rows.forEach(r=>{const p=+r.dataset.pts,st=r.querySelector('.st');
-      if(points>=p){r.classList.add('ok');st.textContent='DISPO';}
-      else{r.classList.remove('ok');st.textContent=p+' pts';}});
-    tier.textContent=points>=maxPts?'👑 VIP':points>=rewards[1].pts?'⭐ FIDÈLE':'🌱 NOUVEAU';
-    if(justUnlocked){
-      const row=rewards.find(r=>r.pts===points);
-      if(row){row.el.classList.remove('pop');void row.el.offsetWidth;row.el.classList.add('pop');burst();}
-    }
-  }
-
-  function tap(auto){
-    if(busy&&!auto)return;
-    ptsWrap.classList.remove('bump');void ptsWrap.offsetWidth;ptsWrap.classList.add('bump');
-    coin();
-    if(points>=maxPts){
-      visits++;since.textContent=visits+' visites';
-      tapHint.textContent='🎉 Récompense réclamée — nouveau cycle !';
-      burst();busy=true;
-      setTimeout(()=>{points=0;render(false);tapHint.textContent='À vous de jouer — touchez la carte !';busy=false;},1100);
-      return;
-    }
-    const willUnlock=rewards.some(r=>r.pts===points+1);
-    points++;render(willUnlock);
-    tapHint.textContent=willUnlock?'🔓 Récompense débloquée !':'+1 point — comme à la caisse.';
-  }
-
-  card.addEventListener('click',()=>tap(false));
-  tapBtn.addEventListener('click',()=>{tap(false);tapBtn.blur();});
-
-  render(false);
-  if(!reduce){
-    let n=0;const auto=setInterval(()=>{if(n>=3){clearInterval(auto);return;}tap(true);n++;},900);
-    setTimeout(()=>clearInterval(auto),4500);
-  }
-})();
+{
+  const v=$('.heroVid');
+  if(v&&matchMedia('(prefers-reduced-motion:reduce)').matches){v.removeAttribute('autoplay');v.pause();}
+}
 
 // ticker
 const items=['Café','Restaurant','Salon','Boulangerie','Bar à jus','Pizzeria','Glacier','Coiffeur','Fleuriste','Boucherie'];

@@ -108,7 +108,7 @@ function gw_color(array $shop): string {
              'Salon' => '#3B2A55', 'Commerce' => '#123B4A'];
   $t = $shop['type'] ?? '';
   if (isset($byType[$t])) return $byType[$t];
-  $pal = ['#0A2E38', '#1E3A5F', '#2F4F3E', '#4A2D45', '#5A3A22', '#20404A'];
+  $pal = ['#241A12', '#1E3A5F', '#2F4F3E', '#4A2D45', '#5A3A22', '#20404A'];
   return $pal[hexdec(substr(md5($shop['id']), 0, 2)) % count($pal)];
 }
 

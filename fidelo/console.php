@@ -408,15 +408,15 @@ function ini2($n){return strtoupper(mb_substr(preg_replace('/\s+/','',$n),0,2));
 <!doctype html><html lang="fr"><head>
 <meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
 <link rel="icon" href="<?= e($base) ?>/favicon.ico" sizes="any"><link rel="icon" type="image/svg+xml" href="<?= e($base) ?>/logo.svg"><link rel="apple-touch-icon" href="<?= e($base) ?>/apple-touch-icon.png">
-<title>Console Fidelo</title><meta name="theme-color" content="#0A2E38">
+<title>Console Fidelo</title><meta name="theme-color" content="#241A12">
 <link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,400..800&family=Instrument+Sans:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500&display=swap">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Calistoga&family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@400;500&display=swap">
 <style>
-:root{--em:#06B6D4;--em-d:#0891B2;--or:#D9A94E;--or-l:#f0d488;--iv:#F3FCFD;--me:#E7F8FA;--me-d:#D6EEF1;--card:#fff;--line:#D6EEF1;--text:#1c2a25;--muted:#5a675f;--faint:#8a958e;--deep:#0A2E38;--deep2:#0F3D49;
---good:#06B6D4;--good-b:#e2f1ea;--warn:#c98a1e;--warn-b:#f7ecd6;--bad:#c0492f;--bad-b:#f7e2dc;--off:#8a958e;--off-b:#E2F2F4;
---disp:"Bricolage Grotesque",system-ui,sans-serif;--body:"Instrument Sans",system-ui,sans-serif;--mono:"IBM Plex Mono",monospace;}
-@media(prefers-color-scheme:dark){:root{--em:#22D3EE;--em-d:#0891B2;--or:#e3ba63;--iv:#07222A;--me:#0B2C35;--me-d:#183B45;--card:#0E323C;--line:#1C4650;--text:#e6efea;--muted:#9fc4cc;--faint:#728178;
---good:#22D3EE;--good-b:#12312a;--warn:#e0b25f;--warn-b:#33280f;--bad:#e07a63;--bad-b:#3a201a;--off:#728178;--off-b:#1c2c25;}}
+:root{--em:#C1552F;--em-d:#9C4024;--or:#D9A94E;--or-l:#f0d488;--iv:#FBF3E7;--me:#F6EBDD;--me-d:#E9DAC3;--card:#fff;--line:#E9DAC3;--text:#241A12;--muted:#6E5B47;--faint:#9C8B74;--deep:#241A12;--deep2:#3A2A1D;
+--good:#4A6329;--good-b:#e2f1ea;--warn:#c98a1e;--warn-b:#f7ecd6;--bad:#B0241A;--bad-b:#f7e2dc;--off:#9C8B74;--off-b:#EFE3D0;
+--disp:"Calistoga",system-ui,sans-serif;--body:"Inter",system-ui,sans-serif;--mono:"JetBrains Mono",monospace;}
+@media(prefers-color-scheme:dark){:root{--em:#E08A5D;--em-d:#9C4024;--or:#e3ba63;--iv:#1E140D;--me:#2A1E16;--me-d:#3A2A1D;--card:#2A1E16;--line:#4A382A;--text:#F3E8D8;--muted:#C9B79E;--faint:#8F7C64;
+--good:#8FB552;--good-b:#233018;--warn:#e0b25f;--warn-b:#33280f;--bad:#D9503B;--bad-b:#3a201a;--off:#8F7C64;--off-b:#1c2c25;}}
 *{box-sizing:border-box}body{margin:0;background:var(--iv);color:var(--text);font-family:var(--body);-webkit-font-smoothing:antialiased}
 h1,h2,h3{font-family:var(--disp);font-weight:600;letter-spacing:-.02em;margin:0}button{font-family:inherit;cursor:pointer;border:0;background:none;color:inherit}input,select{font-family:inherit}
 .mono{font-family:var(--mono);font-variant-numeric:tabular-nums}
@@ -426,8 +426,8 @@ h1,h2,h3{font-family:var(--disp);font-weight:600;letter-spacing:-.02em;margin:0}
 .logo .t{font-family:var(--disp);font-weight:700;font-size:20px}.logo .t i{color:var(--or);font-style:normal}.logo .s{font-size:11px;color:var(--faint);font-family:var(--mono)}
 .btn{display:inline-flex;align-items:center;gap:8px;padding:11px 18px;border-radius:11px;font-weight:600;font-size:14px}.btn-p{background:var(--em);color:#fff}.btn-p svg{width:16px;height:16px}
 .kpis{display:grid;grid-template-columns:repeat(4,1fr);gap:12px;margin-bottom:18px}@media(max-width:820px){.kpis{grid-template-columns:1fr 1fr}}
-.kpi{background:var(--card);border:1px solid var(--line);border-radius:16px;padding:16px}.kpi.hero{background:linear-gradient(160deg,var(--deep),var(--deep2));color:#eef7f2;border-color:transparent}
-.kpi .k{font-size:12px;color:var(--muted)}.kpi.hero .k{color:var(--or-l)}.kpi .v{font-family:var(--disp);font-weight:700;font-size:29px;margin-top:8px}.kpi.hero .v{color:#fff}.kpi .sub{font-size:12px;color:var(--faint);margin-top:6px}.kpi.hero .sub{color:rgba(238,247,242,.6)}
+.kpi{background:var(--card);border:1px solid var(--line);border-radius:16px;padding:16px}.kpi.hero{background:linear-gradient(160deg,var(--deep),var(--deep2));color:#F3ECE1;border-color:transparent}
+.kpi .k{font-size:12px;color:var(--muted)}.kpi.hero .k{color:var(--or-l)}.kpi .v{font-family:var(--disp);font-weight:700;font-size:29px;margin-top:8px}.kpi.hero .v{color:#fff}.kpi .sub{font-size:12px;color:var(--faint);margin-top:6px}.kpi.hero .sub{color:rgba(243,236,225,.6)}
 .panel{background:var(--card);border:1px solid var(--line);border-radius:18px;padding:18px}
 .ph{display:flex;justify-content:space-between;align-items:center;margin-bottom:12px}.ph h3{font-size:16px}.ph .n{font-size:12px;color:var(--faint)}
 .tbl{width:100%;border-collapse:collapse}.tbl th{text-align:left;font-size:11px;letter-spacing:.06em;text-transform:uppercase;color:var(--faint);font-weight:600;padding:0 10px 10px;font-family:var(--mono)}
@@ -444,13 +444,13 @@ select.st{padding:7px 10px;border-radius:9px;border:1.5px solid var(--line);back
 .gate{max-width:380px;margin:16vh auto;text-align:center;padding:0 20px}.gate .m{width:56px;height:56px;border-radius:16px;background:var(--deep);color:var(--or);display:grid;place-items:center;font-family:var(--disp);font-weight:700;font-size:26px;margin:0 auto 18px}
 .gate input{width:100%;padding:13px;border-radius:12px;border:1.5px solid var(--line);background:var(--card);color:var(--text);font-size:15px;margin:14px 0 10px;text-align:center;font-family:var(--mono)}
 .gate .btn{width:100%;justify-content:center}
-.mask{position:fixed;inset:0;z-index:100;background:rgba(6,14,11,.5);display:none;place-items:center;padding:20px}.mask.on{display:grid}
+.mask{position:fixed;inset:0;z-index:100;background:rgba(20,13,8,.5);display:none;place-items:center;padding:20px}.mask.on{display:grid}
 @media(max-width:600px){.mask{padding:10px;align-items:start}.mask.on{display:grid}.dlg{max-height:94vh;padding:18px}}
 .dlg{background:var(--card);border-radius:20px;padding:22px;max-width:400px;width:100%;max-height:88vh;overflow-y:auto;-webkit-overflow-scrolling:touch}.dlg h3{font-size:19px;margin-bottom:4px}.dlg .sub{font-size:13px;color:var(--muted);margin-bottom:12px}
 .dlg label{display:block;font-size:12.5px;font-weight:600;color:var(--muted);margin:12px 0 6px}.dlg .inp{width:100%;padding:12px;border-radius:11px;border:1.5px solid var(--line);background:var(--iv);color:var(--text);font-size:14px}
 .chips{display:flex;flex-wrap:wrap;gap:8px}.chip{padding:8px 12px;border-radius:10px;border:1.5px solid var(--line);font-size:13.5px;color:var(--muted)}.chip.on{border-color:var(--em);color:var(--em-d);font-weight:600}
 .drow{display:flex;gap:9px;margin-top:16px}.drow .btn{flex:1;justify-content:center}.btn-g{background:var(--card);border:1.5px solid var(--line);color:var(--text)}
-.toast{position:fixed;left:50%;bottom:24px;transform:translateX(-50%);background:var(--deep);color:#eef7f2;padding:12px 18px;border-radius:12px;font-size:14px;z-index:200;opacity:0;transition:.3s;pointer-events:none}.toast.on{opacity:1}
+.toast{position:fixed;left:50%;bottom:24px;transform:translateX(-50%);background:var(--deep);color:#F3ECE1;padding:12px 18px;border-radius:12px;font-size:14px;z-index:200;opacity:0;transition:.3s;pointer-events:none}.toast.on{opacity:1}
 @media(max-width:680px){.tbl thead{display:none}.tbl,.tbl tbody,.tbl tr,.tbl td{display:block}.tbl tr{border:1px solid var(--line);border-radius:14px;margin-bottom:10px;padding:6px}.tbl td{border:0;padding:6px 12px}.tbl td.r{text-align:left}}
 .flogo{width:1.35em;height:1.35em;display:inline-block;vertical-align:-.32em;margin-right:.32em}
 </style></head><body>
@@ -459,14 +459,14 @@ select.st{padding:7px 10px;border-radius:9px;border:1.5px solid var(--line);back
   <div class="m">F</div><h2>Console Fidelo</h2>
   <p style="color:var(--muted);font-size:14px;margin-top:8px">Accès réservé au propriétaire.</p>
   <?php if (strlen(ADMIN_KEY) < 16 && !$hasPass): ?>
-  <p style="color:#c0492f;font-size:13px;margin-top:10px;font-weight:600">⚠️ Aucun accès valide n'est configuré — la console reste fermée.</p>
+  <p style="color:#B0241A;font-size:13px;margin-top:10px;font-weight:600">⚠️ Aucun accès valide n'est configuré — la console reste fermée.</p>
   <?php endif; ?>
   <?php if ($hasPass): ?>
   <div style="margin-top:16px;text-align:left">
     <input class="inp" id="alU" type="email" placeholder="Votre e-mail" autocomplete="username" autofocus style="width:100%">
     <input class="inp" id="alP" type="password" placeholder="Mot de passe" autocomplete="current-password" style="width:100%;margin-top:8px">
     <button class="btn btn-p" id="alOk" style="width:100%;margin-top:12px">Entrer</button>
-    <div id="alMsg" style="color:#c0492f;font-size:13px;margin-top:10px;min-height:18px"></div>
+    <div id="alMsg" style="color:#B0241A;font-size:13px;margin-top:10px;min-height:18px"></div>
     <details style="margin-top:12px"><summary style="font-size:12.5px;color:var(--muted);cursor:pointer">Mot de passe perdu ?</summary>
       <p style="font-size:12.5px;color:var(--muted);margin-top:8px">Ouvrez <code>console.php?k=VOTRE_CLÉ</code> (la clé se trouve dans <code>lib.php</code> sur votre serveur), puis redéfinissez votre mot de passe.</p>
     </details>
@@ -487,16 +487,16 @@ select.st{padding:7px 10px;border-radius:9px;border:1.5px solid var(--line);back
 <?php else: ?>
 <div class="wrap">
   <?php if (!$hasPass): ?>
-  <div style="background:#c0492f;color:#fff;padding:14px 16px;border-radius:12px;margin-bottom:16px;font-size:13.5px;font-weight:600;display:flex;align-items:center;gap:12px;flex-wrap:wrap">
+  <div style="background:#B0241A;color:#fff;padding:14px 16px;border-radius:12px;margin-bottom:16px;font-size:13.5px;font-weight:600;display:flex;align-items:center;gap:12px;flex-wrap:wrap">
     <span style="flex:1">⚠️ Votre console n'est protégée que par la clé dans l'URL. Définissez un mot de passe.</span>
-    <button class="btn" id="setPwBtn" style="background:#fff;color:#c0492f">Définir un mot de passe</button>
+    <button class="btn" id="setPwBtn" style="background:#fff;color:#B0241A">Définir un mot de passe</button>
   </div>
   <?php endif; ?>
   <?php if (ADMIN_KEY === 'fidelo-admin-CHANGEZ-MOI' || strlen(ADMIN_KEY) < 16): ?>
-  <div style="background:#c0492f;color:#fff;padding:12px 16px;border-radius:12px;margin-bottom:16px;font-size:13.5px;font-weight:600">⚠️ Sécurité : la clé admin par défaut est encore active. Modifiez ADMIN_KEY dans lib.php AVANT la mise en ligne.</div>
+  <div style="background:#B0241A;color:#fff;padding:12px 16px;border-radius:12px;margin-bottom:16px;font-size:13.5px;font-weight:600">⚠️ Sécurité : la clé admin par défaut est encore active. Modifiez ADMIN_KEY dans lib.php AVANT la mise en ligne.</div>
   <?php endif; ?>
   <div class="head">
-    <div class="logo"><div class="m">F</div><div><div class="t">Console <svg class="flogo" viewBox="0 0 64 64" aria-hidden="true"><defs><linearGradient id="coa" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#06B6D4"/><stop offset=".55" stop-color="#22D3EE"/><stop offset="1" stop-color="#FF6B6B"/></linearGradient><linearGradient id="cob" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#fff" stop-opacity=".3"/><stop offset=".5" stop-color="#fff" stop-opacity="0"/></linearGradient></defs><rect x="3" y="13" width="58" height="40" rx="11" fill="url(#coa)"/><rect x="3" y="13" width="58" height="40" rx="11" fill="url(#cob)"/><rect x="11" y="24" width="24" height="4.4" rx="2.2" fill="#fff" opacity=".95"/><rect x="11" y="33" width="14" height="4.4" rx="2.2" fill="#fff" opacity=".6"/><path d="M45 16.4C45.5 18 46.4 18.9 54.6 26C46.4 33.1 45.5 34 45 35.6C44.5 34 43.6 33.1 35.4 26C43.6 18.9 44.5 18 45 16.4Z" fill="#fff"/><path d="M53.4 34.1C53.6 34.8 54 35.2 57.8 38.5C54 41.8 53.6 42.2 53.4 42.9C53.2 42.2 52.8 41.8 49 38.5C52.8 35.2 53.2 34.8 53.4 34.1Z" fill="#fff" opacity=".88"/></svg>Fidelo<i>.</i></div><div class="s">PLATEFORME · PROPRIÉTAIRE</div></div></div>
+    <div class="logo"><div class="m">F</div><div><div class="t">Console <svg class="flogo" viewBox="0 0 64 64" aria-hidden="true"><defs><linearGradient id="coa" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#C1552F"/><stop offset=".55" stop-color="#E08A5D"/><stop offset="1" stop-color="#FF6B6B"/></linearGradient><linearGradient id="cob" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#fff" stop-opacity=".3"/><stop offset=".5" stop-color="#fff" stop-opacity="0"/></linearGradient></defs><rect x="3" y="13" width="58" height="40" rx="11" fill="url(#coa)"/><rect x="3" y="13" width="58" height="40" rx="11" fill="url(#cob)"/><rect x="11" y="24" width="24" height="4.4" rx="2.2" fill="#fff" opacity=".95"/><rect x="11" y="33" width="14" height="4.4" rx="2.2" fill="#fff" opacity=".6"/><path d="M45 16.4C45.5 18 46.4 18.9 54.6 26C46.4 33.1 45.5 34 45 35.6C44.5 34 43.6 33.1 35.4 26C43.6 18.9 44.5 18 45 16.4Z" fill="#fff"/><path d="M53.4 34.1C53.6 34.8 54 35.2 57.8 38.5C54 41.8 53.6 42.2 53.4 42.9C53.2 42.2 52.8 41.8 49 38.5C52.8 35.2 53.2 34.8 53.4 34.1Z" fill="#fff" opacity=".88"/></svg>Fidelo<i>.</i></div><div class="s">PLATEFORME · PROPRIÉTAIRE</div></div></div>
     <button class="btn btn-g" id="pushBtn" style="background:var(--card);border:1.5px solid var(--line);color:var(--text)"><?= !empty($db['settings']['vapidPub'])?'🔔 Push activé':'🔔 Activer le push' ?></button>
     <button class="btn btn-g" id="secBtn" style="margin-left:auto;background:var(--card);border:1.5px solid var(--line);color:var(--text)">🛡️ Sécurité</button>
     <button class="btn btn-g" id="outBtn" style="background:var(--card);border:1.5px solid var(--line);color:var(--text)" title="Fermer la session">Quitter</button>
@@ -579,7 +579,7 @@ async function openAudit(){
   const ko=r.checks.filter(c=>!c.ok&&!c.na).length;
   const rows=r.checks.map(c=>{
     const icon=c.na?'⚪':(c.ok?'✅':'❌');
-    const det=c.k==='demo'&&c.n?` <span style="color:#c0492f">(${c.n} : ${c.noms.map(escH).join(', ')}${c.faible?` — dont ${c.faible} à mot de passe deviné`:''})</span>`
+    const det=c.k==='demo'&&c.n?` <span style="color:#B0241A">(${c.n} : ${c.noms.map(escH).join(', ')}${c.faible?` — dont ${c.faible} à mot de passe deviné`:''})</span>`
       :c.k==='backup'&&c.ok?` <span style="color:var(--muted)">(${c.n} sauvegarde${c.n>1?'s':''})</span>`
       :c.k==='volume'?` <span style="color:var(--muted)">(${c.n} Ko · ${c.shops} commerce(s) · plus gros : ${c.gros} Ko)</span>`
       :c.k==='disk'&&c.n?` <span style="color:var(--muted)">(${c.n} Mo libres)</span>`:'';
@@ -589,9 +589,9 @@ async function openAudit(){
       ${c.ok||c.na?'':`<div style="font-size:12.5px;color:var(--muted);margin-top:4px">${escH(c.fix)}</div>`}</div></div>`;}).join('');
   const demo=r.checks.find(c=>c.k==='demo');
   $('#dlg').innerHTML=`<h3>🛡️ Diagnostic de sécurité</h3>
-    <div class="sub">${ko?`<b style="color:#c0492f">${ko} point${ko>1?'s':''} à corriger</b>`:'<b style="color:#2f7d5f">Tout est en ordre.</b>'}</div>
+    <div class="sub">${ko?`<b style="color:#B0241A">${ko} point${ko>1?'s':''} à corriger</b>`:'<b style="color:#2f7d5f">Tout est en ordre.</b>'}</div>
     <div style="margin-top:10px;max-height:52vh;overflow:auto">${rows}</div>
-    ${demo&&demo.n?`<button class="btn btn-p" id="dcl" style="width:100%;margin-top:14px;background:#c0492f">🗑 Supprimer les ${demo.n} comptes de démonstration</button>`:''}
+    ${demo&&demo.n?`<button class="btn btn-p" id="dcl" style="width:100%;margin-top:14px;background:#B0241A">🗑 Supprimer les ${demo.n} comptes de démonstration</button>`:''}
     <div style="margin-top:14px;background:var(--iv);border:1px solid var(--line);border-radius:12px;padding:12px">
       <div style="font-size:13px;font-weight:600">Délai de grâce après la fin d'abonnement</div>
       <div style="font-size:12.5px;color:var(--muted);margin:4px 0 8px">Passé ce délai, le commerçant consulte encore ses clients mais ne peut plus ajouter de points. 0 = jamais bloquer.</div>
@@ -655,7 +655,7 @@ function openSecurity(){
     <label>Nouveau mot de passe <span style="font-weight:400;color:var(--muted)">(10 caractères minimum)</span></label>
     <input class="inp" id="asN" type="password" autocomplete="new-password">
     <label>Confirmer</label><input class="inp" id="asN2" type="password" autocomplete="new-password">
-    <div id="asMsg" class="sub" style="color:#c0492f;margin-top:10px;min-height:18px"></div>
+    <div id="asMsg" class="sub" style="color:#B0241A;margin-top:10px;min-height:18px"></div>
     <div class="drow"><button class="btn btn-g" id="asX">Annuler</button><button class="btn btn-p" id="asOk">Enregistrer</button></div>`;
   $('#mask').classList.add('on');
   $('#asX').onclick=()=>$('#mask').classList.remove('on');
@@ -692,7 +692,7 @@ function openShop(id){
       <button class="btn btn-g" id="seKey">🔑 Réinitialiser l'accès</button>
     </div>
     <div style="border-top:1px solid var(--line);margin-top:16px;padding-top:14px">
-      <button class="btn btn-g" id="seDel" style="color:#c0492f;border-color:#e4bcb2">🗑 Supprimer ce commerce</button>
+      <button class="btn btn-g" id="seDel" style="color:#B0241A;border-color:#e4bcb2">🗑 Supprimer ce commerce</button>
     </div>
     <div id="seMsg" class="sub" style="margin-top:10px"></div>
     <div class="drow"><button class="btn btn-g" id="seX">Fermer</button></div>`;

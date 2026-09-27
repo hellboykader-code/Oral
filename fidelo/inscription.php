@@ -52,13 +52,13 @@ $curType = $_POST['type'] ?? 'Café';
 <!doctype html><html lang="fr"><head>
 <meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
 <link rel="icon" href="<?= e($base) ?>/favicon.ico" sizes="any"><link rel="icon" type="image/svg+xml" href="<?= e($base) ?>/logo.svg"><link rel="apple-touch-icon" href="<?= e($base) ?>/apple-touch-icon.png">
-<title>Créer mon compte — Fidelo</title><meta name="theme-color" content="#0A2E38">
+<title>Créer mon compte — Fidelo</title><meta name="theme-color" content="#241A12">
 <link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,400..800&family=Instrument+Sans:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500&display=swap">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Calistoga&family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@400;500&display=swap">
 <style>
-:root{--em:#06B6D4;--em-d:#0891B2;--em-btn:#0B7C97;--or:#D9A94E;--lien:#0B7C97;--iv:#F3FCFD;--me:#E7F8FA;--me-d:#D6EEF1;--card:#fff;--line:#D6EEF1;--text:#1c2a25;--muted:#5a675f;--faint:#6f7c76;--deep:#0A2E38;--bad:#c0492f;
---disp:"Bricolage Grotesque",system-ui,sans-serif;--body:"Instrument Sans",system-ui,sans-serif;--mono:"IBM Plex Mono",monospace;}
-@media(prefers-color-scheme:dark){:root{--em:#22D3EE;--em-d:#0891B2;--em-btn:#0E7F9B;--or:#e3ba63;--lien:#3FD3EE;--iv:#07222A;--me:#0B2C35;--me-d:#183B45;--card:#0E323C;--line:#1C4650;--text:#e6efea;--muted:#9fc4cc;--faint:#8fa39a;}}
+:root{--em:#C1552F;--em-d:#9C4024;--em-btn:#9C4024;--or:#D9A94E;--lien:#9C4024;--iv:#FBF3E7;--me:#F6EBDD;--me-d:#E9DAC3;--card:#fff;--line:#E9DAC3;--text:#241A12;--muted:#6E5B47;--faint:#9C8B74;--deep:#241A12;--bad:#B0241A;
+--disp:"Calistoga",system-ui,sans-serif;--body:"Inter",system-ui,sans-serif;--mono:"JetBrains Mono",monospace;}
+@media(prefers-color-scheme:dark){:root{--em:#E08A5D;--em-d:#9C4024;--em-btn:#9C4024;--or:#e3ba63;--lien:#E08A5D;--iv:#1E140D;--me:#2A1E16;--me-d:#3A2A1D;--card:#2A1E16;--line:#4A382A;--text:#F3E8D8;--muted:#C9B79E;--faint:#8F7C64;}}
 *{box-sizing:border-box}body{margin:0;background:var(--iv);color:var(--text);font-family:var(--body);-webkit-font-smoothing:antialiased}
 h1,h2{font-family:var(--disp);font-weight:600;letter-spacing:-.02em;margin:0}button{font-family:inherit;cursor:pointer;border:0}
 .top{padding:18px 22px;max-width:520px;margin:0 auto}.brand{font-family:var(--disp);font-weight:700;font-size:20px}.brand i{color:var(--or);font-style:normal}
@@ -74,12 +74,12 @@ h1{font-size:clamp(26px,5vw,34px);margin:8px 0 6px}.lead{color:var(--muted);font
 .chip.on{border-color:var(--em);background:color-mix(in srgb,var(--em) 10%,var(--card));color:var(--em-d);font-weight:600}
 .sep{font-family:var(--mono);font-size:11px;letter-spacing:.1em;text-transform:uppercase;color:var(--faint);margin:22px 0 12px;padding-top:16px;border-top:1px solid var(--line)}
 .code{max-width:150px;text-align:center;letter-spacing:.5em;font-family:var(--mono);font-size:20px;font-weight:600}
-.btn{width:100%;padding:15px;border-radius:13px;background:var(--em-btn);color:#fff;font-weight:700;font-size:15px;margin-top:8px}.btn:hover{background:#08637a}
+.btn{width:100%;padding:15px;border-radius:13px;background:var(--em-btn);color:#fff;font-weight:700;font-size:15px;margin-top:8px}.btn:hover{background:#7A3018}
 .alt{text-align:center;margin-top:16px;font-size:14px;color:var(--muted)}.alt a{color:var(--lien);font-weight:600;text-decoration:none}
 .trial{display:inline-flex;align-items:center;gap:7px;background:var(--me);border:1px solid var(--me-d);color:var(--em-d);padding:6px 12px;border-radius:99px;font-size:13px;font-weight:600;margin-bottom:16px}
 .flogo{width:1.35em;height:1.35em;display:inline-block;vertical-align:-.32em;margin-right:.32em}
 </style></head><body>
-<div class="top"><span class="brand"><svg class="flogo" viewBox="0 0 64 64" aria-hidden="true"><defs><linearGradient id="ina" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#06B6D4"/><stop offset=".55" stop-color="#22D3EE"/><stop offset="1" stop-color="#FF6B6B"/></linearGradient><linearGradient id="inb" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#fff" stop-opacity=".3"/><stop offset=".5" stop-color="#fff" stop-opacity="0"/></linearGradient></defs><rect x="3" y="13" width="58" height="40" rx="11" fill="url(#ina)"/><rect x="3" y="13" width="58" height="40" rx="11" fill="url(#inb)"/><rect x="11" y="24" width="24" height="4.4" rx="2.2" fill="#fff" opacity=".95"/><rect x="11" y="33" width="14" height="4.4" rx="2.2" fill="#fff" opacity=".6"/><path d="M45 16.4C45.5 18 46.4 18.9 54.6 26C46.4 33.1 45.5 34 45 35.6C44.5 34 43.6 33.1 35.4 26C43.6 18.9 44.5 18 45 16.4Z" fill="#fff"/><path d="M53.4 34.1C53.6 34.8 54 35.2 57.8 38.5C54 41.8 53.6 42.2 53.4 42.9C53.2 42.2 52.8 41.8 49 38.5C52.8 35.2 53.2 34.8 53.4 34.1Z" fill="#fff" opacity=".88"/></svg>Fidelo<i>.</i></span></div>
+<div class="top"><span class="brand"><svg class="flogo" viewBox="0 0 64 64" aria-hidden="true"><defs><linearGradient id="ina" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#C1552F"/><stop offset=".55" stop-color="#E08A5D"/><stop offset="1" stop-color="#FF6B6B"/></linearGradient><linearGradient id="inb" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#fff" stop-opacity=".3"/><stop offset=".5" stop-color="#fff" stop-opacity="0"/></linearGradient></defs><rect x="3" y="13" width="58" height="40" rx="11" fill="url(#ina)"/><rect x="3" y="13" width="58" height="40" rx="11" fill="url(#inb)"/><rect x="11" y="24" width="24" height="4.4" rx="2.2" fill="#fff" opacity=".95"/><rect x="11" y="33" width="14" height="4.4" rx="2.2" fill="#fff" opacity=".6"/><path d="M45 16.4C45.5 18 46.4 18.9 54.6 26C46.4 33.1 45.5 34 45 35.6C44.5 34 43.6 33.1 35.4 26C43.6 18.9 44.5 18 45 16.4Z" fill="#fff"/><path d="M53.4 34.1C53.6 34.8 54 35.2 57.8 38.5C54 41.8 53.6 42.2 53.4 42.9C53.2 42.2 52.8 41.8 49 38.5C52.8 35.2 53.2 34.8 53.4 34.1Z" fill="#fff" opacity=".88"/></svg>Fidelo<i>.</i></span></div>
 <div class="wrap">
   <span class="kick">Inscription commerçant</span>
   <h1>Créez votre compte</h1>
@@ -117,7 +117,7 @@ h1{font-size:clamp(26px,5vw,34px);margin:8px 0 6px}.lead{color:var(--muted);font
       <input class="inp" name="promo" id="promo" maxlength="24" placeholder="Ex. LANCEMENT15"
              value="<?= e($codePromo) ?>" style="text-transform:uppercase;letter-spacing:.06em">
       <?php if ($promoInfo && $promoInfo['ok']): ?>
-        <div class="hint" style="color:#0B7C97;font-weight:600">✓ <?= e($promoInfo['promo']['label'] ?? 'Code valide') ?><?php
+        <div class="hint" style="color:#9C4024;font-weight:600">✓ <?= e($promoInfo['promo']['label'] ?? 'Code valide') ?><?php
           if ($promoInfo['restant'] !== null) echo ' — il reste ' . (int)$promoInfo['restant'] . ' place' . ($promoInfo['restant']>1?'s':'');
         ?></div>
       <?php elseif ($promoInfo): ?>

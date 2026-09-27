@@ -39,23 +39,23 @@ $CK = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="
 <link rel="icon" href="<?= e($base) ?>/favicon.ico" sizes="any"><link rel="icon" type="image/svg+xml" href="<?= e($base) ?>/logo.svg"><link rel="apple-touch-icon" href="<?= e($base) ?>/apple-touch-icon.png">
 <title>Contact — Fidelo</title>
 <meta name="description" content="Une question sur Fidelo ? Écrivez-nous : nous répondons vite, en français, sans engagement.">
-<meta name="theme-color" content="#06B6D4">
+<meta name="theme-color" content="#C1552F">
 <link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,400..800&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=IBM+Plex+Mono:wght@400;500&display=swap">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Calistoga&family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500&display=swap">
 <style>
 :root{
-  --tq:#06B6D4;--tq-d:#0891B2;--co:#FF6B6B;--co-d:#F14E4E;--am-d:#F7B500;
-  --ink-fixed:#0A2E38;--accent-txt:#0B7C97;
-  --bg:#F3FCFD;--bg-2:#E7F8FA;--card:#ffffff;--line:#D6EEF1;
-  --text:#0F343D;--muted:#4e767f;--faint:#7d9ea7;
-  --disp:"Bricolage Grotesque",-apple-system,system-ui,sans-serif;
-  --body:"Plus Jakarta Sans",-apple-system,system-ui,sans-serif;--mono:"IBM Plex Mono",monospace;
-  --grad:linear-gradient(118deg,#06B6D4 0%,#22D3EE 38%,#FF6B6B 100%);
+  --tq:#C1552F;--tq-d:#9C4024;--co:#FF6B6B;--co-d:#F14E4E;--am-d:#F7B500;
+  --ink-fixed:#241A12;--accent-txt:#9C4024;
+  --bg:#FBF3E7;--bg-2:#F6EBDD;--card:#ffffff;--line:#E9DAC3;
+  --text:#241A12;--muted:#6E5B47;--faint:#9C8B74;
+  --disp:"Calistoga",-apple-system,system-ui,sans-serif;
+  --body:"Inter",-apple-system,system-ui,sans-serif;--mono:"JetBrains Mono",monospace;
+  --grad:linear-gradient(118deg,#C1552F 0%,#E08A5D 38%,#FF6B6B 100%);
 }
 @media(prefers-color-scheme:dark){:root{
-  --tq:#22D3EE;--tq-d:#06B6D4;--co:#FF8080;--co-d:#FF6B6B;--accent-txt:#7DE9FB;--ink-fixed:#04161c;
-  --bg:#07222a;--bg-2:#0b2c35;--card:#0e323c;--line:#1c4650;
-  --text:#EAFBFD;--muted:#9fc4cc;--faint:#6f939b;}}
+  --tq:#E08A5D;--tq-d:#C1552F;--co:#FF8080;--co-d:#FF6B6B;--accent-txt:#F0AE85;--ink-fixed:#140D08;
+  --bg:#1E140D;--bg-2:#2A1E16;--card:#2A1E16;--line:#4A382A;
+  --text:#FBF3E7;--muted:#C9B79E;--faint:#8F7C64;}}
 *{box-sizing:border-box}
 body{margin:0;background:var(--bg);color:var(--text);font-family:var(--body);-webkit-font-smoothing:antialiased;overflow-x:hidden}
 a{color:inherit;text-decoration:none}
@@ -71,10 +71,10 @@ a{color:inherit;text-decoration:none}
 .card .sub{color:var(--muted);font-size:14.5px;margin-bottom:18px;line-height:1.5}
 label{display:block;font-size:13px;font-weight:600;color:var(--muted);margin:14px 0 6px}
 .inp{width:100%;padding:13px 14px;border-radius:12px;border:1.6px solid var(--line);background:var(--bg);color:var(--text);font-size:15px;font-family:inherit}
-.inp:focus{outline:0;border-color:var(--tq);box-shadow:0 0 0 3px rgba(6,182,212,.16)}
+.inp:focus{outline:0;border-color:var(--tq);box-shadow:0 0 0 3px rgba(193,85,47,.16)}
 textarea.inp{min-height:130px;resize:vertical}
 .hp{position:absolute;left:-9999px;width:1px;height:1px;overflow:hidden}
-.btn{display:inline-flex;align-items:center;justify-content:center;gap:9px;width:100%;padding:15px;border-radius:13px;font-weight:700;font-size:15px;border:0;cursor:pointer;font-family:inherit;background:var(--grad);color:#fff;box-shadow:0 14px 30px -12px rgba(6,182,212,.7);margin-top:18px;transition:transform .15s}
+.btn{display:inline-flex;align-items:center;justify-content:center;gap:9px;width:100%;padding:15px;border-radius:13px;font-weight:700;font-size:15px;border:0;cursor:pointer;font-family:inherit;background:var(--grad);color:#fff;box-shadow:0 14px 30px -12px rgba(193,85,47,.7);margin-top:18px;transition:transform .15s}
 .btn:hover{transform:translateY(-2px)}
 .err{background:rgba(241,78,78,.12);color:var(--co-d);border:1px solid rgba(241,78,78,.3);border-radius:12px;padding:12px 14px;font-size:14px;font-weight:600;margin-bottom:6px}
 .ok{text-align:center;padding:10px 0}
@@ -91,7 +91,7 @@ textarea.inp{min-height:130px;resize:vertical}
 .mapsec{margin:6px 0 66px}
 .mapsec h2{font-family:var(--disp);font-weight:700;font-size:21px;margin:0 0 6px}
 .mapsec .sub{color:var(--muted);font-size:14.5px;margin-bottom:16px}
-.mapwrap{border-radius:22px;overflow:hidden;border:2px solid var(--line);height:360px;box-shadow:0 24px 48px -30px rgba(6,182,212,.4)}
+.mapwrap{border-radius:22px;overflow:hidden;border:2px solid var(--line);height:360px;box-shadow:0 24px 48px -30px rgba(193,85,47,.4)}
 .mapwrap iframe{width:100%;height:100%;border:0;display:block;filter:saturate(1.05)}
 .foot{padding:38px 0 60px;border-top:2px solid var(--line);color:var(--muted);font-size:13.5px;text-align:center}
 .foot .ll{display:flex;gap:16px;justify-content:center;flex-wrap:wrap;margin-bottom:10px}
