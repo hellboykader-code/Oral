@@ -21,27 +21,27 @@ $base = rtrim(dirname($_SERVER['SCRIPT_NAME']), '/');
    Grille 8px. La typographie EST le visuel principal.
    ============================================================ */
 :root{
-  --ink:#080F0D;--ink-2:#122019;
-  --paper:#F5F2EA;--card:#FFFFFF;--line:#E4DFD0;
-  --tq:#0EA5B7;--tq-d:#0A7A88;--tq-l:#3FC6D6;
-  --gold:#C99A3E;--gold-l:#E4C583;
-  --coral:#E24E3F;--coral-d:#B93B2F;
-  --text:#141A16;--muted:#5C6259;--faint:#8C9188;
+  --ink:#17140F;--ink-2:#241E16;
+  --paper:#FAF4E9;--card:#FFFCF5;--line:#E4D8C3;
+  --tq:#4F7A6C;--tq-d:#3A5B50;--tq-l:#7CA396;
+  --gold:#C79A5C;--gold-l:#E3C393;
+  --coral:#A85630;--coral-d:#874323;
+  --text:#241D14;--muted:#6E6353;--faint:#A0947F;
   --disp:"Playfair Display",Georgia,"Times New Roman",serif;
   --body:"Inter",-apple-system,system-ui,sans-serif;
   --mono:"IBM Plex Mono",monospace;
   --s1:.5rem;--s2:1rem;--s3:1.5rem;--s4:2rem;--s5:3rem;--s6:4rem;--s7:6rem;--s8:9rem;
   --ease:cubic-bezier(.16,1,.3,1);
   /* alias de compatibilité — consommés par nav.php / legal-ui.php (mêmes tokens sur tout le site) */
-  --co:var(--coral);--accent-txt:var(--tq-d);--bg-2:#ECE7D8;
+  --co:var(--coral);--accent-txt:var(--tq-d);--bg-2:#F0E6D4;
   --grad:linear-gradient(118deg,var(--tq) 0%,var(--tq-l) 45%,var(--coral) 100%);
 }
 @media(prefers-color-scheme:dark){:root{
-  --ink:#F5F2EA;--ink-2:#e8e3d3;--paper:#0B100D;--card:#141A16;--line:#262C25;
-  --tq:#3FC6D6;--tq-d:#7BDCE7;--tq-l:#9EE8F0;--gold:#E4C583;--gold-l:#F3DFA6;
-  --coral:#FF8577;--coral-d:#FFA89E;
-  --text:#F1EFE6;--muted:#A7ACA0;--faint:#6E7368;
-  --co:var(--coral);--accent-txt:var(--tq-l);--bg-2:#1A211A;}}
+  --ink:#F5EEDF;--ink-2:#e8dfc9;--paper:#14100B;--card:#1E1811;--line:#33291C;
+  --tq:#7CA396;--tq-d:#4F7A6C;--tq-l:#A9C7BC;--gold:#E3C393;--gold-l:#F0DDB2;
+  --coral:#C87A50;--coral-d:#D89670;
+  --text:#F1E9D8;--muted:#B8AC94;--faint:#7A6F5C;
+  --co:var(--coral);--accent-txt:var(--tq-l);--bg-2:#241C12;}}
 *{box-sizing:border-box}
 html{scroll-behavior:auto;overflow-x:hidden}
 body{margin:0;background:var(--paper);color:var(--text);font-family:var(--body);-webkit-font-smoothing:antialiased;overflow-x:hidden}
@@ -112,12 +112,12 @@ img{max-width:100%}[hidden]{display:none!important}.mono{font-family:var(--mono)
 @keyframes demoIn{to{opacity:1;transform:none}}
 .phone .notch{position:absolute;top:10px;left:50%;transform:translateX(-50%);width:84px;height:18px;background:#050807;border-radius:0 0 12px 12px;z-index:5}
 .screen{position:relative;width:100%;height:100%;border-radius:26px;overflow:hidden;background:var(--paper);display:flex;flex-direction:column}
-.sc-head{padding:22px 14px 10px;display:flex;align-items:center;gap:8px;color:#0A2E38;background:#fff}
+.sc-head{padding:22px 14px 10px;display:flex;align-items:center;gap:8px;color:#17140F;background:#fff}
 .sc-head .ic{width:26px;height:26px;border-radius:8px;background:var(--ink);color:#fff;display:grid;place-items:center;font-family:var(--disp);font-weight:800;font-size:12px}
-.sc-head .nm{font-family:var(--disp);font-weight:700;font-size:13px;text-align:left;color:#0A2E38}
-.sc-head .sb{font-size:8.5px;color:#7d9ea7;font-family:var(--mono)}
+.sc-head .nm{font-family:var(--disp);font-weight:700;font-size:13px;text-align:left;color:#17140F}
+.sc-head .sb{font-size:8.5px;color:#A0947F;font-family:var(--mono)}
 .sc-body{flex:1;padding:11px;overflow:hidden}
-.mcard{position:relative;border-radius:16px;overflow:hidden;color:#fff;padding:15px;background:linear-gradient(155deg,#0A2E38,#0A7A88 130%);cursor:pointer;user-select:none;-webkit-tap-highlight-color:transparent;transition:transform .12s}
+.mcard{position:relative;border-radius:16px;overflow:hidden;color:#fff;padding:15px;background:linear-gradient(155deg,#17140F,#3A5B50 130%);cursor:pointer;user-select:none;-webkit-tap-highlight-color:transparent;transition:transform .12s}
 .mcard:active{transform:scale(.985)}
 .mcard>*{position:relative;z-index:2}
 .mc-top{display:flex;justify-content:space-between;align-items:flex-start}
@@ -135,11 +135,11 @@ img{max-width:100%}[hidden]{display:none!important}.mono{font-family:var(--mono)
 .hprog{margin-top:5px;height:5px;border-radius:99px;background:rgba(255,255,255,.16);overflow:hidden}
 .hprog i{display:block;height:100%;width:0;border-radius:99px;background:var(--tq-l);transition:width .5s var(--ease)}
 .sc-rew{margin-top:11px}
-.sc-rew .r{display:flex;align-items:center;gap:8px;padding:8px 10px;border-radius:10px;background:#fff;border:1px solid #D6EEF1;margin-bottom:6px;transition:border-color .3s}
-.sc-rew .r .p{width:30px;height:30px;border-radius:8px;background:#E7F8FA;color:#0A7A88;display:grid;place-items:center;font-family:var(--mono);font-weight:700;font-size:11px;flex-shrink:0}
+.sc-rew .r{display:flex;align-items:center;gap:8px;padding:8px 10px;border-radius:10px;background:#fff;border:1px solid #E4D8C3;margin-bottom:6px;transition:border-color .3s}
+.sc-rew .r .p{width:30px;height:30px;border-radius:8px;background:#F0E6D4;color:#3A5B50;display:grid;place-items:center;font-family:var(--mono);font-weight:700;font-size:11px;flex-shrink:0}
 .sc-rew .r.ok .p{background:linear-gradient(140deg,var(--gold-l),var(--gold));color:#3a2a05}
-.sc-rew .r .t{font-size:10.5px;font-weight:600;color:#0A2E38}
-.sc-rew .r .st{margin-left:auto;font-size:8.5px;font-weight:700;color:#7d9ea7}
+.sc-rew .r .t{font-size:10.5px;font-weight:600;color:#17140F}
+.sc-rew .r .st{margin-left:auto;font-size:8.5px;font-weight:700;color:#A0947F}
 .sc-rew .r.ok .st{color:var(--gold);font-weight:800}
 .sc-rew .r.pop{animation:rwpop .55s cubic-bezier(.2,1.5,.4,1)}
 @keyframes rwpop{0%{transform:scale(1)}30%{transform:scale(1.05)}100%{transform:scale(1)}}
@@ -490,7 +490,7 @@ const stage=$('#stage');
   function resize(){canvas.width=card.clientWidth;canvas.height=card.clientHeight;}
   resize();addEventListener('resize',resize);
   teardown.push(()=>{removeEventListener('resize',resize);if(raf)cancelAnimationFrame(raf);});
-  const COLORS=['#E4C583','#3FC6D6','#C99A3E','#9EE8F0'];
+  const COLORS=['#E3C393','#7CA396','#C79A5C','#A9C7BC'];
   function loop(){
     ctx.clearRect(0,0,canvas.width,canvas.height);
     parts.forEach(p=>{p.x+=p.vx;p.y+=p.vy;p.vy+=p.g;p.r+=p.vr;p.life--;

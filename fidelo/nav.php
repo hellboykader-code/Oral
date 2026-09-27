@@ -4,12 +4,19 @@
    S'appuie sur les tokens de design déjà définis par chaque page
    (--card, --line, --text, --tq, --grad, --co, --muted, --bg-2, --accent-txt). */
 
-function nav_css_once(): string {
+function nav_css_once(string $base): string {
   static $done = false;
   if ($done) return '';
   $done = true;
   return <<<CSS
 <style>
+/* fond d'ambiance — photographie Higgsfield (intérieur commerce chaleureux),
+   floutée + fortement teintée papier : texture discrète, jamais au détriment
+   de la lisibilité. Fixe (immobile au scroll) pour un effet de profondeur. */
+body{
+  background-image:linear-gradient(color-mix(in srgb,var(--paper) 93%,transparent),color-mix(in srgb,var(--paper) 93%,transparent)),url('{$base}/media/site-bg.jpg');
+  background-size:cover;background-position:center;background-repeat:no-repeat;background-attachment:fixed;
+}
 .fnav{position:sticky;top:0;z-index:120;background:color-mix(in srgb,var(--card) 90%,transparent);
   backdrop-filter:saturate(1.4) blur(12px);-webkit-backdrop-filter:saturate(1.4) blur(12px);
   border-bottom:1px solid var(--line)}
@@ -28,7 +35,7 @@ function nav_css_once(): string {
   font-weight:700;font-size:14px;border:0;cursor:pointer;white-space:nowrap;font-family:inherit;transition:transform .15s,box-shadow .2s}
 .fnav .b:hover{transform:translateY(-1px)}
 .fnav .b.g{background:transparent;border:1.6px solid var(--line);color:var(--text)}
-.fnav .b.p{background:var(--grad);color:#fff;box-shadow:0 12px 26px -12px rgba(6,182,212,.7)}
+.fnav .b.p{background:var(--grad);color:#fff;box-shadow:0 12px 26px -12px rgba(79,122,108,.6)}
 .fnav .burger{display:none;margin-left:auto;width:44px;height:44px;border:1.6px solid var(--line);border-radius:12px;
   background:var(--card);cursor:pointer;align-items:center;justify-content:center;flex-direction:column;gap:4px}
 .fnav .burger span{display:block;width:20px;height:2px;background:var(--text);border-radius:2px;transition:.25s}
@@ -56,12 +63,12 @@ CSS;
 }
 
 function nav_logo_svg(): string {
-  return '<svg viewBox="0 0 64 64" aria-hidden="true"><defs><linearGradient id="fnvg" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#06B6D4"/><stop offset=".55" stop-color="#22D3EE"/><stop offset="1" stop-color="#FF6B6B"/></linearGradient></defs><rect x="3" y="13" width="58" height="40" rx="11" fill="url(#fnvg)"/><rect x="11" y="24" width="24" height="4.4" rx="2.2" fill="#fff" opacity=".95"/><rect x="11" y="33" width="14" height="4.4" rx="2.2" fill="#fff" opacity=".6"/><path d="M45 16.4C45.5 18 46.4 18.9 54.6 26C46.4 33.1 45.5 34 45 35.6C44.5 34 43.6 33.1 35.4 26C43.6 18.9 44.5 18 45 16.4Z" fill="#fff"/><path d="M53.4 34.1C53.6 34.8 54 35.2 57.8 38.5C54 41.8 53.6 42.2 53.4 42.9C53.2 42.2 52.8 41.8 49 38.5C52.8 35.2 53.2 34.8 53.4 34.1Z" fill="#fff" opacity=".88"/></svg>';
+  return '<svg viewBox="0 0 64 64" aria-hidden="true"><defs><linearGradient id="fnvg" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#4F7A6C"/><stop offset=".55" stop-color="#7CA396"/><stop offset="1" stop-color="#A85630"/></linearGradient></defs><rect x="3" y="13" width="58" height="40" rx="11" fill="url(#fnvg)"/><rect x="11" y="24" width="24" height="4.4" rx="2.2" fill="#fff" opacity=".95"/><rect x="11" y="33" width="14" height="4.4" rx="2.2" fill="#fff" opacity=".6"/><path d="M45 16.4C45.5 18 46.4 18.9 54.6 26C46.4 33.1 45.5 34 45 35.6C44.5 34 43.6 33.1 35.4 26C43.6 18.9 44.5 18 45 16.4Z" fill="#fff"/><path d="M53.4 34.1C53.6 34.8 54 35.2 57.8 38.5C54 41.8 53.6 42.2 53.4 42.9C53.2 42.2 52.8 41.8 49 38.5C52.8 35.2 53.2 34.8 53.4 34.1Z" fill="#fff" opacity=".88"/></svg>';
 }
 
 /** Rend la barre de navigation. $active ∈ accueil|services|tarifs|contact */
 function nav_bar(string $base, string $active = ''): void {
-  echo nav_css_once();
+  echo nav_css_once($base);
   $on = fn($k) => $active === $k ? ' class="on"' : '';
   $links = [
     ['accueil',  $base . '/accueil.php',            'Accueil'],

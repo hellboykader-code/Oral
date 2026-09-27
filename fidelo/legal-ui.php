@@ -5,7 +5,7 @@ require_once __DIR__ . '/lib.php';
 require_once __DIR__ . '/nav.php';
 
 function legal_icon(): string {
-  return '<svg class="flogo" viewBox="0 0 64 64" aria-hidden="true"><defs><linearGradient id="lga" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#06B6D4"/><stop offset=".55" stop-color="#22D3EE"/><stop offset="1" stop-color="#FF6B6B"/></linearGradient></defs><rect x="3" y="13" width="58" height="40" rx="11" fill="url(#lga)"/><rect x="11" y="24" width="24" height="4.4" rx="2.2" fill="#fff" opacity=".95"/><rect x="11" y="33" width="14" height="4.4" rx="2.2" fill="#fff" opacity=".6"/><path d="M45 16.4C45.5 18 46.4 18.9 54.6 26C46.4 33.1 45.5 34 45 35.6C44.5 34 43.6 33.1 35.4 26C43.6 18.9 44.5 18 45 16.4Z" fill="#fff"/><path d="M53.4 34.1C53.6 34.8 54 35.2 57.8 38.5C54 41.8 53.6 42.2 53.4 42.9C53.2 42.2 52.8 41.8 49 38.5C52.8 35.2 53.2 34.8 53.4 34.1Z" fill="#fff" opacity=".88"/></svg>';
+  return '<svg class="flogo" viewBox="0 0 64 64" aria-hidden="true"><defs><linearGradient id="lga" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#4F7A6C"/><stop offset=".55" stop-color="#7CA396"/><stop offset="1" stop-color="#A85630"/></linearGradient></defs><rect x="3" y="13" width="58" height="40" rx="11" fill="url(#lga)"/><rect x="11" y="24" width="24" height="4.4" rx="2.2" fill="#fff" opacity=".95"/><rect x="11" y="33" width="14" height="4.4" rx="2.2" fill="#fff" opacity=".6"/><path d="M45 16.4C45.5 18 46.4 18.9 54.6 26C46.4 33.1 45.5 34 45 35.6C44.5 34 43.6 33.1 35.4 26C43.6 18.9 44.5 18 45 16.4Z" fill="#fff"/><path d="M53.4 34.1C53.6 34.8 54 35.2 57.8 38.5C54 41.8 53.6 42.2 53.4 42.9C53.2 42.2 52.8 41.8 49 38.5C52.8 35.2 53.2 34.8 53.4 34.1Z" fill="#fff" opacity=".88"/></svg>';
 }
 
 function legal_open(string $titre, string $desc, string $chapeau): void {
@@ -23,26 +23,26 @@ function legal_open(string $titre, string $desc, string $chapeau): void {
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,500;0,600;0,700;0,800;0,900;1,400;1,500;1,600&family=Inter:wght@400;500;600;700;800&family=IBM+Plex+Mono:wght@400;500&display=swap">
 <style>
 :root{
-  --ink:#080F0D;--ink-2:#122019;
-  --paper:#F5F2EA;--card:#FFFFFF;--line:#E4DFD0;
-  --tq:#0EA5B7;--tq-d:#0A7A88;--tq-l:#3FC6D6;
-  --gold:#C99A3E;--gold-l:#E4C583;
-  --coral:#E24E3F;--coral-d:#B93B2F;
-  --text:#141A16;--muted:#5C6259;--faint:#8C9188;
+  --ink:#17140F;--ink-2:#241E16;
+  --paper:#FAF4E9;--card:#FFFCF5;--line:#E4D8C3;
+  --tq:#4F7A6C;--tq-d:#3A5B50;--tq-l:#7CA396;
+  --gold:#C79A5C;--gold-l:#E3C393;
+  --coral:#A85630;--coral-d:#874323;
+  --text:#241D14;--muted:#6E6353;--faint:#A0947F;
   --disp:"Playfair Display",Georgia,"Times New Roman",serif;
   --body:"Inter",-apple-system,system-ui,sans-serif;
   --mono:"IBM Plex Mono",monospace;
   --s1:.5rem;--s2:1rem;--s3:1.5rem;--s4:2rem;--s5:3rem;--s6:4rem;--s7:6rem;--s8:9rem;
   --ease:cubic-bezier(.16,1,.3,1);
-  --co:var(--coral);--accent-txt:var(--tq-d);--bg-2:#ECE7D8;
+  --co:var(--coral);--accent-txt:var(--tq-d);--bg-2:#F0E6D4;
   --grad:linear-gradient(118deg,var(--tq) 0%,var(--tq-l) 45%,var(--coral) 100%);
 }
 @media(prefers-color-scheme:dark){:root{
-  --ink:#F5F2EA;--ink-2:#e8e3d3;--paper:#0B100D;--card:#141A16;--line:#262C25;
-  --tq:#3FC6D6;--tq-d:#7BDCE7;--tq-l:#9EE8F0;--gold:#E4C583;--gold-l:#F3DFA6;
-  --coral:#FF8577;--coral-d:#FFA89E;
-  --text:#F1EFE6;--muted:#A7ACA0;--faint:#6E7368;
-  --co:var(--coral);--accent-txt:var(--tq-l);--bg-2:#1A211A;}}
+  --ink:#F5EEDF;--ink-2:#e8dfc9;--paper:#14100B;--card:#1E1811;--line:#33291C;
+  --tq:#7CA396;--tq-d:#4F7A6C;--tq-l:#A9C7BC;--gold:#E3C393;--gold-l:#F0DDB2;
+  --coral:#C87A50;--coral-d:#D89670;
+  --text:#F1E9D8;--muted:#B8AC94;--faint:#7A6F5C;
+  --co:var(--coral);--accent-txt:var(--tq-l);--bg-2:#241C12;}}
 *{box-sizing:border-box}
 html{scroll-behavior:auto;overflow-x:hidden}
 body{margin:0;background:var(--paper);color:var(--text);font-family:var(--body);-webkit-font-smoothing:antialiased;line-height:1.7;overflow-x:hidden}
