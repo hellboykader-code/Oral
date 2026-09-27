@@ -95,19 +95,19 @@ $shopName = $exists ? $found['shop']['name'] : 'Fidelo';
 <!doctype html><html lang="fr"><head>
 <meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
 <link rel="icon" href="<?= e($base) ?>/favicon.ico" sizes="any"><link rel="icon" type="image/svg+xml" href="<?= e($base) ?>/logo.svg"><link rel="apple-touch-icon" href="<?= e($base) ?>/apple-touch-icon.png">
-<title>Ma carte <?= e($shopName) ?></title><meta name="theme-color" content="#0A2E38">
+<title>Ma carte <?= e($shopName) ?></title><meta name="theme-color" content="#241A12">
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
 <meta name="apple-mobile-web-app-title" content="<?= e($shopName) ?>">
 <link rel="apple-touch-icon" href="<?= e($base) ?>/icon-192.png">
 <link rel="manifest" href="<?= e($base) ?>/manifest.php?c=<?= e($card) ?>">
 <link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,400..800&family=Instrument+Sans:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500&display=swap">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Calistoga&family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@400;500&display=swap">
 <script src="qrcode.min.js"></script>
 <style>
-:root{--em:#06B6D4;--em-d:#0891B2;--em-l:#22D3EE;--or:#D9A94E;--or-l:#f0d488;--or-d:#bd8f38;--iv:#F3FCFD;--me:#E7F8FA;--me-d:#D6EEF1;--card:#fff;--line:#D6EEF1;--text:#1c2a25;--muted:#5a675f;--faint:#6f7c76;--deep:#0A2E38;--deep2:#0F3D49;
---disp:"Bricolage Grotesque",system-ui,sans-serif;--body:"Instrument Sans",system-ui,sans-serif;--mono:"IBM Plex Mono",monospace;}
-@media(prefers-color-scheme:dark){:root{--em:#22D3EE;--em-d:#0891B2;--em-l:#67E8F9;--or:#e3ba63;--or-l:#f2d78f;--iv:#07222A;--me:#0B2C35;--me-d:#183B45;--card:#0E323C;--line:#1C4650;--text:#e6efea;--muted:#9fc4cc;--faint:#728178;}}
+:root{--em:#C1552F;--em-d:#9C4024;--em-l:#E08A5D;--or:#D9A94E;--or-l:#f0d488;--or-d:#bd8f38;--iv:#FBF3E7;--me:#F6EBDD;--me-d:#E9DAC3;--card:#fff;--line:#E9DAC3;--text:#241A12;--muted:#6E5B47;--faint:#9C8B74;--deep:#241A12;--deep2:#3A2A1D;
+--disp:"Calistoga",system-ui,sans-serif;--body:"Inter",system-ui,sans-serif;--mono:"JetBrains Mono",monospace;}
+@media(prefers-color-scheme:dark){:root{--em:#E08A5D;--em-d:#9C4024;--em-l:#F0AE85;--or:#e3ba63;--or-l:#f2d78f;--iv:#1E140D;--me:#2A1E16;--me-d:#3A2A1D;--card:#2A1E16;--line:#4A382A;--text:#F3E8D8;--muted:#C9B79E;--faint:#8F7C64;}}
 *{box-sizing:border-box}body{margin:0;background:var(--iv);color:var(--text);font-family:var(--body);-webkit-font-smoothing:antialiased}
 h1,h2,h3{font-family:var(--disp);font-weight:600;letter-spacing:-.02em;margin:0}button{font-family:inherit;cursor:pointer;border:0;background:none;color:inherit}[hidden]{display:none!important}.mono{font-family:var(--mono)}
 .app{max-width:460px;margin:0 auto;padding:16px 16px 40px}
@@ -115,22 +115,22 @@ h1,h2,h3{font-family:var(--disp);font-weight:600;letter-spacing:-.02em;margin:0}
 .bar .ic img{width:100%;height:100%;object-fit:cover;display:block;opacity:0;animation:logoIn .6s .1s forwards}
 @keyframes logoIn{to{opacity:1}}
 .bar .shop{font-family:var(--disp);font-weight:600;font-size:16px}.bar .sub{font-size:11px;color:var(--faint);font-family:var(--mono)}.bar .brand{margin-left:auto;font-family:var(--disp);font-weight:700;color:var(--muted)}.bar .brand i{color:var(--or);font-style:normal}
-.card{position:relative;border-radius:24px;overflow:hidden;color:#eef7f2;padding:20px;background:linear-gradient(150deg,#0A2E38,#0891B2 76%,#FF6B6B 138%);box-shadow:0 20px 44px -18px rgba(10,40,32,.6)}
+.card{position:relative;border-radius:24px;overflow:hidden;color:#F3ECE1;padding:20px;background:linear-gradient(150deg,#241A12,#9C4024 76%,#FF6B6B 138%);box-shadow:0 20px 44px -18px rgba(30,20,13,.6)}
 .card::before{content:"";position:absolute;inset:0;background:radial-gradient(120% 80% at 85% -10%,rgba(217,169,78,.28),transparent 55%)}
 .card::after{content:"";position:absolute;top:-60%;left:-30%;width:60%;height:220%;background:linear-gradient(105deg,transparent,rgba(255,255,255,.13),transparent);transform:rotate(8deg);animation:sh 5.5s ease-in-out infinite}
 @keyframes sh{0%,100%{left:-40%}55%{left:130%}}.card>*{position:relative;z-index:2}
 .ctop{display:flex;justify-content:space-between;align-items:flex-start}
 .tier{display:inline-flex;align-items:center;gap:6px;padding:5px 11px;border-radius:99px;background:rgba(217,169,78,.16);border:1px solid rgba(217,169,78,.5);color:var(--or-l);font-size:11px;font-weight:600}.tier svg{width:13px;height:13px}
 .chip{width:38px;height:30px;border-radius:7px;background:linear-gradient(135deg,var(--or-l),var(--or-d))}
-.cname{font-family:var(--disp);font-size:23px;font-weight:600;margin-top:16px;color:#fff}.csince{font-size:11.5px;color:rgba(238,247,242,.7);font-family:var(--mono);margin-top:2px}
+.cname{font-family:var(--disp);font-size:23px;font-weight:600;margin-top:16px;color:#fff}.csince{font-size:11.5px;color:rgba(243,236,225,.7);font-family:var(--mono);margin-top:2px}
 .cbot{display:flex;align-items:flex-end;justify-content:space-between;margin-top:18px;gap:14px}
-.pk{font-size:10.5px;letter-spacing:.14em;text-transform:uppercase;color:rgba(238,247,242,.6)}.pv{font-family:var(--disp);font-weight:700;font-size:50px;line-height:.9;color:#fff}.pv small{font-size:14px;color:var(--or-l)}
+.pk{font-size:10.5px;letter-spacing:.14em;text-transform:uppercase;color:rgba(243,236,225,.6)}.pv{font-family:var(--disp);font-weight:700;font-size:50px;line-height:.9;color:#fff}.pv small{font-size:14px;color:var(--or-l)}
 .card .brandmark{position:absolute!important;z-index:3!important;right:18px;top:18px;width:58px;height:58px;
   border-radius:50%;background-size:cover;background-position:center;pointer-events:none;
   box-shadow:0 0 0 3px rgba(255,255,255,.28), 0 8px 20px -6px rgba(0,0,0,.45);
   animation:markIn .9s .15s cubic-bezier(.2,.9,.3,1) both}
 @keyframes markIn{from{opacity:0;transform:scale(.55) rotate(-18deg)}to{opacity:1;transform:none}}
-.qm{background:#fff;border-radius:12px;padding:7px;flex-shrink:0}.qm img{width:78px;height:78px;image-rendering:pixelated;display:block}.qm .t{font-size:8px;color:#0891B2;text-align:center;margin-top:2px;font-family:var(--mono)}
+.qm{background:#fff;border-radius:12px;padding:7px;flex-shrink:0}.qm img{width:78px;height:78px;image-rendering:pixelated;display:block}.qm .t{font-size:8px;color:#9C4024;text-align:center;margin-top:2px;font-family:var(--mono)}
 .prog{background:var(--card);border:1px solid var(--line);border-radius:16px;padding:15px;margin-top:14px}
 .prog .r{display:flex;justify-content:space-between;font-size:13.5px}.prog .r .g{color:var(--muted)}.prog .r .c{font-family:var(--mono);color:var(--em);font-weight:600}
 .track{height:10px;border-radius:99px;background:var(--me-d);overflow:hidden;margin-top:10px}.track>i{height:100%;background:linear-gradient(90deg,var(--em),var(--em-l));border-radius:99px;width:0;transition:width 1s}
@@ -138,25 +138,25 @@ h1,h2,h3{font-family:var(--disp);font-weight:600;letter-spacing:-.02em;margin:0}
 .acts{display:grid;grid-template-columns:1fr 1fr;gap:9px;margin-top:12px}.btn{display:flex;align-items:center;justify-content:center;gap:8px;padding:13px;border-radius:13px;font-weight:600;font-size:14px}.btn svg{width:17px;height:17px}
 .btn-gw{width:100%;margin-top:9px;background:#000;color:#fff;border:1px solid #3c4043}
 .btn-gw:disabled{opacity:.6}
-.btn-install{width:100%;margin-top:9px;background:linear-gradient(118deg,#06B6D4,#22D3EE 42%,#FF6B6B);color:#fff;box-shadow:0 10px 22px -8px rgba(6,182,212,.5)}
+.btn-install{width:100%;margin-top:9px;background:linear-gradient(118deg,#C1552F,#E08A5D 42%,#FF6B6B);color:#fff;box-shadow:0 10px 22px -8px rgba(193,85,47,.5)}
 .btn-p{background:var(--em);color:#fff}.btn-o{background:var(--card);border:1.5px solid var(--line);color:var(--text)}
 .sect{font-family:var(--disp);font-weight:600;font-size:16px;margin:24px 2px 12px}
 .rw{display:flex;align-items:center;gap:13px;padding:13px 14px;background:var(--card);border:1px solid var(--line);border-radius:15px;margin-bottom:10px}
 .rw.ok{border-color:var(--or)}.rw.lock{opacity:.6}.rw .n{width:50px;height:50px;border-radius:14px;display:grid;place-items:center;font-family:var(--mono);font-weight:600;background:var(--me);color:var(--em-d)}
 .rw.ok .n{background:linear-gradient(140deg,var(--or-l),var(--or));color:#3a2a05}.rw .t{font-weight:600;font-size:14px}.rw .d{font-size:12px;color:var(--muted)}.rw .st{margin-left:auto;font-size:11px;font-weight:700}.rw.ok .st{color:var(--or-d)}.rw .st.done{color:var(--em)}.rw.lock .st{color:var(--faint)}
 .foot{text-align:center;margin-top:26px;color:var(--faint);font-size:12px;line-height:1.6}.foot b{color:var(--em)}.foot i{color:var(--or);font-style:normal}
-.qr-full{position:fixed;inset:0;z-index:100;background:rgba(6,14,11,.72);display:none;place-items:center;padding:24px}.qr-full.on{display:grid}
-.qr-full .s{background:#fff;border-radius:24px;padding:26px;text-align:center;max-width:340px;width:100%}.qr-full .w{font-family:var(--disp);font-weight:600;font-size:18px;color:#0A2E38}.qr-full .su{font-size:12.5px;color:#5a675f;margin-top:4px}
-.qr-full img{width:230px;height:230px;image-rendering:pixelated;margin-top:14px}.qr-full .cd{font-family:var(--mono);font-size:12px;color:#8a958e;margin-top:8px}.qr-full .cl{margin-top:16px;width:100%;padding:13px;border-radius:13px;background:#0A2E38;color:#fff;font-weight:600}
+.qr-full{position:fixed;inset:0;z-index:100;background:rgba(20,13,8,.72);display:none;place-items:center;padding:24px}.qr-full.on{display:grid}
+.qr-full .s{background:#fff;border-radius:24px;padding:26px;text-align:center;max-width:340px;width:100%}.qr-full .w{font-family:var(--disp);font-weight:600;font-size:18px;color:#241A12}.qr-full .su{font-size:12.5px;color:#6E5B47;margin-top:4px}
+.qr-full img{width:230px;height:230px;image-rendering:pixelated;margin-top:14px}.qr-full .cd{font-family:var(--mono);font-size:12px;color:#9C8B74;margin-top:8px}.qr-full .cl{margin-top:16px;width:100%;padding:13px;border-radius:13px;background:#241A12;color:#fff;font-weight:600}
 .msg{display:none;margin-top:14px;padding:15px 16px;border-radius:16px;position:relative;
-  background:linear-gradient(126deg,rgba(6,182,212,.18),rgba(255,107,107,.16));border:1px solid rgba(34,211,238,.42)}
+  background:linear-gradient(126deg,rgba(193,85,47,.18),rgba(255,107,107,.16));border:1px solid rgba(224,138,93,.42)}
 .msg.on{display:block;animation:msgIn .5s cubic-bezier(.2,.9,.3,1)}
 @keyframes msgIn{from{opacity:0;transform:translateY(-8px)}to{opacity:1;transform:none}}
 .msg .k{font-size:10.5px;letter-spacing:.14em;color:var(--em-l);font-family:var(--mono);text-transform:uppercase}
 .msg .t{font-family:var(--disp);font-weight:600;font-size:16px;margin-top:5px;padding-right:26px}
 .msg .b{font-size:13.5px;color:var(--text);opacity:.9;margin-top:5px;line-height:1.5;white-space:pre-wrap}
 .msg .x{position:absolute;top:10px;right:10px;width:26px;height:26px;border-radius:9px;color:var(--muted);font-size:15px;line-height:1}
-.empty{text-align:center;padding:60px 20px;color:var(--muted)}.toast{position:fixed;left:50%;bottom:24px;transform:translateX(-50%);background:var(--deep);color:#eef7f2;padding:12px 18px;border-radius:12px;font-size:14px;z-index:200;opacity:0;transition:.3s;pointer-events:none}.toast.on{opacity:1}
+.empty{text-align:center;padding:60px 20px;color:var(--muted)}.toast{position:fixed;left:50%;bottom:24px;transform:translateX(-50%);background:var(--deep);color:#F3ECE1;padding:12px 18px;border-radius:12px;font-size:14px;z-index:200;opacity:0;transition:.3s;pointer-events:none}.toast.on{opacity:1}
 @media(prefers-reduced-motion:reduce){.card::after{display:none}*{transition:none!important}}
 .flogo{width:1.35em;height:1.35em;display:inline-block;vertical-align:-.32em;margin-right:.32em}
 </style></head><body>
@@ -165,7 +165,7 @@ h1,h2,h3{font-family:var(--disp);font-weight:600;letter-spacing:-.02em;margin:0}
 <div class="empty"><h2>Carte introuvable</h2><p style="margin-top:10px">Ce lien n'est pas valide. Demandez à votre commerçant de vous renvoyer votre carte.</p></div></div>
 <?php else: ?>
 <div class="app">
-  <div class="bar"><div class="ic" id="ic">·</div><div><div class="shop" id="shop">…</div><div class="sub">CARTE DE FIDÉLITÉ</div></div><div class="brand"><svg class="flogo" viewBox="0 0 64 64" aria-hidden="true"><defs><linearGradient id="caa" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#06B6D4"/><stop offset=".55" stop-color="#22D3EE"/><stop offset="1" stop-color="#FF6B6B"/></linearGradient><linearGradient id="cab" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#fff" stop-opacity=".3"/><stop offset=".5" stop-color="#fff" stop-opacity="0"/></linearGradient></defs><rect x="3" y="13" width="58" height="40" rx="11" fill="url(#caa)"/><rect x="3" y="13" width="58" height="40" rx="11" fill="url(#cab)"/><rect x="11" y="24" width="24" height="4.4" rx="2.2" fill="#fff" opacity=".95"/><rect x="11" y="33" width="14" height="4.4" rx="2.2" fill="#fff" opacity=".6"/><path d="M45 16.4C45.5 18 46.4 18.9 54.6 26C46.4 33.1 45.5 34 45 35.6C44.5 34 43.6 33.1 35.4 26C43.6 18.9 44.5 18 45 16.4Z" fill="#fff"/><path d="M53.4 34.1C53.6 34.8 54 35.2 57.8 38.5C54 41.8 53.6 42.2 53.4 42.9C53.2 42.2 52.8 41.8 49 38.5C52.8 35.2 53.2 34.8 53.4 34.1Z" fill="#fff" opacity=".88"/></svg>Fidelo<i>.</i></div></div>
+  <div class="bar"><div class="ic" id="ic">·</div><div><div class="shop" id="shop">…</div><div class="sub">CARTE DE FIDÉLITÉ</div></div><div class="brand"><svg class="flogo" viewBox="0 0 64 64" aria-hidden="true"><defs><linearGradient id="caa" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#C1552F"/><stop offset=".55" stop-color="#E08A5D"/><stop offset="1" stop-color="#FF6B6B"/></linearGradient><linearGradient id="cab" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#fff" stop-opacity=".3"/><stop offset=".5" stop-color="#fff" stop-opacity="0"/></linearGradient></defs><rect x="3" y="13" width="58" height="40" rx="11" fill="url(#caa)"/><rect x="3" y="13" width="58" height="40" rx="11" fill="url(#cab)"/><rect x="11" y="24" width="24" height="4.4" rx="2.2" fill="#fff" opacity=".95"/><rect x="11" y="33" width="14" height="4.4" rx="2.2" fill="#fff" opacity=".6"/><path d="M45 16.4C45.5 18 46.4 18.9 54.6 26C46.4 33.1 45.5 34 45 35.6C44.5 34 43.6 33.1 35.4 26C43.6 18.9 44.5 18 45 16.4Z" fill="#fff"/><path d="M53.4 34.1C53.6 34.8 54 35.2 57.8 38.5C54 41.8 53.6 42.2 53.4 42.9C53.2 42.2 52.8 41.8 49 38.5C52.8 35.2 53.2 34.8 53.4 34.1Z" fill="#fff" opacity=".88"/></svg>Fidelo<i>.</i></div></div>
   <div class="card"><div class="ctop"><span class="tier"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 2l2.4 5 5.6.6-4.2 3.8 1.2 5.6L12 19.8 6.9 17l1.2-5.6L4 7.6 9.6 7z"/></svg><span id="tier">Client</span></span></div>
     <div class="cname" id="name">…</div><div class="csince" id="since"></div>
     <div class="brandmark" id="brandMark"></div>

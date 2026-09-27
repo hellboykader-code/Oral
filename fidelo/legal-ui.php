@@ -5,7 +5,7 @@ require_once __DIR__ . '/lib.php';
 require_once __DIR__ . '/nav.php';
 
 function legal_icon(): string {
-  return '<svg class="flogo" viewBox="0 0 64 64" aria-hidden="true"><defs><linearGradient id="lga" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#06B6D4"/><stop offset=".55" stop-color="#22D3EE"/><stop offset="1" stop-color="#FF6B6B"/></linearGradient></defs><rect x="3" y="13" width="58" height="40" rx="11" fill="url(#lga)"/><rect x="11" y="24" width="24" height="4.4" rx="2.2" fill="#fff" opacity=".95"/><rect x="11" y="33" width="14" height="4.4" rx="2.2" fill="#fff" opacity=".6"/><path d="M45 16.4C45.5 18 46.4 18.9 54.6 26C46.4 33.1 45.5 34 45 35.6C44.5 34 43.6 33.1 35.4 26C43.6 18.9 44.5 18 45 16.4Z" fill="#fff"/><path d="M53.4 34.1C53.6 34.8 54 35.2 57.8 38.5C54 41.8 53.6 42.2 53.4 42.9C53.2 42.2 52.8 41.8 49 38.5C52.8 35.2 53.2 34.8 53.4 34.1Z" fill="#fff" opacity=".88"/></svg>';
+  return '<svg class="flogo" viewBox="0 0 64 64" aria-hidden="true"><defs><linearGradient id="lga" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#C1552F"/><stop offset=".55" stop-color="#E08A5D"/><stop offset="1" stop-color="#FF6B6B"/></linearGradient></defs><rect x="3" y="13" width="58" height="40" rx="11" fill="url(#lga)"/><rect x="11" y="24" width="24" height="4.4" rx="2.2" fill="#fff" opacity=".95"/><rect x="11" y="33" width="14" height="4.4" rx="2.2" fill="#fff" opacity=".6"/><path d="M45 16.4C45.5 18 46.4 18.9 54.6 26C46.4 33.1 45.5 34 45 35.6C44.5 34 43.6 33.1 35.4 26C43.6 18.9 44.5 18 45 16.4Z" fill="#fff"/><path d="M53.4 34.1C53.6 34.8 54 35.2 57.8 38.5C54 41.8 53.6 42.2 53.4 42.9C53.2 42.2 52.8 41.8 49 38.5C52.8 35.2 53.2 34.8 53.4 34.1Z" fill="#fff" opacity=".88"/></svg>';
 }
 
 function legal_open(string $titre, string $desc, string $chapeau): void {
@@ -17,23 +17,23 @@ function legal_open(string $titre, string $desc, string $chapeau): void {
 <link rel="icon" href="<?= e($base) ?>/favicon.ico" sizes="any"><link rel="icon" type="image/svg+xml" href="<?= e($base) ?>/logo.svg"><link rel="apple-touch-icon" href="<?= e($base) ?>/apple-touch-icon.png">
 <title><?= e($titre) ?> — Fidelo</title>
 <meta name="description" content="<?= e($desc) ?>">
-<meta name="theme-color" content="#06B6D4">
+<meta name="theme-color" content="#C1552F">
 <link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,400..800&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=IBM+Plex+Mono:wght@400;500&display=swap">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Calistoga&family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500&display=swap">
 <style>
 :root{
-  --tq:#06B6D4;--tq-d:#0891B2;--co:#FF6B6B;--am-d:#F7B500;
-  --ink-fixed:#0A2E38;--accent-txt:#0B7C97;
-  --bg:#F3FCFD;--bg-2:#E7F8FA;--card:#ffffff;--line:#D6EEF1;
-  --text:#0F343D;--muted:#4e767f;--faint:#7d9ea7;
-  --disp:"Bricolage Grotesque",-apple-system,system-ui,sans-serif;
-  --body:"Plus Jakarta Sans",-apple-system,system-ui,sans-serif;--mono:"IBM Plex Mono",monospace;
-  --grad:linear-gradient(118deg,#06B6D4 0%,#22D3EE 38%,#FF6B6B 100%);
+  --tq:#C1552F;--tq-d:#9C4024;--co:#FF6B6B;--am-d:#F7B500;
+  --ink-fixed:#241A12;--accent-txt:#9C4024;
+  --bg:#FBF3E7;--bg-2:#F6EBDD;--card:#ffffff;--line:#E9DAC3;
+  --text:#241A12;--muted:#6E5B47;--faint:#9C8B74;
+  --disp:"Calistoga",-apple-system,system-ui,sans-serif;
+  --body:"Inter",-apple-system,system-ui,sans-serif;--mono:"JetBrains Mono",monospace;
+  --grad:linear-gradient(118deg,#C1552F 0%,#E08A5D 38%,#FF6B6B 100%);
 }
 @media(prefers-color-scheme:dark){:root{
-  --tq:#22D3EE;--tq-d:#06B6D4;--co:#FF8080;--accent-txt:#7DE9FB;--ink-fixed:#04161c;
-  --bg:#07222a;--bg-2:#0b2c35;--card:#0e323c;--line:#1c4650;
-  --text:#EAFBFD;--muted:#9fc4cc;--faint:#6f939b;}}
+  --tq:#E08A5D;--tq-d:#C1552F;--co:#FF8080;--accent-txt:#F0AE85;--ink-fixed:#140D08;
+  --bg:#1E140D;--bg-2:#2A1E16;--card:#2A1E16;--line:#4A382A;
+  --text:#FBF3E7;--muted:#C9B79E;--faint:#8F7C64;}}
 *{box-sizing:border-box}
 body{margin:0;background:var(--bg);color:var(--text);font-family:var(--body);-webkit-font-smoothing:antialiased;line-height:1.7}
 a{color:var(--accent-txt);text-decoration:none;font-weight:600}
@@ -61,7 +61,7 @@ li{font-size:15.5px;margin-top:7px}
 .box p:first-child,.box ul:first-child{margin-top:0}
 table{width:100%;border-collapse:collapse;margin-top:16px;background:var(--card);border-radius:14px;overflow:hidden;font-size:14.5px;border:1px solid var(--line)}
 th,td{padding:12px 14px;text-align:left;border-bottom:1px solid var(--line);vertical-align:top}
-thead th{background:var(--ink-fixed);color:#EAFBFD;font-family:var(--disp);font-weight:600;font-size:14.5px}
+thead th{background:var(--ink-fixed);color:#FBF3E7;font-family:var(--disp);font-weight:600;font-size:14.5px}
 tbody tr:last-child td{border-bottom:0}
 @media(max-width:700px){table{font-size:13px}th,td{padding:9px 10px}}
 .foot{padding:46px 0 60px;margin-top:56px;border-top:2px solid var(--line);color:var(--muted);font-size:13.5px;text-align:center}

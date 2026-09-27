@@ -3,35 +3,47 @@
 require __DIR__ . '/lib.php';
 require __DIR__ . '/nav.php';
 $base = rtrim(dirname($_SERVER['SCRIPT_NAME']), '/');
+$origin = (is_https() ? 'https' : 'http') . '://' . ($_SERVER['HTTP_HOST'] ?? 'fidelo.site');
 ?>
 <!doctype html><html lang="fr"><head>
 <meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
 <link rel="icon" href="<?= e($base) ?>/favicon.ico" sizes="any"><link rel="icon" type="image/svg+xml" href="<?= e($base) ?>/logo.svg"><link rel="apple-touch-icon" href="<?= e($base) ?>/apple-touch-icon.png">
 <title>Fidelo — La fidélité qui fait revenir vos clients</title>
 <meta name="description" content="Le programme de fidélité sans carte et sans appli pour cafés, restaurants et commerces. Inscription gratuite, 10 jours d'essai.">
-<meta name="theme-color" content="#0A2E38">
+<meta name="theme-color" content="#241A12">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="Fidelo">
+<meta property="og:title" content="Fidelo — La fidélité qui fait revenir vos clients">
+<meta property="og:description" content="Le programme de fidélité sans carte et sans appli pour cafés, restaurants et commerces. Inscription gratuite, 10 jours d'essai.">
+<meta property="og:image" content="<?= e($origin . $base) ?>/og-image.png">
+<meta property="og:image:width" content="1200"><meta property="og:image:height" content="630">
+<meta property="og:url" content="<?= e($origin . $base) ?>/accueil.php">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="Fidelo — La fidélité qui fait revenir vos clients">
+<meta name="twitter:description" content="Le programme de fidélité sans carte et sans appli pour cafés, restaurants et commerces.">
+<meta name="twitter:image" content="<?= e($origin . $base) ?>/og-image.png">
 <link rel="icon" href="<?= e($base) ?>/icon-192.png">
 <link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,400..800&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=IBM+Plex+Mono:wght@400;500&display=swap">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Calistoga&family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500&display=swap">
 <style>
 /* ============================================================
    TOKENS — palette disciplinée (encre + un seul accent),
    grille d'espacement 8px, échelle typographique nette.
    ============================================================ */
 :root{
-  --ink:#0A2E38;--ink-2:#123B47;
-  --tq:#06B6D4;--tq-d:#0980A0;--tq-l:#22D3EE;
+  --ink:#241A12;--ink-2:#3A2A1D;
+  --tq:#C1552F;--tq-d:#9C4024;--tq-l:#E08A5D;
   --gold:#B8863A;--gold-l:#E4C583;
-  --bg:#F6F8F7;--card:#FFFFFF;--line:#DCE6E4;
-  --text:#12262A;--muted:#5B7278;--faint:#8AA0A4;
-  --disp:"Bricolage Grotesque",-apple-system,system-ui,sans-serif;
-  --body:"Plus Jakarta Sans",-apple-system,system-ui,sans-serif;
-  --mono:"IBM Plex Mono",monospace;
+  --bg:#FBF3E7;--card:#FFFFFF;--line:#E9DAC3;
+  --text:#241A12;--muted:#6E5B47;--faint:#9C8B74;
+  --disp:"Calistoga",-apple-system,system-ui,sans-serif;
+  --body:"Inter",-apple-system,system-ui,sans-serif;
+  --mono:"JetBrains Mono",monospace;
   --s1:.5rem;--s2:1rem;--s3:1.5rem;--s4:2rem;--s5:3rem;--s6:4rem;--s7:6rem;--s8:8rem;
 }
 @media(prefers-color-scheme:dark){:root{
-  --ink:#EAF4F5;--ink-2:#cfe6e8;--tq:#22D3EE;--tq-d:#67E8F9;--tq-l:#8FF1FF;--gold:#E4C583;--gold-l:#F3DFA6;
-  --bg:#0A1618;--card:#0F2226;--line:#1D3438;--text:#EAF4F5;--muted:#9AB4B8;--faint:#5F797D;}}
+  --ink:#F3E8D8;--ink-2:#E4D5BE;--tq:#E08A5D;--tq-d:#F0AE85;--tq-l:#F5C6A5;--gold:#E4C583;--gold-l:#F3DFA6;
+  --bg:#0A1618;--card:#0F2226;--line:#1D3438;--text:#F3E8D8;--muted:#C9B79E;--faint:#8F7C64;}}
 *{box-sizing:border-box}
 body{margin:0;background:var(--bg);color:var(--text);font-family:var(--body);-webkit-font-smoothing:antialiased;overflow-x:hidden}
 h1,h2,h3,h4{font-family:var(--disp);font-weight:700;line-height:1.02;letter-spacing:-.025em;text-wrap:balance;margin:0}
@@ -75,13 +87,13 @@ img{max-width:100%}[hidden]{display:none!important}.mono{font-family:var(--mono)
 @keyframes demoIn{to{opacity:1;transform:none}}
 .phone{position:relative;width:280px;max-width:100%;margin:0 auto;aspect-ratio:280/560;background:#08181d;border-radius:34px;padding:10px;box-shadow:0 30px 60px -24px rgba(0,0,0,.55)}
 .phone .notch{position:absolute;top:10px;left:50%;transform:translateX(-50%);width:84px;height:18px;background:#08181d;border-radius:0 0 12px 12px;z-index:5}
-.screen{position:relative;width:100%;height:100%;border-radius:26px;overflow:hidden;background:#F3FCFD;display:flex;flex-direction:column}
-.sc-head{padding:22px 14px 10px;display:flex;align-items:center;gap:8px;color:#0A2E38;background:#fff}
-.sc-head .ic{width:26px;height:26px;border-radius:8px;background:#0A2E38;color:#fff;display:grid;place-items:center;font-family:var(--disp);font-weight:800;font-size:12px}
-.sc-head .nm{font-family:var(--disp);font-weight:700;font-size:13px;text-align:left;color:#0A2E38}
-.sc-head .sb{font-size:8.5px;color:#7d9ea7;font-family:var(--mono)}
+.screen{position:relative;width:100%;height:100%;border-radius:26px;overflow:hidden;background:#FBF3E7;display:flex;flex-direction:column}
+.sc-head{padding:22px 14px 10px;display:flex;align-items:center;gap:8px;color:#241A12;background:#fff}
+.sc-head .ic{width:26px;height:26px;border-radius:8px;background:#241A12;color:#fff;display:grid;place-items:center;font-family:var(--disp);font-weight:800;font-size:12px}
+.sc-head .nm{font-family:var(--disp);font-weight:700;font-size:13px;text-align:left;color:#241A12}
+.sc-head .sb{font-size:8.5px;color:#9C8B74;font-family:var(--mono)}
 .sc-body{flex:1;padding:11px;overflow:hidden}
-.mcard{position:relative;border-radius:16px;overflow:hidden;color:#fff;padding:15px;background:linear-gradient(155deg,#0A2E38,#0980A0 130%);cursor:pointer;user-select:none;-webkit-tap-highlight-color:transparent;transition:transform .12s}
+.mcard{position:relative;border-radius:16px;overflow:hidden;color:#fff;padding:15px;background:linear-gradient(155deg,#241A12,#9C4024 130%);cursor:pointer;user-select:none;-webkit-tap-highlight-color:transparent;transition:transform .12s}
 .mcard:active{transform:scale(.985)}
 .mcard>*{position:relative;z-index:2}
 .mc-top{display:flex;justify-content:space-between;align-items:flex-start}
@@ -99,11 +111,11 @@ img{max-width:100%}[hidden]{display:none!important}.mono{font-family:var(--mono)
 .hprog{margin-top:5px;height:5px;border-radius:99px;background:rgba(255,255,255,.16);overflow:hidden}
 .hprog i{display:block;height:100%;width:0;border-radius:99px;background:var(--tq-l);transition:width .5s cubic-bezier(.2,.8,.3,1)}
 .sc-rew{margin-top:11px}
-.sc-rew .r{display:flex;align-items:center;gap:8px;padding:8px 10px;border-radius:10px;background:#fff;border:1px solid #D6EEF1;margin-bottom:6px;transition:border-color .3s}
-.sc-rew .r .p{width:30px;height:30px;border-radius:8px;background:#E7F8FA;color:#0980A0;display:grid;place-items:center;font-family:var(--mono);font-weight:700;font-size:11px;flex-shrink:0}
+.sc-rew .r{display:flex;align-items:center;gap:8px;padding:8px 10px;border-radius:10px;background:#fff;border:1px solid #E9DAC3;margin-bottom:6px;transition:border-color .3s}
+.sc-rew .r .p{width:30px;height:30px;border-radius:8px;background:#F6EBDD;color:#9C4024;display:grid;place-items:center;font-family:var(--mono);font-weight:700;font-size:11px;flex-shrink:0}
 .sc-rew .r.ok .p{background:linear-gradient(140deg,var(--gold-l),var(--gold));color:#3a2a05}
-.sc-rew .r .t{font-size:10.5px;font-weight:600;color:#0A2E38}
-.sc-rew .r .st{margin-left:auto;font-size:8.5px;font-weight:700;color:#7d9ea7}
+.sc-rew .r .t{font-size:10.5px;font-weight:600;color:#241A12}
+.sc-rew .r .st{margin-left:auto;font-size:8.5px;font-weight:700;color:#9C8B74}
 .sc-rew .r.ok .st{color:var(--gold);font-weight:800}
 .sc-rew .r.pop{animation:rwpop .55s cubic-bezier(.2,1.5,.4,1)}
 @keyframes rwpop{0%{transform:scale(1)}30%{transform:scale(1.05)}100%{transform:scale(1)}}
@@ -451,7 +463,7 @@ const stage=$('#stage');
   const ctx=canvas.getContext('2d');let parts=[],raf=null;
   function resize(){canvas.width=card.clientWidth;canvas.height=card.clientHeight;}
   resize();addEventListener('resize',resize);
-  const COLORS=['#E4C583','#22D3EE','#B8863A','#67E8F9'];
+  const COLORS=['#E4C583','#E08A5D','#B8863A','#F0AE85'];
   function loop(){
     ctx.clearRect(0,0,canvas.width,canvas.height);
     parts.forEach(p=>{p.x+=p.vx;p.y+=p.vy;p.vy+=p.g;p.r+=p.vr;p.life--;

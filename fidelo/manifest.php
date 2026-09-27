@@ -20,8 +20,8 @@ if ($card !== '') {
     'scope' => ($base ?: '') . '/carte.php',
     'display' => 'standalone',
     'orientation' => 'portrait',
-    'background_color' => '#0A2E38',
-    'theme_color' => '#0A2E38',
+    'background_color' => '#241A12',
+    'theme_color' => '#241A12',
     'icons' => [
       ['src' => ($base ?: '') . '/icon-192.png', 'sizes' => '192x192', 'type' => 'image/png', 'purpose' => 'any'],
       ['src' => ($base ?: '') . '/icon-512.png', 'sizes' => '512x512', 'type' => 'image/png', 'purpose' => 'any'],
@@ -39,8 +39,8 @@ echo json_encode([
   'scope' => ($base ?: '') . '/',
   'display' => 'standalone',
   'orientation' => 'portrait',
-  'background_color' => '#0A2E38',
-  'theme_color' => '#0A2E38',
+  'background_color' => '#241A12',
+  'theme_color' => '#241A12',
   'icons' => [
     ['src' => ($base ?: '') . '/icon-192.png', 'sizes' => '192x192', 'type' => 'image/png', 'purpose' => 'any maskable'],
     ['src' => ($base ?: '') . '/icon-512.png', 'sizes' => '512x512', 'type' => 'image/png', 'purpose' => 'any maskable'],
