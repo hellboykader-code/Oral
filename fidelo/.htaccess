@@ -29,6 +29,16 @@ DirectoryIndex accueil.php index.php
   Header always set Content-Security-Policy "default-src 'self'; script-src 'self' 'unsafe-inline'; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' https://fonts.gstatic.com data:; img-src 'self' data: blob: https://*.google.com https://*.gstatic.com https://*.googleusercontent.com; connect-src 'self'; frame-ancestors 'self'; frame-src https://www.google.com https://maps.google.com; form-action 'self' https://pay.google.com; base-uri 'self'; object-src 'none'"
 </IfModule>
 
+# Les 5 pages marketing (design 3D claude.ai/design) transpilent du JSX dans
+# le navigateur via Babel standalone : ça exige 'unsafe-eval'. On ne relâche
+# CETTE règle que pour ces fichiers précis — le reste du site (app commerçant,
+# carte client, console) garde le CSP strict sans 'unsafe-eval' au-dessus.
+<FilesMatch "^(accueil|tarifs|contact|confidentialite|mentions-legales)\.php$">
+  <IfModule mod_headers.c>
+    Header always set Content-Security-Policy "default-src 'self'; script-src 'self' 'unsafe-inline' 'unsafe-eval'; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' https://fonts.gstatic.com data:; img-src 'self' data: blob: https://*.google.com https://*.gstatic.com https://*.googleusercontent.com; connect-src 'self'; frame-ancestors 'self'; frame-src https://www.google.com https://maps.google.com; form-action 'self'; base-uri 'self'; object-src 'none'"
+  </IfModule>
+</FilesMatch>
+
 # La console propriétaire ne doit jamais fuiter son URL (clé de secours ?k=)
 # ni pouvoir être encadrée dans une autre page.
 <Files "console.php">
