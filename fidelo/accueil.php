@@ -25,6 +25,10 @@ a{color:#f2a65a;text-decoration:none}a:hover{color:#ffcf99}
 
   <div ref="{{ stageRef }}" style="position:fixed;inset:0;z-index:0;background:radial-gradient(ellipse at 50% 18%,#2a1a0c 0%,#0c0a08 62%)"></div>
 
+  <sc-if value="{{ debugOn }}" hint-placeholder-val="{{ false }}">
+    <div style="position:fixed;top:80px;left:12px;right:12px;z-index:999;background:rgba(0,0,0,.92);color:#7dffb0;font:12px/1.6 'Geist Mono',monospace;padding:14px;border-radius:10px;white-space:pre-wrap;word-break:break-word;box-shadow:0 8px 30px rgba(0,0,0,.6)">{{ debugText }}</div>
+  </sc-if>
+
   <sc-if value="{{ fallback }}" hint-placeholder-val="{{ false }}">
     <div style="position:fixed;inset:0;z-index:1;overflow:hidden;background:radial-gradient(ellipse at 50% 18%,#2a1a0c 0%,#0c0a08 62%)">
       <sc-if value="{{ hasVideo }}" hint-placeholder-val="{{ false }}">
@@ -219,7 +223,7 @@ a{color:#f2a65a;text-decoration:none}a:hover{color:#ffcf99}
 </x-dc>
 <script type="text/x-dc" data-dc-script data-props="{&quot;forceFallback&quot;:{&quot;editor&quot;:&quot;boolean&quot;,&quot;default&quot;:false,&quot;tsType&quot;:&quot;boolean&quot;,&quot;section&quot;:&quot;Film&quot;},&quot;fallbackStills&quot;:{&quot;editor&quot;:&quot;boolean&quot;,&quot;default&quot;:false,&quot;tsType&quot;:&quot;boolean&quot;,&quot;section&quot;:&quot;Film&quot;},&quot;fallbackVideo&quot;:{&quot;editor&quot;:&quot;text&quot;,&quot;default&quot;:&quot;&quot;,&quot;tsType&quot;:&quot;string&quot;,&quot;section&quot;:&quot;Film&quot;}}">
 class Component extends DCLogic {
-  state = { fallback: false, points: 4, shop: 0, open: 0, msg: '', aiText: '', aiBusy: false, tiers: null, narrow: false };
+  state = { fallback: false, points: 4, shop: 0, open: 0, msg: '', aiText: '', aiBusy: false, tiers: null, narrow: false, debugOn: false, debugText: '' };
   N = 9;
   NAMES = ['Ouverture', 'Le constat', 'La bascule', 'En caisse', 'Démo', 'Pourquoi', 'Tarifs', 'Questions', 'Générique'];
   SHOPS = ['Café Lumière', 'Boulangerie Soleil', 'Salon Élégance', 'Bar à jus Zeste', 'Bistrot du Coin'];
@@ -238,7 +242,25 @@ class Component extends DCLogic {
     const mq = matchMedia('(prefers-reduced-motion: reduce)');
     const nav = navigator, mobile = /Mobi|Android/i.test(nav.userAgent);
     const low = (nav.deviceMemory && nav.deviceMemory <= 2) || (mobile && (nav.hardwareConcurrency || 8) <= 4) || (nav.connection && nav.connection.saveData);
-    let gl = false; try { gl = !!document.createElement('canvas').getContext('webgl2'); } catch (e) {}
+    let gl = false, glErr = ''; try { gl = !!document.createElement('canvas').getContext('webgl2'); } catch (e) { glErr = String(e && e.message || e); }
+    const debugOn = /[?&]debug=1\b/.test(location.search);
+    if (debugOn) {
+      const reasons = [];
+      if (this.props.forceFallback) reasons.push('forceFallback=true (prop)');
+      if (mq.matches) reasons.push('prefers-reduced-motion: reduce');
+      if (low) reasons.push('appareil jugé "low-end"');
+      if (!gl) reasons.push('pas de WebGL2' + (glErr ? ' (' + glErr + ')' : ''));
+      const info = [
+        'mode: ' + (reasons.length ? 'FALLBACK (image plate)' : 'FILM 3D'),
+        reasons.length ? 'raison(s): ' + reasons.join(', ') : '',
+        'reducedMotion=' + mq.matches + '  webgl2=' + gl,
+        'deviceMemory=' + nav.deviceMemory + '  hardwareConcurrency=' + nav.hardwareConcurrency,
+        'saveData=' + !!(nav.connection && nav.connection.saveData) + '  mobile=' + mobile,
+        'UA: ' + nav.userAgent,
+      ].filter(Boolean).join('\n');
+      this.setState({ debugOn: true, debugText: info });
+      try { console.log('[fidelo debug]\n' + info); } catch (e) {}
+    }
     this.onScroll = () => this.readScroll();
     this.onResize = () => { this.setState({ narrow: innerWidth < 760 }); this.readScroll(); };
     addEventListener('scroll', this.onScroll, { passive: true }); addEventListener('resize', this.onResize);
@@ -318,6 +340,7 @@ class Component extends DCLogic {
     const st = this.state, tiers = st.tiers || this.TIERS;
     return {
       rootRef: this.rootRef, stageRef: this.stageRef, spacerRef: this.spacerRef,
+      debugOn: st.debugOn, debugText: st.debugText,
       fallback: st.fallback, hasVideo: !!this.props.fallbackVideo, fallbackVideo: this.props.fallbackVideo || '',
       stills: !this.props.fallbackStills ? [] : this.NAMES.map((n, i) => ({ src: `img/scene-${String(i + 1).padStart(2, '0')}.jpg`, alt: `Scène ${i + 1} — ${n}` })),
       spacerH: `${this.N * 115}vh`, nameDisplay: st.narrow ? 'none' : 'inline',
