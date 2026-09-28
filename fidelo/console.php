@@ -91,6 +91,16 @@ if ($a !== '') {
     if ($st === 'active') unset($s['impayeDepuis']);
     $s['status']=$st; db_save($db); json_out(['ok'=>true]);
   }
+  /* Formule (quota) : Découverte reste plafonnée à PLAN_FREE_MAX ; les
+     3 autres formules débloquent le quota illimité (voir plan_of() dans lib.php).
+     Séparé du statut de paiement ci-dessus : un commerce peut être "actif"
+     sur n'importe quelle formule. */
+  if ($a === 'plan') {
+    $id=$_POST['id']??''; $pl=$_POST['pl']??'';
+    if(!in_array($pl,['decouverte','mensuel','annuel','avie'],true)) json_out(['ok'=>false],400);
+    $s=&shop_ref($db,$id); if(!$s) json_out(['ok'=>false,'error'=>'notfound'],404);
+    $s['plan']=$pl; db_save($db); json_out(['ok'=>true]);
+  }
   /* Codes promo : lister, créer, modifier, supprimer. */
   if ($a === 'promos') {
     $out = [];
@@ -403,6 +413,7 @@ $essais = count(array_filter($shops, fn($s)=>($s['status']??'')==='trial'));
 $impayes = count(array_filter($shops, fn($s)=>($s['status']??'')==='impaye'));
 $te = ['Café'=>'☕','Restaurant'=>'🍽️','Boulangerie'=>'🥐','Salon'=>'💈','Commerce'=>'🛍️'];
 $stl = ['active'=>'Actif','trial'=>'Essai','impaye'=>'Impayé','annule'=>'Annulé'];
+$pll = ['decouverte'=>'Découverte (30 max)','mensuel'=>'Mensuel','annuel'=>'Annuel','avie'=>'À vie'];
 function ini2($n){return strtoupper(mb_substr(preg_replace('/\s+/','',$n),0,2));}
 ?>
 <!doctype html><html lang="fr"><head>
@@ -511,13 +522,16 @@ select.st{padding:7px 10px;border-radius:9px;border:1.5px solid var(--line);back
   </div>
   <div class="panel">
     <div class="ph"><h3>Commerces</h3><span class="n"><?= count($shops) ?> au total</span></div>
-    <table class="tbl"><thead><tr><th>Commerce</th><th>Statut</th><th>Clients</th><th class="r">MRR</th></tr></thead><tbody>
-    <?php foreach($shops as $s): $st=$s['status']??'trial'; $pay=$st==='active'; ?>
+    <table class="tbl"><thead><tr><th>Commerce</th><th>Statut</th><th>Formule</th><th>Clients</th><th class="r">MRR</th></tr></thead><tbody>
+    <?php foreach($shops as $s): $st=$s['status']??'trial'; $pay=$st==='active'; $pl=$s['plan']??'decouverte'; ?>
       <tr>
         <td><div class="mrow"><span class="av"><?= e(ini2($s['name'])) ?></span><div><div class="nm"><button class="opn" data-id="<?= e($s['id']) ?>" style="background:none;border:0;padding:0;font:inherit;color:inherit;cursor:pointer;text-align:left"><?= e($s['name']) ?></button></div><div class="tp"><?= ($te[$s['type']??'Commerce']??'🛍️') ?> <?= e($s['type']??'Commerce') ?> · <?= e($s['email']) ?></div></div></div></td>
         <td><select class="st" data-id="<?= e($s['id']) ?>">
           <?php foreach($stl as $k=>$v): ?><option value="<?= $k ?>" <?= $k===$st?'selected':'' ?>><?= $v ?></option><?php endforeach; ?>
         </select> <button class="rst" data-id="<?= e($s['id']) ?>" data-nm="<?= e($s['name']) ?>" title="Réinitialiser l'accès" style="padding:6px 9px;border-radius:8px;border:1.5px solid var(--line);background:var(--card);cursor:pointer">🔑</button></td>
+        <td><select class="pl" data-id="<?= e($s['id']) ?>">
+          <?php foreach($pll as $k=>$v): ?><option value="<?= $k ?>" <?= $k===$pl?'selected':'' ?>><?= $v ?></option><?php endforeach; ?>
+        </select></td>
         <td class="mono"><?= (int)($s['nClients'] ?? count($s['clients'] ?? [])) ?></td>
         <td class="r"><span class="mrr <?= $pay?'':'z' ?>"><?= $pay?$PRICE.' €':'—' ?></span></td>
       </tr>
@@ -533,6 +547,7 @@ const $=s=>document.querySelector(s),$$=s=>[...document.querySelectorAll(s)];
 let tT;function toast(m){const t=$('#toast');t.textContent=m;t.classList.add('on');clearTimeout(tT);tT=setTimeout(()=>t.classList.remove('on'),2400);}
 async function api(a,d={}){const b=new URLSearchParams({a,_csrf:ACSRF,...d});const r=await fetch(BASE+'/console.php',{method:'POST',headers:{'Content-Type':'application/x-www-form-urlencoded'},body:b});return r.json();}
 $$('.st').forEach(sel=>sel.onchange=async()=>{const r=await api('status',{id:sel.dataset.id,st:sel.value});toast(r.ok?'✓ Statut mis à jour':'Erreur');if(r.ok)setTimeout(()=>location.reload(),700);});
+$$('.pl').forEach(sel=>sel.onchange=async()=>{const r=await api('plan',{id:sel.dataset.id,pl:sel.value});toast(r.ok?'✓ Formule mise à jour':'Erreur');if(r.ok)setTimeout(()=>location.reload(),700);});
 $('#pushBtn').onclick=async()=>{const r=await fetch(BASE+'/push.php',{method:'POST',headers:{'Content-Type':'application/x-www-form-urlencoded'},body:'a=keygen'}).then(x=>x.json());
   toast(r.ok?'🔔 Notifications push activées (clés VAPID générées)':'Erreur : '+(r.error||''));if(r.ok)setTimeout(()=>location.reload(),900);};
 /* ---- Google Wallet : réglages propriétaire ---- */

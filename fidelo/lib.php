@@ -529,6 +529,7 @@ function shop_create(array &$db, array $in): array {
     ],
     'nClients' => 0,
     'status'   => 'trial',
+    'plan'     => 'decouverte',
     'trialEnds'=> now() + 10 * 86400,
     'createdAt'=> now(),
   ];

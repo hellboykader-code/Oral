@@ -425,7 +425,9 @@ $('#cAdd').onclick=()=>{sheet(`<h3 style="font-size:18px">Nouveau client</h3>
   <input class="field" id="nTel" placeholder="Téléphone (optionnel)" style="margin-top:8px">
   <button class="btn btn-p" id="nOk" style="width:100%;margin-top:12px">Créer & afficher le code</button>`);
   $('#nOk').onclick=async()=>{const name=$('#nName').value.trim();if(!name){$('#nName').focus();return;}
-    const r=await api('client_add',{name,tel:$('#nTel').value});if(r.ok){if(r.existing)toast('Ce client a déjà une carte — la voici');loadClients();showQR(r.client);}};};
+    const r=await api('client_add',{name,tel:$('#nTel').value});
+    if(r.ok){if(r.existing)toast('Ce client a déjà une carte — la voici');loadClients();showQR(r.client);}
+    else toast(r.message||'Erreur');};};
 
 $('#cBlank').onclick=()=>{sheet(`<h3 style="font-size:18px">🖨️ Cartes vierges</h3>
   <p style="font-size:12.5px;color:var(--muted);margin:6px 0 12px">Imprimez un lot de cartes à l'avance, gardez-les au comptoir. Quand vous en remettez une à un client, scannez-la pour l'activer avec son nom — ça compte comme sa première visite.</p>
