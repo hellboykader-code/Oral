@@ -501,6 +501,7 @@ function shop_public(array $s): array {
     'parrainCode' => parrain_code($s),
     'filleuls'    => (int)($s['filleuls'] ?? 0),
     'creditMois'  => (int)($s['creditMois'] ?? 0),
+    'googleReview' => $s['googleReview'] ?? '',
   ];
 }
 

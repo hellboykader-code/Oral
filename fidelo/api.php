@@ -154,8 +154,9 @@ case 'home': {
   usort($clients, fn($x,$y)=>$y['last']-$x['last']);
   $feed = array_map(fn($c)=>client_view($c,$ref['rewards']), array_slice($clients,0,5));
   if ($before !== ($ref['today']['day'] ?? '')) db_save($db);   // écrit seulement au changement de jour
+  $inboxUnread = count(array_filter($ref['inbox'] ?? [], fn($m)=>empty($m['read'])));
   json_out(['ok'=>true,'today'=>$ref['today'],'goal'=>$ref['goal'],
-    'nClients'=>count($clients),'feed'=>$feed,
+    'nClients'=>count($clients),'feed'=>$feed,'inboxUnread'=>$inboxUnread,
     'quota'=>quota_restant($ref, count($clients)), 'freeMax'=>PLAN_FREE_MAX]);
 }
 
@@ -519,8 +520,23 @@ case 'settings_set': {
   if (isset($_POST['name'])) { $n=trim($_POST['name']); if($n!=='') $ref['name']=mb_substr($n,0,60); }
   if (isset($_POST['goal'])) $ref['goal']=max(1,(int)$_POST['goal']);
   if (isset($_POST['city'])) $ref['city']=mb_substr(trim($_POST['city']),0,60);
+  if (isset($_POST['googleReview'])) {
+    $gr = trim($_POST['googleReview']);
+    if ($gr !== '' && !filter_var($gr, FILTER_VALIDATE_URL)) json_out(['ok'=>false,'error'=>'googleReview'],400);
+    $ref['googleReview'] = mb_substr($gr, 0, 300);
+  }
   db_save($db);
   json_out(['ok'=>true,'shop'=>shop_public($ref)]);
+}
+
+/* Messages envoyés par les clients depuis leur carte (carte.php, action
+   publique client_msg). Les plus récents d'abord ; marqués lus à l'ouverture. */
+case 'inbox': {
+  $inbox = $ref['inbox'] ?? [];
+  usort($inbox, fn($a,$b)=>$b['at']-$a['at']);
+  foreach ($ref['inbox'] as &$m) $m['read'] = true; unset($m);
+  db_save($db);
+  json_out(['ok'=>true,'messages'=>array_slice($inbox,0,100)]);
 }
 
 case 'stats': {

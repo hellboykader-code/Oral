@@ -175,6 +175,7 @@ background:radial-gradient(70% 45% at 78% 8%,rgba(6,182,212,.18),transparent 60%
   <div class="ahead"><div class="row">
     <div class="av" id="hIc">·</div>
     <div style="flex:1"><div class="nm" id="hShop">Fidelo</div><div class="sb">Espace commerçant <span id="qBadge" style="color:var(--or-l);font-weight:600"></span></div></div>
+    <button class="set" id="btnInbox" aria-label="Messages de mes clients" title="Messages" style="margin-right:8px;position:relative"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#eaf5f0" stroke-width="2"><path d="M4 4h16v16H4z" opacity="0"/><path d="M21 8V6a2 2 0 0 0-2-2H5a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h9"/><path d="M3 7l9 6 9-6"/><circle cx="19" cy="17" r="4" fill="#E85D4B" stroke="none" style="display:none" id="inboxDot"/></svg></button>
     <button class="set" id="btnInstall" aria-label="Installer l'app" title="Ajouter à l'écran d'accueil" style="margin-right:8px"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#eaf5f0" stroke-width="2"><path d="M12 3v12m0 0 4-4m-4 4-4-4"/><path d="M4 17v2a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2v-2"/></svg></button>
     <button class="set" id="btnSet" aria-label="Réglages"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#eaf5f0" stroke-width="2"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.6 1.6 0 0 0 .3 1.8l.1.1a2 2 0 1 1-2.8 2.8l-.1-.1a1.6 1.6 0 0 0-2.7 1.1V21a2 2 0 1 1-4 0v-.1A1.6 1.6 0 0 0 6.6 19.4l-.1.1a2 2 0 1 1-2.8-2.8l.1-.1a1.6 1.6 0 0 0-1.1-2.7H2a2 2 0 1 1 0-4h.1A1.6 1.6 0 0 0 4.6 7.4l-.1-.1a2 2 0 1 1 2.8-2.8l.1.1a1.6 1.6 0 0 0 1.8.3H9.4A1.6 1.6 0 0 0 10.5 3.6V3a2 2 0 1 1 4 0v.1a1.6 1.6 0 0 0 2.7 1.1l.1-.1a2 2 0 1 1 2.8 2.8l-.1.1a1.6 1.6 0 0 0-.3 1.8V9.4a1.6 1.6 0 0 0 1.5 1.1H21a2 2 0 1 1 0 4h-.1a1.6 1.6 0 0 0-1.5 1.5z"/></svg></button>
   </div></div>
@@ -409,7 +410,19 @@ async function loadHome(){
   $('#feed').innerHTML=r.feed.map(cliRow).join('')||'<div style="color:var(--faint);font-size:13px;text-align:center;padding:16px">Aucun passage pour l\'instant.</div>';
   bindCli($('#feed'));
   showQuota(r.quota, r.freeMax);
+  const dot=$('#inboxDot'); if(dot) dot.style.display=r.inboxUnread?'block':'none';
 }
+async function openInbox(){
+  sheet('<h3 style="font-size:18px">📨 Messages de vos clients</h3><div id="inboxList" style="margin-top:10px">Chargement…</div>');
+  const r=await api('inbox');
+  const dot=$('#inboxDot'); if(dot) dot.style.display='none';
+  if(!r.ok){$('#inboxList').textContent='Erreur.';return;}
+  $('#inboxList').innerHTML=r.messages.length?r.messages.map(m=>`<div style="padding:10px 0;border-top:1px solid var(--line)">
+    <div style="display:flex;justify-content:space-between;gap:8px;font-size:12px;color:var(--muted)"><b style="color:var(--text)">${esc(m.name)}</b><span>${new Date(m.at*1000).toLocaleString('fr-FR',{day:'2-digit',month:'2-digit',hour:'2-digit',minute:'2-digit'})}</span></div>
+    <div style="font-size:14px;margin-top:4px">${esc(m.text)}</div></div>`).join('')
+    :'<div style="color:var(--faint);font-size:13px;text-align:center;padding:16px">Aucun message pour l\'instant.</div>';
+}
+$('#btnInbox').onclick=openInbox;
 async function loadClients(){const r=await api('clients',{q:$('#cQ').value});if(!r.ok)return;
   $('#cList').innerHTML=r.clients.map(cliRow).join('')||'<div style="color:var(--faint);font-size:13px;text-align:center;padding:16px">Aucun client.</div>';bindCli($('#cList'));}
 $('#cQ').oninput=()=>loadClients();
@@ -720,6 +733,8 @@ $('#btnSet').onclick=()=>{sheet(`<h3 style="font-size:18px">Réglages</h3>
   <input class="field" id="sName" value="${esc(SHOP.name)}">
   <label style="display:block;font-size:12.5px;font-weight:600;color:var(--muted);margin:12px 0 6px">Objectif de points / jour</label>
   <input class="field" id="sGoal" type="number" min="1" value="${SHOP.goal}">
+  <label style="display:block;font-size:12.5px;font-weight:600;color:var(--muted);margin:12px 0 6px">Lien avis Google <span style="font-weight:400;color:var(--faint)">(pour le proposer à vos clients)</span></label>
+  <input class="field" id="sGrev" type="url" placeholder="https://g.page/r/…/review" value="${esc(SHOP.googleReview||'')}">
   <label style="display:block;font-size:12.5px;font-weight:600;color:var(--muted);margin:14px 0 6px">Logo du commerce</label>
   <div style="display:flex;align-items:center;gap:12px">
     <img id="sLogoImg" src="${BASE}/brand.php?s=${SHOP.id}&t=logo&v=${Date.now()}" alt=""
@@ -741,7 +756,9 @@ $('#btnSet').onclick=()=>{sheet(`<h3 style="font-size:18px">Réglages</h3>
   <button class="btn btn-g" id="sDedup" style="width:100%;margin-top:8px">🧹 Fusionner les doublons</button>
   <button class="btn btn-g" id="sOut" style="width:100%;margin-top:8px">Se déconnecter</button>
   <div style="text-align:center;margin-top:12px"><button class="link" id="sInstall" style="color:var(--em)">📲 Ajouter à l'écran d'accueil</button></div>`);
-  $('#sOk').onclick=async()=>{const r=await api('settings_set',{name:$('#sName').value,goal:$('#sGoal').value});if(r.ok){SHOP=r.shop;$('#hShop').textContent=SHOP.name;$('#hIc').textContent=initials(SHOP.name);toast('✓ Enregistré');closeSheet();}};
+  $('#sOk').onclick=async()=>{const r=await api('settings_set',{name:$('#sName').value,goal:$('#sGoal').value,googleReview:$('#sGrev').value.trim()});
+    if(r.ok){SHOP=r.shop;$('#hShop').textContent=SHOP.name;$('#hIc').textContent=initials(SHOP.name);toast('✓ Enregistré');closeSheet();}
+    else toast(r.error==='googleReview'?'Lien Google invalide':'Erreur');};
   /* Logo : lecture locale → envoi en base64 (aucune dépendance serveur). */
   $('#sLogoPick').onclick=()=>$('#sLogoFile').click();
   $('#sLogoFile').onchange=async e=>{

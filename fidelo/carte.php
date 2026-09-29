@@ -8,6 +8,50 @@ require __DIR__ . '/lib.php'; require __DIR__ . '/gwallet.php';
 $base = rtrim(dirname($_SERVER['SCRIPT_NAME']), '/');
 $card = preg_replace('/[^A-Za-z0-9_-]/', '', $_GET['c'] ?? ($_POST['c'] ?? ''));
 
+/* ---- Badge NFC du commerce (?nfc=<shopId>) ----
+   Puce statique, une seule par commerce : elle ne connaît pas le client.
+   On identifie le client par son cookie fidelo_card (posé à chaque visite
+   de sa carte, voir plus bas). Choix assumé par le commerçant : pas de
+   protection cryptographique (puce simple) — un client pourrait en théorie
+   se re-scanner lui-même s'il garde la puce en main, c'est un risque business
+   mineur accepté, pas une faille de données. Jamais utilisable pour lire
+   les cartes des AUTRES commerces : le shopId doit correspondre au commerce
+   du cookie. */
+$nfcShop = preg_replace('/[^A-Za-z0-9_-]/', '', $_GET['nfc'] ?? '');
+if ($nfcShop !== '') {
+  $cookieCard = preg_replace('/[^A-Za-z0-9_-]/', '', $_COOKIE['fidelo_card'] ?? '');
+  $db0 = db_load();
+  $shop0 = shop_ref($db0, $nfcShop);
+  $join = $shop0['joinToken'] ?? '';
+  $fallback = $join !== '' ? ($base . '/rejoindre.php?s=' . rawurlencode($join)) : ($base . '/accueil.php');
+  if ($cookieCard === '') { header('Location: ' . $fallback); exit; }
+  $LOCK = db_lock($nfcShop);
+  $db = db_load();
+  $found0 = client_by_card($db, $cookieCard);
+  if (!$found0 || $found0['shop']['id'] !== $nfcShop) { header('Location: ' . $fallback); exit; }
+  if (!rate_hit($db, 'nfc:' . $nfcShop, 120, 60)) { header('Location: ' . $base . '/carte.php?c=' . rawurlencode($cookieCard)); exit; }
+  foreach ($db['shops'] as $si => $s) {
+    if ($s['id'] !== $nfcShop) continue;
+    foreach ($s['clients'] as $ci => $cc) {
+      if (($cc['card'] ?? '') !== $cookieCard && !in_array($cookieCard, $cc['alias'] ?? [], true)) continue;
+      $c = &$db['shops'][$si]['clients'][$ci];
+      $depuis = now() - (int)($c['last'] ?? 0);
+      $pt = 0;
+      if (!($depuis < 90 && (int)($c['visits'] ?? 0) > 0)) {
+        $c['points']++; $c['visits']++; $c['last'] = now();
+        $db['shops'][$si]['events'][] = ['at' => now(), 'type' => 'point', 'cid' => $c['id']];
+        if (count($db['shops'][$si]['events']) > 400) $db['shops'][$si]['events'] = array_slice($db['shops'][$si]['events'], -400);
+        $pt = 1;
+      }
+      db_save($db);
+      if ($pt) gw_sync_later($nfcShop, $cookieCard);
+      header('Location: ' . $base . '/carte.php?c=' . rawurlencode($cookieCard) . ($pt ? '&pt=1' : ''));
+      exit;
+    }
+  }
+  header('Location: ' . $fallback); exit;
+}
+
 /* ---- micro-API (POST a=...) ---- */
 $a = $_POST['a'] ?? '';
 if ($a !== '') {
@@ -23,7 +67,7 @@ if ($a !== '') {
     $s = $found['shop']; $c = $found['client'];
     json_out(['ok' => true,
       'shop' => ['id' => $s['id'], 'name' => $s['name'], 'type' => $s['type'] ?? 'Commerce',
-                 'brandAt' => (int)($s['brandAt'] ?? 1),
+                 'brandAt' => (int)($s['brandAt'] ?? 1), 'googleReview' => $s['googleReview'] ?? '',
                  'c1' => brand_colors($s)[0], 'c2' => brand_colors($s)[1]],
       'rewards' => array_values($s['rewards'] ?? []),
       'client' => ['id' => $c['id'], 'name' => $c['name'], 'points' => (int)$c['points'],
@@ -83,6 +127,22 @@ if ($a !== '') {
     }
     json_out(['ok' => false, 'error' => 'notfound'], 404);
   }
+  if ($a === 'client_msg') {
+    // message libre du client vers le commerçant (lu dans son espace, onglet Accueil)
+    $text = mb_substr(trim($_POST['text'] ?? ''), 0, 500);
+    if ($text === '') json_out(['ok' => false, 'error' => 'empty'], 400);
+    if (!rate_hit($db, 'clientmsg:' . client_ip(), 5, 3600)) { db_save($db); json_out(['ok' => false, 'error' => 'rate'], 429); }
+    $sid = $found['shop']['id']; $c = $found['client'];
+    foreach ($db['shops'] as $si => $s) {
+      if ($s['id'] !== $sid) continue;
+      $db['shops'][$si]['inbox'] = $db['shops'][$si]['inbox'] ?? [];
+      $db['shops'][$si]['inbox'][] = ['id' => rid(6), 'cid' => $c['id'], 'name' => $c['name'], 'text' => $text, 'at' => now(), 'read' => false];
+      if (count($db['shops'][$si]['inbox']) > 200) $db['shops'][$si]['inbox'] = array_slice($db['shops'][$si]['inbox'], -200);
+      db_save($db);
+      json_out(['ok' => true]);
+    }
+    json_out(['ok' => false, 'error' => 'notfound'], 404);
+  }
   json_out(['ok' => false, 'error' => 'unknown'], 400);
 }
 
@@ -91,6 +151,10 @@ $db = db_load();
 $found = $card ? client_by_card($db, $card) : [];
 $exists = (bool)$found;
 $shopName = $exists ? $found['shop']['name'] : 'Fidelo';
+/* Cookie posé sur CHAQUE visite valide (pas seulement à l'abonnement push) :
+   c'est lui qui identifie le client quand il retape sa carte NFC du bout
+   des doigts (l'URL sur la puce n'est pas propre à un client). */
+if ($exists) setcookie('fidelo_card', $card, ['expires' => now() + 60*60*24*365, 'path' => '/', 'secure' => is_https(), 'httponly' => true, 'samesite' => 'Lax']);
 ?>
 <!doctype html><html lang="fr"><head>
 <meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
@@ -185,6 +249,21 @@ h1,h2,h3{font-family:var(--disp);font-weight:600;letter-spacing:-.02em;margin:0}
   <div class="foot">Carte propulsée par <b>Fidelo</b><i>.</i><br>Vos points sont crédités par le commerçant.<br>Aucune application à installer.</div>
 </div>
 <div class="qr-full" id="qrFull"><div class="s"><div class="w" id="fw">…</div><div class="su">Montrez ce code au commerçant.<br>Il le scanne, votre point est ajouté.</div><img id="fq"><div class="cd" id="fc"></div><button class="cl" id="fClose">Fermer</button></div></div>
+
+<div class="qr-full" id="welcomeFull"><div class="s" style="max-width:360px;text-align:left">
+  <div class="w" id="wTitle" style="text-align:center">Bienvenue !</div>
+  <div class="su" id="wSub" style="text-align:center;margin-top:4px">Merci de votre visite.</div>
+  <div style="display:flex;flex-direction:column;gap:10px;margin-top:18px">
+    <button class="btn btn-gw" id="wReview" hidden style="width:100%;margin-top:0">⭐ Laisser un avis Google</button>
+    <button class="btn btn-o" id="wMsgToggle" style="width:100%;margin-top:0">✉️ Envoyer un message au commerçant</button>
+    <div id="wMsgForm" hidden style="display:flex;flex-direction:column;gap:8px">
+      <textarea id="wMsgText" rows="3" maxlength="500" placeholder="Votre message…" style="border-radius:12px;border:1.5px solid var(--line);padding:10px 12px;font:inherit;font-size:14px;resize:vertical;background:var(--card);color:var(--text)"></textarea>
+      <button class="btn btn-p" id="wMsgSend" style="width:100%;margin-top:0">Envoyer</button>
+      <div id="wMsgNote" style="font-size:12px;color:var(--muted);text-align:center"></div>
+    </div>
+  </div>
+  <button class="cl" id="wClose">Continuer vers ma carte</button>
+</div></div>
 <div class="toast" id="toast"></div>
 <script>
 const BASE=<?= json_encode($base) ?>, CARD=<?= json_encode($card) ?>;
@@ -197,7 +276,7 @@ const PAY=()=>'FIDELO:'+M.client.card;
 function tier(p){return p>=20?'Membre VIP Or':p>=10?'Client fidèle':p>=3?'Client habitué':'Nouveau client';}
 async function api(a,d={}){const b=new URLSearchParams({a,c:CARD,...d});const r=await fetch(BASE+'/carte.php',{method:'POST',headers:{'Content-Type':'application/x-www-form-urlencoded'},body:b});return r.json();}
 let firstLoad=true;
-async function load(){const r=await api('get');if(!r.ok)return;M=r;VAPID=r.vapidPub||'';render();firstLoad=false;}
+async function load(){const r=await api('get');if(!r.ok)return;M=r;VAPID=r.vapidPub||'';render();firstLoad=false;maybeShowWelcome();}
 function showMsg(){const m=M&&M.msg;const box=$('#msgBox');if(!box)return;
   if(m&&m.body){$('#msgT').textContent=m.title||'Fidelo';$('#msgB').textContent=m.body;box.classList.add('on');}
   else box.classList.remove('on');}
@@ -225,6 +304,33 @@ function render(){const s=M.shop,c=M.client,rw=M.rewards.slice().sort((a,b)=>a.p
 $('#qm').onclick=$('#showBtn').onclick=()=>$('#qrFull').classList.add('on');
 $('#fClose').onclick=()=>$('#qrFull').classList.remove('on');
 $('#qrFull').onclick=e=>{if(e.target.id==='qrFull')$('#qrFull').classList.remove('on');};
+
+/* ---- Bandeau de bienvenue / +1 point (après inscription ou pointage NFC) ---- */
+function maybeShowWelcome(){
+  const p=new URLSearchParams(location.search), isNew=p.get('bienvenue')==='1', gotPoint=p.get('pt')==='1';
+  if(!isNew&&!gotPoint)return;
+  history.replaceState(null,'',location.pathname+'?c='+encodeURIComponent(CARD));
+  $('#wTitle').textContent=isNew?'Bienvenue chez '+(M.shop.name||'nous')+' ! 🎉':'+1 point ! 🎉';
+  $('#wSub').textContent=isNew?'Votre carte de fidélité digitale est prête — scannez-la à chaque passage.':'Merci de votre visite, à bientôt !';
+  const rv=$('#wReview'); rv.hidden=!(M.shop.googleReview);
+  $('#wMsgForm').hidden=true; $('#wMsgToggle').hidden=false; $('#wMsgText').value=''; $('#wMsgNote').textContent='';
+  $('#welcomeFull').classList.add('on');
+}
+$('#wReview').onclick=()=>{ if(M.shop.googleReview) window.open(M.shop.googleReview,'_blank','noopener'); };
+$('#wMsgToggle').onclick=()=>{$('#wMsgForm').hidden=false;$('#wMsgToggle').hidden=true;$('#wMsgText').focus();};
+$('#wMsgSend').onclick=async()=>{
+  const t=$('#wMsgText').value.trim(); if(!t)return;
+  $('#wMsgSend').disabled=true;
+  try{
+    const r=await api('client_msg',{text:t});
+    $('#wMsgNote').style.color=r.ok?'var(--em)':'#E85D4B';
+    $('#wMsgNote').textContent=r.ok?'✓ Message envoyé au commerçant.':(r.error==='rate'?'Trop de messages envoyés, réessayez plus tard.':'Erreur, réessayez.');
+    if(r.ok){$('#wMsgText').value='';$('#wMsgForm').hidden=true;}
+  }catch(e){$('#wMsgNote').style.color='#E85D4B';$('#wMsgNote').textContent='Pas de connexion.';}
+  $('#wMsgSend').disabled=false;
+};
+$('#wClose').onclick=()=>$('#welcomeFull').classList.remove('on');
+$('#welcomeFull').onclick=e=>{if(e.target.id==='welcomeFull')$('#welcomeFull').classList.remove('on');};
 
 /* ---- Push (gratuit) ---- */
 function b64u(s){const p='='.repeat((4-s.length%4)%4);const b=atob((s+p).replace(/-/g,'+').replace(/_/g,'/'));return Uint8Array.from([...b].map(c=>c.charCodeAt(0)));}
@@ -277,8 +383,8 @@ document.getElementById('installBtn').onclick=async()=>{
 };
 load();
 {const p=new URLSearchParams(location.search);
- if(p.has('bienvenue'))setTimeout(()=>toast('🎉 Bienvenue ! Votre carte est prête. Ajoutez-la à votre écran d\'accueil 👇'),700);
- else if(p.has('deja'))setTimeout(()=>toast('👋 Vous avez déjà une carte — la voici.'),600);}
+ // 'bienvenue' est maintenant géré par le bandeau riche (maybeShowWelcome, appelé après le chargement des données)
+ if(p.has('deja'))setTimeout(()=>toast('👋 Vous avez déjà une carte — la voici.'),600);}
 // tenir la carte à jour (le commerçant vient d'ajouter un point / une récompense)
 setInterval(()=>{if(document.visibilityState==='visible')load();},20000);
 document.addEventListener('visibilitychange',()=>{if(document.visibilityState==='visible')load();});
