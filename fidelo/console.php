@@ -4,7 +4,7 @@
    La clé n'est JAMAIS renvoyée au navigateur ni stockée en clair côté
    client : elle ouvre une session admin, puis on travaille en session.
    ================================================================== */
-require __DIR__ . '/lib.php'; require __DIR__ . '/gwallet.php'; fidelo_session();
+require __DIR__ . '/lib.php'; require __DIR__ . '/gwallet.php'; require __DIR__ . '/stripe.php'; fidelo_session();
 $LOCK = db_lock();   // sérialise les écritures concurrentes (lecture-modification-écriture)
 $base = rtrim(dirname($_SERVER['SCRIPT_NAME']), '/');
 
@@ -399,6 +399,30 @@ if ($a !== '') {
     json_out(['ok'=>false,'error'=>'http'.$r['code'],'hint'=>substr(json_encode($r['body']),0,300)]);
   }
 
+  if ($a === 'stripe_set') {
+    /* Clé secrète + secret de webhook : jamais renvoyés au navigateur
+       (comme le JSON Google Wallet ci-dessus). '••••••••' = inchangé. */
+    $sec = trim((string)($_POST['secret'] ?? ''));
+    $wh  = trim((string)($_POST['whsec'] ?? ''));
+    $db['settings']['stripe'] = $db['settings']['stripe'] ?? [];
+    if ($sec !== '' && $sec !== '••••••••') {
+      if (!preg_match('/^sk_(live|test)_/', $sec)) json_out(['ok'=>false,'error'=>'secret'],400);
+      $db['settings']['stripe']['secret'] = $sec;
+    }
+    if ($wh !== '' && $wh !== '••••••••') {
+      if (!preg_match('/^whsec_/', $wh)) json_out(['ok'=>false,'error'=>'whsec'],400);
+      $db['settings']['stripe']['whsec'] = $wh;
+    }
+    db_save($db);
+    json_out(['ok'=>true,'ready'=>st_on($db)]);
+  }
+
+  if ($a === 'stripe_prices') {
+    /* Crée (si besoin) les 3 tarifs Fidelo sur Stripe. Idempotent. */
+    $r = st_ensure_prices($db);
+    json_out($r, $r['ok']?200:500);
+  }
+
   json_out(['ok'=>false,'error'=>'unknown'],400);
 }
 
@@ -512,6 +536,7 @@ select.st{padding:7px 10px;border-radius:9px;border:1.5px solid var(--line);back
     <button class="btn btn-g" id="secBtn" style="margin-left:auto;background:var(--card);border:1.5px solid var(--line);color:var(--text)">🛡️ Sécurité</button>
     <button class="btn btn-g" id="outBtn" style="background:var(--card);border:1.5px solid var(--line);color:var(--text)" title="Fermer la session">Quitter</button>
     <button class="btn btn-g" id="gwBtn" style="background:var(--card);border:1.5px solid var(--line);color:var(--text)"><?= gw_live($db)?'💳 Wallet actif':(gw_on($db)?'💳 Wallet en attente':'💳 Google Wallet') ?></button>
+    <button class="btn btn-g" id="stBtn" style="background:var(--card);border:1.5px solid var(--line);color:var(--text)"><?= st_on($db)?(empty(st_conf($db)['prices'])?'💰 Stripe (tarifs à créer)':'💰 Stripe actif'):'💰 Stripe' ?></button>
     <button class="btn btn-p" id="addBtn"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4"><path d="M12 5v14M5 12h14"/></svg> Ajouter un commerce</button>
   </div>
   <div class="kpis">
@@ -581,6 +606,32 @@ $('#gwBtn').onclick=()=>{
     $('#gwMsg').textContent='Test en cours…';
     const r=await api('gw_test');
     $('#gwMsg').innerHTML=r.ok?'✅ Connexion à Google réussie.':'❌ '+(r.hint||r.error||'échec');};
+};
+
+/* ---- Paiement Stripe ---- */
+const ST_READY=<?= st_on($db)?'true':'false' ?>, ST_NPRICES=<?= count(st_conf($db)['prices']) ?>, ST_WEBHOOK=<?= json_encode($base.'/stripe-webhook.php') ?>;
+$('#stBtn').onclick=()=>{
+  $('#dlg').innerHTML=`<h3>💰 Paiement Stripe</h3>
+    <div class="sub">Le commerçant passe par Stripe Checkout pour payer sa formule (Mensuel/Annuel/À vie). Stripe confirme le paiement par webhook, qui débloque le quota tout seul — rien à faire ici ensuite.</div>
+    <label>Clé secrète <span style="font-weight:400;color:var(--muted)">(Stripe → Developers → API keys, "sk_live_…" ou "sk_test_…")</span></label>
+    <input class="inp" id="stS" type="password" placeholder="sk_live_… ou sk_test_…" value="${ST_READY?'••••••••':''}">
+    <label>Secret de webhook <span style="font-weight:400;color:var(--muted)">(donné par Stripe à la création du webhook ci-dessous, "whsec_…")</span></label>
+    <input class="inp" id="stW" type="password" placeholder="whsec_…">
+    <div class="sub" style="margin-top:8px">URL à coller dans Stripe → Developers → Webhooks → « Add endpoint », évènements <b>checkout.session.completed</b>, <b>customer.subscription.updated</b>, <b>customer.subscription.deleted</b> :<br><b style="user-select:all">${ST_WEBHOOK}</b></div>
+    <div class="sub" style="margin-top:8px">Tarifs créés sur Stripe : <b>${ST_NPRICES} / 3</b>${ST_NPRICES<3?' — à faire après avoir enregistré la clé ci-dessus.':''}</div>
+    <div id="stMsg" class="sub" style="margin-top:6px"></div>
+    <div class="drow"><button class="btn btn-g" id="stX">Fermer</button><button class="btn btn-g" id="stP">Créer les tarifs</button><button class="btn btn-p" id="stO">Enregistrer</button></div>`;
+  $('#mask').classList.add('on');
+  $('#stX').onclick=()=>$('#mask').classList.remove('on');
+  $('#stO').onclick=async()=>{
+    const r=await api('stripe_set',{secret:$('#stS').value.trim(),whsec:$('#stW').value.trim()});
+    if(r.ok){toast(r.ready?'✓ Clé enregistrée':'Enregistré — il manque la clé secrète');setTimeout(()=>location.reload(),900);}
+    else toast('Clé/secret invalide — vérifiez le préfixe (sk_… / whsec_…)');};
+  $('#stP').onclick=async()=>{
+    $('#stMsg').textContent='Création des tarifs sur Stripe…';
+    const r=await api('stripe_prices');
+    $('#stMsg').innerHTML=r.ok?'✅ 3 tarifs prêts sur Stripe.':'❌ '+(r.error||'échec');
+    if(r.ok)setTimeout(()=>location.reload(),900);};
 };
 
 /* ---- Sécurité du compte propriétaire ---- */

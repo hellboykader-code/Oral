@@ -62,7 +62,9 @@ DirectoryIndex accueil.php index.php
 # (manifest.php sert le manifeste PWA : c'est du PHP, il n'est pas concerné)
 
 # Le noyau et les modules internes ne sont jamais appelés directement
-<FilesMatch "^(lib|gwallet)\.php$">
+# (stripe-webhook.php N'EST PAS concerné : Stripe doit pouvoir l'appeler directement,
+# son authenticité vient de la signature du webhook, pas d'un accès direct interdit)
+<FilesMatch "^(lib|gwallet|stripe)\.php$">
   Require all denied
 </FilesMatch>
 

@@ -4,7 +4,7 @@
    Toute action portant sur des clients est cloisonnée au commerce
    en SESSION : jamais un id de commerce venu de la requête.
    ================================================================== */
-require __DIR__ . '/lib.php'; require __DIR__ . '/gwallet.php';
+require __DIR__ . '/lib.php'; require __DIR__ . '/gwallet.php'; require __DIR__ . '/stripe.php';
 fidelo_session();
 /* Verrou et chargement limités AU commerce connecté : deux commerces
    différents ne s'attendent plus, et on ne lit pas les clients des autres. */
@@ -190,6 +190,17 @@ case 'client_add': {
   $ref['clients'][] = $c;
   db_save($db);
   json_out(['ok'=>true,'client'=>client_view($c,$ref['rewards'])]);
+}
+
+/* Passer à une formule payante : renvoie l'URL Stripe Checkout du commerce
+   en session. Le plan n'est activé qu'à la confirmation du paiement,
+   par stripe-webhook.php — jamais côté client. */
+case 'stripe_checkout': {
+  $plan = $_POST['plan'] ?? '';
+  if (!in_array($plan, ['mensuel','annuel','avie'], true)) json_out(['ok'=>false,'error'=>'plan'],400);
+  if (!st_on($db)) json_out(['ok'=>false,'error'=>'stripe_off']);
+  $r = st_checkout_url($db, $ref, $plan);
+  json_out($r, $r['ok']?200:500);
 }
 
 /* Cartes vierges pré-imprimées : un lot de N cartes QR sans client, à coller

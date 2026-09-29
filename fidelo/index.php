@@ -427,6 +427,7 @@ $('#cAdd').onclick=()=>{sheet(`<h3 style="font-size:18px">Nouveau client</h3>
   $('#nOk').onclick=async()=>{const name=$('#nName').value.trim();if(!name){$('#nName').focus();return;}
     const r=await api('client_add',{name,tel:$('#nTel').value});
     if(r.ok){if(r.existing)toast('Ce client a déjà une carte — la voici');loadClients();showQR(r.client);}
+    else if(r.error==='quota')showUpgrade(r.message);
     else toast(r.message||'Erreur');};};
 
 $('#cBlank').onclick=()=>{sheet(`<h3 style="font-size:18px">🖨️ Cartes vierges</h3>
@@ -437,7 +438,7 @@ $('#cBlank').onclick=()=>{sheet(`<h3 style="font-size:18px">🖨️ Cartes vierg
   $('#bqOk').onclick=async()=>{
     const n=Math.max(1,Math.min(200,parseInt($('#bqN').value)||0));
     const r=await api('blank_batch',{n});
-    if(!r.ok){toast(r.message||'Erreur');return;}
+    if(!r.ok){if(r.error==='quota'){closeSheet();showUpgrade(r.message);}else toast(r.message||'Erreur');return;}
     closeSheet();loadHome();
     const ids=r.cards.map(c=>c.card).join(',');
     window.open(BASE+'/cartesvierges.php?ids='+encodeURIComponent(ids),'_blank');
@@ -448,6 +449,25 @@ $('#cBlank').onclick=()=>{sheet(`<h3 style="font-size:18px">🖨️ Cartes vierg
 function sheet(h){$('#sheetC').innerHTML=h;$('#sheet').classList.add('on');}
 $('#sheet').onclick=e=>{if(e.target.id==='sheet')$('#sheet').classList.remove('on');};
 function closeSheet(){$('#sheet').classList.remove('on');}
+
+/* Quota Découverte atteint : propose de passer à une formule payante,
+   paiement par Stripe Checkout (redirection, retour automatique ici). */
+function showUpgrade(msg){
+  const plans=[['mensuel','Mensuel','29 € / mois'],['annuel','Annuel','250 € / an'],['avie','À vie','525 € une fois']];
+  sheet(`<h3 style="font-size:18px">Formule Découverte complète</h3>
+    <p style="font-size:13px;color:var(--muted);margin-top:4px">${msg||'Passez en illimité pour continuer — vos clients actuels restent intacts.'}</p>
+    <div style="display:flex;flex-direction:column;gap:8px;margin-top:12px">
+      ${plans.map(p=>`<button class="btn btn-g upP" data-plan="${p[0]}" style="width:100%;display:flex;justify-content:space-between;align-items:center"><span>${p[1]}</span><b>${p[2]}</b></button>`).join('')}
+    </div>
+    <div id="upMsg" style="font-size:12.5px;color:var(--faint);margin-top:10px"></div>
+    <button class="btn btn-g" style="width:100%;margin-top:8px" onclick="closeSheet()">Plus tard</button>`);
+  $$('.upP').forEach(b=>b.onclick=async()=>{
+    $('#upMsg').textContent='Redirection vers le paiement…';
+    const r=await api('stripe_checkout',{plan:b.dataset.plan});
+    if(r.ok&&r.url)location.href=r.url;
+    else $('#upMsg').textContent=r.error==='stripe_off'?'Paiement pas encore configuré — contactez-nous.':'Erreur, réessayez.';
+  });
+}
 async function openClient(cid){const r=await api('client_get',{cid});if(!r.ok)return;const c=r.client;
   const nx=c.next,prog=nx?Math.round(c.points/nx.pts*100):100;
   const rws=[...(SHOP.rewards||[])].sort((a,b)=>a.pts-b.pts);
@@ -562,6 +582,7 @@ async function addPoint(q){
       const x=await api('blank_activate',{card,name,tel:$('#baTel').value});
       if(x.ok){closeSheet();toast('✓ Carte activée pour '+x.client.name);loadHome();
         if($('.screen[data-s=clients]').classList.contains('on'))loadClients();}
+      else if(x.error==='quota'){closeSheet();showUpgrade(x.message);}
       else toast(x.message||'Erreur');
     };
     return;
