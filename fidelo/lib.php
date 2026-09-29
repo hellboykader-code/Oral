@@ -506,7 +506,7 @@ function shop_public(array $s): array {
 
 /* Création d'un commerce (inscription). */
 function shop_create(array &$db, array $in): array {
-  $name = trim($in['name'] ?? '');
+  $name = mb_substr(trim($in['name'] ?? ''), 0, 60);
   $email = mb_strtolower(trim($in['email'] ?? ''));
   $pass = (string)($in['pass'] ?? '');
   $pin  = (string)($in['pin'] ?? '');

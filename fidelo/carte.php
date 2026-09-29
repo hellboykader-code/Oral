@@ -189,6 +189,7 @@ h1,h2,h3{font-family:var(--disp);font-weight:600;letter-spacing:-.02em;margin:0}
 <script>
 const BASE=<?= json_encode($base) ?>, CARD=<?= json_encode($card) ?>;
 const $=s=>document.querySelector(s);let M=null,VAPID='';
+function esc(s){return String(s??'').replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));}
 let tT;function toast(m){const t=$('#toast');t.textContent=m;t.classList.add('on');clearTimeout(tT);tT=setTimeout(()=>t.classList.remove('on'),2600);}
 const initials=n=>(n||'?').split(/\s+/).map(w=>w[0]).join('').slice(0,2).toUpperCase();
 function qrURL(t,cell){const q=qrcode(0,'M');q.addData(t);q.make();return q.createDataURL(cell,6);}
@@ -216,10 +217,10 @@ function render(){const s=M.shop,c=M.client,rw=M.rewards.slice().sort((a,b)=>a.p
   const nx=rw.find(r=>r.pts>c.points),claim=[...rw].reverse().find(r=>r.pts<=c.points);
   if(nx){const prev=[...rw].reverse().find(r=>r.pts<=c.points)?.pts||0;const done=c.points-prev,span=nx.pts-prev;
     $('#nextL').textContent=nx.t;$('#nextC').textContent=c.points+'/'+nx.pts;setTimeout(()=>$('#fill').style.width=Math.max(6,Math.round(done/span*100))+'%',60);
-    $('#hint').innerHTML='Plus que <b>'+(nx.pts-c.points)+' point'+((nx.pts-c.points)>1?'s':'')+'</b> pour « '+nx.t+' ».';}
+    $('#hint').innerHTML='Plus que <b>'+(nx.pts-c.points)+' point'+((nx.pts-c.points)>1?'s':'')+'</b> pour « '+esc(nx.t)+' ».';}
   else{$('#nextL').textContent='Palier max 🎉';$('#nextC').textContent=c.points+' pts';setTimeout(()=>$('#fill').style.width='100%',60);$('#hint').innerHTML='Vous êtes au sommet. <b>Merci !</b>';}
   $('#rwList').innerHTML=rw.map(r=>{const u=c.points>=r.pts;
-    return '<div class="rw '+(u?'ok':'lock')+'"><div class="n">'+r.pts+'<span style="font-size:8px;margin-left:1px">PTS</span></div><div style="flex:1"><div class="t">'+r.t+'</div><div class="d">'+(r.d||'')+'</div></div><div class="st">'+(u?'DISPONIBLE':(r.pts-c.points)+' pts')+'</div></div>';}).join('');
+    return '<div class="rw '+(u?'ok':'lock')+'"><div class="n">'+r.pts+'<span style="font-size:8px;margin-left:1px">PTS</span></div><div style="flex:1"><div class="t">'+esc(r.t)+'</div><div class="d">'+esc(r.d||'')+'</div></div><div class="st">'+(u?'DISPONIBLE':(r.pts-c.points)+' pts')+'</div></div>';}).join('');
 }
 $('#qm').onclick=$('#showBtn').onclick=()=>$('#qrFull').classList.add('on');
 $('#fClose').onclick=()=>$('#qrFull').classList.remove('on');

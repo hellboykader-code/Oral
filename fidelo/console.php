@@ -747,10 +747,10 @@ const SHOPS=<?= json_encode(array_map(fn($s)=>['id'=>$s['id'],'name'=>$s['name']
 const TYPES=['Café','Restaurant','Boulangerie','Salon','Commerce'];
 function openShop(id){
   const sh=SHOPS.find(x=>x.id===id); if(!sh)return;
-  $('#dlg').innerHTML=`<h3>${sh.name}</h3><div class="sub">${sh.clients} client(s) · ${sh.email}</div>
-    <label>Nom du commerce</label><input class="inp" id="seN" maxlength="60" value="${sh.name.replace(/"/g,'&quot;')}">
+  $('#dlg').innerHTML=`<h3>${escH(sh.name)}</h3><div class="sub">${sh.clients} client(s) · ${escH(sh.email)}</div>
+    <label>Nom du commerce</label><input class="inp" id="seN" maxlength="60" value="${escH(sh.name)}">
     <label>Type</label><div class="chips" id="seT">${TYPES.map(t=>`<button class="chip ${t===sh.type?'on':''}" data-t="${t}">${t}</button>`).join('')}</div>
-    <label>E-mail du gérant</label><input class="inp" id="seE" type="email" value="${sh.email}">
+    <label>E-mail du gérant</label><input class="inp" id="seE" type="email" value="${escH(sh.email)}">
     <div style="display:flex;gap:8px;margin-top:14px;flex-wrap:wrap">
       <button class="btn btn-p" id="seOk">Enregistrer</button>
       <button class="btn btn-g" id="seCli">👥 Ses clients</button>
