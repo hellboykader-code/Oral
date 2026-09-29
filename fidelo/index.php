@@ -110,7 +110,7 @@ background:radial-gradient(70% 45% at 78% 8%,rgba(6,182,212,.18),transparent 60%
 .nav .fab{position:relative;top:-12px}.nav .fab .i{width:46px;height:46px;border-radius:15px;background:var(--em);color:#fff;display:grid;place-items:center;box-shadow:0 8px 18px -6px rgba(14,131,103,.7)}.nav .fab svg{width:23px;height:23px}
 /* sheet */
 .sheet{position:fixed;inset:0;z-index:40;background:rgba(11,21,18,.45);display:none;align-items:flex-end}.sheet.on{display:flex;animation:fade .2s}
-.sheet .card{width:100%;max-width:900px;margin:0 auto;background:var(--card);border-radius:22px 22px 0 0;padding:18px 16px calc(18px + env(safe-area-inset-bottom));animation:up .28s cubic-bezier(.2,.9,.3,1)}
+.sheet .card{width:100%;max-width:900px;margin:0 auto;background:var(--card);border-radius:22px 22px 0 0;padding:18px 16px calc(18px + env(safe-area-inset-bottom));animation:up .28s cubic-bezier(.2,.9,.3,1);max-height:88vh;overflow-y:auto;-webkit-overflow-scrolling:touch}
 @keyframes up{from{transform:translateY(30px)}to{transform:none}}
 .qr-box{background:#fff;padding:12px;border-radius:14px;width:fit-content;margin:6px auto 0}.qr-box img{width:180px;height:180px;image-rendering:pixelated;display:block}
 .rwlist{max-height:38vh;overflow-y:auto}
@@ -465,7 +465,7 @@ $('#cBlank').onclick=()=>{sheet(`<h3 style="font-size:18px">🖨️ Cartes vierg
   };};
 
 /* fiche client */
-function sheet(h){$('#sheetC').innerHTML=h;$('#sheet').classList.add('on');}
+function sheet(h){$('#sheetC').innerHTML=h;$('#sheet').classList.add('on');$('#sheetC').scrollTop=0;}
 $('#sheet').onclick=e=>{if(e.target.id==='sheet')$('#sheet').classList.remove('on');};
 function closeSheet(){$('#sheet').classList.remove('on');}
 
