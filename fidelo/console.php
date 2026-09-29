@@ -220,10 +220,11 @@ if ($a !== '') {
       'label'=>"Console protégée par mot de passe",
       'fix'=>"Cliquez sur « 🔐 Sécurité » et définissez un mot de passe : la clé dans l'URL ne suffit pas."];
 
-    // 4. clé de secours changée
-    $out[] = ['k'=>'key','ok'=>ADMIN_KEY !== 'fidelo-admin-CHANGEZ-MOI' && strlen(ADMIN_KEY) >= 20,
-      'label'=>"Clé de secours personnalisée et longue",
-      'fix'=>"Modifiez ADMIN_KEY dans lib.php (au moins 20 caractères aléatoires)."];
+    // 4. clé de secours configurée (vide par défaut depuis le correctif de sécurité :
+    //    aucune chaîne de contournement n'est plus codée en dur dans lib.php)
+    $out[] = ['k'=>'key','ok'=>strlen(ADMIN_KEY) >= 20,
+      'label'=>"Clé de secours configurée et longue",
+      'fix'=>"Réglez FIDELO_ADMIN_KEY (variable d'environnement) ou éditez ADMIN_KEY UNIQUEMENT sur le serveur en ligne (jamais dans Git), avec au moins 20 caractères aléatoires."];
 
     // 5. comptes de démonstration livrés avec un mot de passe connu
     /* Tout compte d'exemple est à supprimer : soit il garde un mot de passe

@@ -77,7 +77,7 @@ if ($a !== '') {
         $db['shops'][$si]['clients'][$ci]['push'][] = $sub;
         db_save($db);
         // cookie pour que le service worker s'identifie lors du "peek" (push sans payload)
-        setcookie('fidelo_card', $card, ['expires' => now() + 60*60*24*365, 'path' => '/', 'secure' => !empty($_SERVER['HTTPS']), 'httponly' => true, 'samesite' => 'Lax']);
+        setcookie('fidelo_card', $card, ['expires' => now() + 60*60*24*365, 'path' => '/', 'secure' => is_https(), 'httponly' => true, 'samesite' => 'Lax']);
         json_out(['ok' => true]);
       }
     }

@@ -347,7 +347,7 @@ function shop_by_email(array $db, string $email): ?array {
 }
 function shop_by_join(array $db, string $token): ?array {
   if ($token === '') return null;
-  foreach ($db['shops'] as $s) if (($s['joinToken'] ?? '') === $token) return $s;
+  foreach ($db['shops'] as $s) if (hash_equals((string)($s['joinToken'] ?? ''), $token)) return $s;
   return null;
 }
 function shop_by_short(array $db, string $code): ?array {
