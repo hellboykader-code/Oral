@@ -15,10 +15,17 @@ define('DB_FILE',  DATA_DIR . '/db.json');
    éternel : au-delà, il faut repasser par le mot de passe. */
 define('DEVICE_TTL', 120 * 86400);      // 120 jours
 
-/* Clé de la console propriétaire (à changer après installation).
-   Peut être surchargée par une variable d'env FIDELO_ADMIN_KEY. */
+/* Clé de secours de la console propriétaire (?k=…), pour le jour où le mot
+   de passe est perdu — la porte normale reste le mot de passe.
+   ⚠️ Ne JAMAIS écrire la vraie clé ici : ce fichier est suivi par un dépôt
+   Git PUBLIC. Réglez FIDELO_ADMIN_KEY comme variable d'environnement sur
+   le serveur, ou modifiez cette ligne UNIQUEMENT sur la copie EN LIGNE
+   (jamais dans Git) avec une valeur générée par vous
+   (ex. bin2hex(random_bytes(24))). Tant qu'aucune vraie clé n'est réglée,
+   la clé de secours reste désactivée (strlen < 16 ci-dessous) — seul le
+   mot de passe permet de se connecter. */
 if (!defined('ADMIN_KEY')) {
-  define('ADMIN_KEY', getenv('FIDELO_ADMIN_KEY') ?: 'fidelo-2038a28a44d53c811b0c9b443d684287');
+  define('ADMIN_KEY', getenv('FIDELO_ADMIN_KEY') ?: '');
 }
 
 /* ---------- session durcie ---------- */
