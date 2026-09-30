@@ -27,6 +27,7 @@ function client_view(array $c, array $rewards): array {
   return [
     'id'=>$c['id'],'name'=>$c['name'],'tel'=>$c['tel'] ?? '','card'=>$c['card'] ?? '',
     'points'=>(int)$c['points'],'visits'=>(int)$c['visits'],'last'=>(int)$c['last'],
+    'bday'=>$c['bday'] ?? '',
     'next'=>$nx,'claim'=>$cl,
   ];
 }
@@ -150,10 +151,12 @@ case 'wa_reg': {
 case 'home': {
   $before = $ref['today']['day'] ?? '';
   today_reset($ref);
+  $dayChanged = $before !== ($ref['today']['day'] ?? '');
+  if ($dayChanged) bday_gifts_process($ref, now());   // cadeaux anniversaire, au plus une fois/jour
   $clients = real_clients($ref['clients']);
   usort($clients, fn($x,$y)=>$y['last']-$x['last']);
   $feed = array_map(fn($c)=>client_view($c,$ref['rewards']), array_slice($clients,0,5));
-  if ($before !== ($ref['today']['day'] ?? '')) db_save($db);   // écrit seulement au changement de jour
+  if ($dayChanged) db_save($db);   // écrit seulement au changement de jour
   $inboxUnread = count(array_filter($ref['inbox'] ?? [], fn($m)=>empty($m['read'])));
   json_out(['ok'=>true,'today'=>$ref['today'],'goal'=>$ref['goal'],
     'nClients'=>count($clients),'feed'=>$feed,'inboxUnread'=>$inboxUnread,
@@ -183,11 +186,14 @@ case 'client_add': {
   $name = mb_substr(trim($_POST['name'] ?? ''), 0, 50);
   if ($name==='') json_out(['ok'=>false,'error'=>'name'],400);
   $tel = mb_substr(trim($_POST['tel'] ?? ''), 0, 30);
+  $bday = bday_norm((string)($_POST['bday'] ?? ''));
+  if ($bday === null) json_out(['ok'=>false,'error'=>'bday'],400);
   // anti-doublon : si un client identique existe déjà, on le renvoie (pas de 2e carte)
   $dup = client_find_existing($ref, $name, $tel);
   if ($dup) json_out(['ok'=>true,'client'=>client_view($dup,$ref['rewards']),'existing'=>true]);
   $c = ['id'=>'F'.rid(6),'name'=>$name,'tel'=>$tel!==''?$tel:'—','points'=>0,'visits'=>0,
         'last'=>now(),'card'=>unique_card($db),'push'=>[],'created'=>now()];
+  if ($bday !== '') $c['bday'] = $bday;
   $ref['clients'][] = $c;
   db_save($db);
   json_out(['ok'=>true,'client'=>client_view($c,$ref['rewards'])]);
@@ -396,8 +402,11 @@ case 'client_edit': {
   $name = mb_substr(trim($_POST['name'] ?? ''), 0, 50);
   if ($name === '') json_out(['ok'=>false,'error'=>'name'],400);
   $tel = mb_substr(trim($_POST['tel'] ?? ''), 0, 30);
+  $bday = bday_norm((string)($_POST['bday'] ?? ''));
+  if ($bday === null) json_out(['ok'=>false,'error'=>'bday'],400);
   $c['name'] = $name;
   $c['tel'] = $tel !== '' ? $tel : '—';
+  if ($bday === '') unset($c['bday']); else $c['bday'] = $bday;
   db_save($db);
   gw_sync_later($sid, (string)($c['card'] ?? ''));
   json_out(['ok'=>true,'client'=>client_view($c,$ref['rewards'])]);
@@ -525,6 +534,7 @@ case 'settings_set': {
     if ($gr !== '' && !filter_var($gr, FILTER_VALIDATE_URL)) json_out(['ok'=>false,'error'=>'googleReview'],400);
     $ref['googleReview'] = mb_substr($gr, 0, 300);
   }
+  if (isset($_POST['birthdayGift'])) $ref['birthdayGift'] = $_POST['birthdayGift'] === '1';
   db_save($db);
   json_out(['ok'=>true,'shop'=>shop_public($ref)]);
 }

@@ -442,9 +442,11 @@ $('#cJoin').onclick=()=>{
 $('#cAdd').onclick=()=>{sheet(`<h3 style="font-size:18px">Nouveau client</h3>
   <input class="field" id="nName" placeholder="Prénom / nom" style="margin-top:10px">
   <input class="field" id="nTel" placeholder="Téléphone (optionnel)" style="margin-top:8px">
+  <label style="display:block;font-size:12.5px;font-weight:600;color:var(--muted);margin:10px 0 6px">Date de naissance <span style="font-weight:400;color:var(--faint)">(optionnel — pour le cadeau d'anniversaire 🎂)</span></label>
+  <input class="field" id="nBday" type="date">
   <button class="btn btn-p" id="nOk" style="width:100%;margin-top:12px">Créer & afficher le code</button>`);
   $('#nOk').onclick=async()=>{const name=$('#nName').value.trim();if(!name){$('#nName').focus();return;}
-    const r=await api('client_add',{name,tel:$('#nTel').value});
+    const r=await api('client_add',{name,tel:$('#nTel').value,bday:$('#nBday').value});
     if(r.ok){if(r.existing)toast('Ce client a déjà une carte — la voici');loadClients();showQR(r.client);}
     else if(r.error==='quota')showUpgrade(r.message);
     else toast(r.message||'Erreur');};};
@@ -529,11 +531,13 @@ function editClient(c){
     <input class="field" id="ceName" maxlength="50" value="${esc(c.name)}">
     <label style="display:block;font-size:12.5px;font-weight:600;color:var(--muted);margin:10px 0 6px">Téléphone</label>
     <input class="field" id="ceTel" maxlength="30" inputmode="tel" value="${c.tel==='—'?'':esc(c.tel)}">
+    <label style="display:block;font-size:12.5px;font-weight:600;color:var(--muted);margin:10px 0 6px">Date de naissance <span style="font-weight:400;color:var(--faint)">(optionnel — pour le cadeau d'anniversaire 🎂)</span></label>
+    <input class="field" id="ceBday" type="date" value="${c.bday?('2000-'+c.bday):''}">
     <button class="btn btn-p" id="ceOk" style="width:100%;margin-top:14px">Enregistrer</button>`);
   $('#ceOk').onclick=async()=>{
     const name=$('#ceName').value.trim();
     if(!name){$('#ceName').focus();return;}
-    const x=await api('client_edit',{cid:c.id,name,tel:$('#ceTel').value.trim()});
+    const x=await api('client_edit',{cid:c.id,name,tel:$('#ceTel').value.trim(),bday:$('#ceBday').value});
     if(x.ok){toast('✓ Fiche mise à jour');openClient(c.id);loadHome();
       if($('.screen[data-s=clients]').classList.contains('on'))loadClients();}
     else toast('Erreur');};
@@ -735,6 +739,9 @@ $('#btnSet').onclick=()=>{sheet(`<h3 style="font-size:18px">Réglages</h3>
   <input class="field" id="sGoal" type="number" min="1" value="${SHOP.goal}">
   <label style="display:block;font-size:12.5px;font-weight:600;color:var(--muted);margin:12px 0 6px">Lien avis Google <span style="font-weight:400;color:var(--faint)">(pour le proposer à vos clients)</span></label>
   <input class="field" id="sGrev" type="url" placeholder="https://g.page/r/…/review" value="${esc(SHOP.googleReview||'')}">
+  <label style="display:flex;gap:9px;align-items:flex-start;margin-top:14px;font-size:12.5px;color:var(--muted);cursor:pointer">
+    <input type="checkbox" id="sBdayGift" style="margin-top:2px;width:16px;height:16px" ${SHOP.birthdayGift?'checked':''}>
+    <span>🎂 Offrir automatiquement 1 point le jour de l'anniversaire d'un client (si sa date de naissance est renseignée).</span></label>
   <label style="display:block;font-size:12.5px;font-weight:600;color:var(--muted);margin:14px 0 6px">Logo du commerce</label>
   <div style="display:flex;align-items:center;gap:12px">
     <img id="sLogoImg" src="${BASE}/brand.php?s=${SHOP.id}&t=logo&v=${Date.now()}" alt=""
@@ -756,7 +763,7 @@ $('#btnSet').onclick=()=>{sheet(`<h3 style="font-size:18px">Réglages</h3>
   <button class="btn btn-g" id="sDedup" style="width:100%;margin-top:8px">🧹 Fusionner les doublons</button>
   <button class="btn btn-g" id="sOut" style="width:100%;margin-top:8px">Se déconnecter</button>
   <div style="text-align:center;margin-top:12px"><button class="link" id="sInstall" style="color:var(--em)">📲 Ajouter à l'écran d'accueil</button></div>`);
-  $('#sOk').onclick=async()=>{const r=await api('settings_set',{name:$('#sName').value,goal:$('#sGoal').value,googleReview:$('#sGrev').value.trim()});
+  $('#sOk').onclick=async()=>{const r=await api('settings_set',{name:$('#sName').value,goal:$('#sGoal').value,googleReview:$('#sGrev').value.trim(),birthdayGift:$('#sBdayGift').checked?'1':'0'});
     if(r.ok){SHOP=r.shop;$('#hShop').textContent=SHOP.name;$('#hIc').textContent=initials(SHOP.name);toast('✓ Enregistré');closeSheet();}
     else toast(r.error==='googleReview'?'Lien Google invalide':'Erreur');};
   /* Logo : lecture locale → envoi en base64 (aucune dépendance serveur). */

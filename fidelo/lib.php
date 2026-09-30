@@ -502,6 +502,7 @@ function shop_public(array $s): array {
     'filleuls'    => (int)($s['filleuls'] ?? 0),
     'creditMois'  => (int)($s['creditMois'] ?? 0),
     'googleReview' => $s['googleReview'] ?? '',
+    'birthdayGift' => ($s['birthdayGift'] ?? true) !== false,
   ];
 }
 
@@ -643,6 +644,37 @@ function shop_broadcast_log(array &$ref, string $title, string $body, string $se
     'clients' => $clients, 'sent' => $sent, 'at' => now(),
   ]);
   $ref['broadcasts'] = array_slice($ref['broadcasts'], 0, 30);
+}
+
+/* Valide une date de naissance envoyée par un <input type="date"> (YYYY-MM-DD)
+   et ne renvoie QUE le mois-jour (MM-DD) : aucune année n'est jamais stockée. */
+function bday_norm(string $in): ?string {
+  $in = trim($in);
+  if ($in === '') return '';   // effacement volontaire du champ
+  if (!preg_match('/^\d{4}-(\d{2})-(\d{2})$/', $in, $m)) return null;
+  [, $mo, $da] = $m;
+  if (!checkdate((int)$mo, (int)$da, 2000)) return null;
+  return $mo . '-' . $da;
+}
+
+/* Cadeau anniversaire : 1 point + message automatique le jour J, une seule
+   fois par an et par client. Désactivable par commerce (birthdayGift=false).
+   Aucune année de naissance n'est jamais stockée (MM-DD uniquement). */
+function bday_gifts_process(array &$ref, int $t): int {
+  if (($ref['birthdayGift'] ?? true) === false) return 0;
+  $mmdd = date('m-d', $t); $year = (int)date('Y', $t);
+  $n = 0;
+  foreach ($ref['clients'] as $i => $c) {
+    if (empty($c['bday']) || $c['bday'] !== $mmdd) continue;
+    if ((int)($c['bdayLastYear'] ?? 0) === $year) continue;
+    $ref['clients'][$i]['points'] = (int)($c['points'] ?? 0) + 1;
+    $ref['clients'][$i]['bdayLastYear'] = $year;
+    $ref['clients'][$i]['msg'] = ['title' => 'Joyeux anniversaire 🎂',
+      'body' => 'Un point cadeau de la part de ' . ($ref['name'] ?? 'votre commerce') . ' !', 'at' => $t];
+    $ref['events'][] = ['at' => $t, 'type' => 'bday', 'cid' => $c['id']];
+    $n++;
+  }
+  return $n;
 }
 
 /* ---------- palette du commerce ---------- */
