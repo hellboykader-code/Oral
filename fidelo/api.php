@@ -539,16 +539,19 @@ case 'inbox': {
   json_out(['ok'=>true,'messages'=>array_slice($inbox,0,100)]);
 }
 
+/* Historique des messages groupés envoyés par CE commerce (push.php?a=broadcast). */
+case 'broadcast_history': {
+  json_out(['ok'=>true,'items'=>array_slice($ref['broadcasts'] ?? [],0,30)]);
+}
+
 case 'stats': {
   $cl = real_clients($ref['clients']);
   $seg = ['champions'=>0,'fideles'=>0,'nouveaux'=>0,'endormis'=>0];
   $sleepers = []; $t = now();
   foreach ($cl as $c) {
-    $p=(int)$c['points']; $inactif = ($t-$c['last']) > 14*86400;
-    if ($inactif) { $seg['endormis']++; $sleepers[]=$c; }
-    elseif ($p>=20) $seg['champions']++;
-    elseif ($p>=10) $seg['fideles']++;
-    else $seg['nouveaux']++;
+    $s = client_segment($c, $t);
+    $seg[$s]++;
+    if ($s === 'endormis') $sleepers[] = $c;
   }
   usort($sleepers, fn($x,$y)=>$x['last']-$y['last']);
   $sleepers = array_map(fn($c)=>[

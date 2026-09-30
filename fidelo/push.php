@@ -153,15 +153,25 @@ if ($a === 'broadcast') {
   $title = mb_substr(trim($_POST['title'] ?? ''), 0, 60) ?: 'Fidelo';
   $body  = mb_substr(trim($_POST['body'] ?? ''), 0, 160);
   if ($body === '') json_out(['ok' => false, 'error' => 'empty'], 400);
+  $segment = $_POST['segment'] ?? 'all';
+  if (!in_array($segment, ['all', 'champions', 'fideles', 'nouveaux', 'endormis'], true)) $segment = 'all';
   $ref = &shop_ref($db, $sid);
   if (!$ref) json_out(['ok' => false, 'error' => 'auth'], 401);
   $base = rtrim(dirname($_SERVER['SCRIPT_NAME']), '/');
-  /* 1) le message est déposé sur la carte de TOUS les clients : même sans
+  $t = now();
+  /* Ciblage optionnel par segment (mêmes règles que l'onglet Statistiques). */
+  $targetIds = null;
+  if ($segment !== 'all') {
+    $targetIds = [];
+    foreach (real_clients($ref['clients']) as $c) if (client_segment($c, $t) === $segment) $targetIds[] = $c['id'];
+  }
+  /* 1) le message est déposé sur la carte des clients ciblés : même sans
         notification activée, il s'affiche dès qu'ils ouvrent leur carte. */
-  $clients = shop_broadcast_set($ref, $title, $body);
+  $clients = shop_broadcast_set($ref, $title, $body, $targetIds);
   /* 2) notification push immédiate pour ceux qui l'ont activée. */
   $targets = 0; $sentN = 0;
   foreach ($ref['clients'] as $i => $c) {
+    if ($targetIds !== null && !in_array($c['id'], $targetIds, true)) continue;
     if (empty($c['push'])) continue;
     $targets++;
     $ref['clients'][$i]['notif'] = ['title' => $title, 'body' => $body,
@@ -173,8 +183,9 @@ if ($a === 'broadcast') {
     }
     foreach (array_reverse($bad) as $pk) array_splice($ref['clients'][$i]['push'], $pk, 1);
   }
+  shop_broadcast_log($ref, $title, $body, $segment, $clients, $sentN);
   db_save($db);
-  json_out(['ok' => true, 'clients' => $clients, 'targets' => $targets, 'sent' => $sentN]);
+  json_out(['ok' => true, 'clients' => $clients, 'targets' => $targets, 'sent' => $sentN, 'segment' => $segment]);
 }
 
 json_out(['ok' => false, 'error' => 'unknown'], 400);

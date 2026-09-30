@@ -195,7 +195,7 @@ background:radial-gradient(70% 45% at 78% 8%,rgba(6,182,212,.18),transparent 60%
       <input class="field" id="cQ" placeholder="Rechercher un client…">
       <div style="display:flex;gap:8px;margin-top:8px"><button class="btn btn-p" id="cJoin" style="flex:1">📲 QR d'inscription</button><button class="btn btn-g" id="cAdd" style="flex:1">+ Client</button></div>
       <button class="btn btn-g" id="cBlank" style="width:100%;margin-top:8px">🖨️ Imprimer des cartes vierges</button>
-      <button class="btn btn-g" id="cBroadcast" style="width:100%;margin-top:8px">📣 Message à tous mes clients</button>
+      <button class="btn btn-g" id="cBroadcast" style="width:100%;margin-top:8px">📣 Message groupé</button>
       <div id="cList" style="margin-top:12px"></div>
     </div>
     <!-- SCANNER -->
@@ -917,24 +917,49 @@ $('#btnSet').onclick=()=>{sheet(`<h3 style="font-size:18px">Réglages</h3>
   $('#sInstall').onclick=doInstall;};
 
 /* Message groupé — accessible depuis l'onglet Clients */
+const BC_SEG_LABEL={all:'Tous les clients',champions:'🏆 Champions',fideles:'❤️ Fidèles',nouveaux:'🌱 Nouveaux',endormis:'💤 Endormis'};
 function openBroadcast(){
-  sheet(`<h3 style="font-size:18px">📣 Message à tous mes clients</h3>
-    <p style="font-size:12.5px;color:var(--muted);margin:6px 0 10px">Le message s'affiche sur la carte de <b>tous</b> vos clients, et part en notification à ceux qui les ont activées.</p>
-    <input class="field" id="bcT" placeholder="Titre (ex. Offre du jour)" maxlength="60">
+  sheet(`<h3 style="font-size:18px">📣 Message groupé</h3>
+    <p style="font-size:12.5px;color:var(--muted);margin:6px 0 10px">Le message s'affiche sur la carte des clients ciblés, et part en notification à ceux qui les ont activées.</p>
+    <label style="display:block;font-size:12.5px;font-weight:600;color:var(--muted);margin:10px 0 6px">Destinataires</label>
+    <select class="field" id="bcSeg">
+      <option value="all">Tous les clients</option>
+      <option value="champions">🏆 Champions (20 pts et +)</option>
+      <option value="fideles">❤️ Fidèles (10 à 19 pts)</option>
+      <option value="nouveaux">🌱 Nouveaux (moins de 10 pts)</option>
+      <option value="endormis">💤 Endormis (inactifs 14 j et +)</option>
+    </select>
+    <input class="field" id="bcT" placeholder="Titre (ex. Offre du jour)" maxlength="60" style="margin-top:8px">
     <textarea class="field" id="bcB" placeholder="Votre message…" maxlength="160" style="min-height:80px;margin-top:8px;resize:vertical"></textarea>
-    <button class="btn btn-p" id="bcOk" style="width:100%;margin-top:12px">Envoyer à tous</button>`);
+    <button class="btn btn-p" id="bcOk" style="width:100%;margin-top:12px">Envoyer</button>
+    <button class="btn btn-g" id="bcHist" style="width:100%;margin-top:8px">🕓 Historique des messages envoyés</button>`);
   $('#bcOk').onclick=async()=>{
-    const title=$('#bcT').value.trim(),body=$('#bcB').value.trim();
+    const title=$('#bcT').value.trim(),body=$('#bcB').value.trim(),segment=$('#bcSeg').value;
     if(!body){$('#bcB').focus();return;}
     $('#bcOk').disabled=true;$('#bcOk').textContent='Envoi…';
-    const form=new URLSearchParams({title,body});
+    const form=new URLSearchParams({title,body,segment});
     const r=await fetch(BASE+'/push.php?a=broadcast',{method:'POST',headers:{'X-CSRF':CSRF,'Content-Type':'application/x-www-form-urlencoded'},body:form}).then(x=>x.json()).catch(()=>({ok:false,error:'net'}));
     if(r.ok){
       let t='📣 Message affiché sur '+r.clients+' carte'+(r.clients>1?'s':'');
       if(r.sent)t+=' · '+r.sent+' notification'+(r.sent>1?'s':'')+' envoyée'+(r.sent>1?'s':'');
       toast(t);closeSheet();
-    } else {toast(r.error==='net'?'Pas de connexion — réessayez':'Erreur d\'envoi');$('#bcOk').disabled=false;$('#bcOk').textContent='Envoyer à tous';}
+    } else {toast(r.error==='net'?'Pas de connexion — réessayez':(r.error==='empty'?'Écrivez un message':'Erreur d\'envoi'));$('#bcOk').disabled=false;$('#bcOk').textContent='Envoyer';}
   };
+  $('#bcHist').onclick=openBroadcastHistory;
+}
+function openBroadcastHistory(){
+  sheet(`<h3 style="font-size:18px">🕓 Historique des messages</h3><div id="bcHList" style="margin-top:10px;font-size:13px;color:var(--muted)">Chargement…</div>`);
+  api('broadcast_history').then(r=>{
+    if(!r.ok||!r.items.length){$('#bcHList').textContent='Aucun message envoyé pour le moment.';return;}
+    $('#bcHList').innerHTML=r.items.map(m=>{
+      const d=new Date(m.at*1000).toLocaleDateString('fr-FR',{day:'2-digit',month:'2-digit',year:'numeric',hour:'2-digit',minute:'2-digit'});
+      return `<div style="padding:10px 0;border-bottom:1px solid var(--line)">
+        <div style="font-weight:600;color:var(--text)">${esc(m.title)}</div>
+        <div style="font-size:12.5px;margin:2px 0">${esc(m.body)}</div>
+        <div style="font-size:11.5px;color:var(--faint)">${esc(BC_SEG_LABEL[m.segment]||m.segment)} · ${m.clients} carte${m.clients>1?'s':''}${m.sent?(' · '+m.sent+' notif.'):''} · ${d}</div>
+      </div>`;
+    }).join('');
+  });
 }
 
 $('#cBroadcast').onclick=openBroadcast;

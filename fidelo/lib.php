@@ -614,14 +614,35 @@ function vapid_ensure(array &$db): string {
   return $db['settings']['vapidPub'];
 }
 
-/* Dernier message du commerce affiché sur la carte du client. */
-function shop_broadcast_set(array &$ref, string $title, string $body): int {
+/* Segment RFM simplifié d'un client (aligné sur l'action stats de api.php). */
+function client_segment(array $c, int $t): string {
+  if (($t - (int)($c['last'] ?? 0)) > 14 * 86400) return 'endormis';
+  $p = (int)($c['points'] ?? 0);
+  if ($p >= 20) return 'champions';
+  if ($p >= 10) return 'fideles';
+  return 'nouveaux';
+}
+
+/* Dernier message du commerce affiché sur la carte du client.
+   $targetIds = null → tous les clients ; sinon uniquement les id listés. */
+function shop_broadcast_set(array &$ref, string $title, string $body, ?array $targetIds = null): int {
   $n = 0;
   foreach ($ref['clients'] as $i => $c) {
+    if ($targetIds !== null && !in_array($c['id'], $targetIds, true)) continue;
     $ref['clients'][$i]['msg'] = ['title' => $title, 'body' => $body, 'at' => now()];
     $n++;
   }
   return $n;
+}
+
+/* Historique des messages groupés envoyés par le commerce (30 derniers). */
+function shop_broadcast_log(array &$ref, string $title, string $body, string $segment, int $clients, int $sent): void {
+  $ref['broadcasts'] = $ref['broadcasts'] ?? [];
+  array_unshift($ref['broadcasts'], [
+    'title' => $title, 'body' => $body, 'segment' => $segment,
+    'clients' => $clients, 'sent' => $sent, 'at' => now(),
+  ]);
+  $ref['broadcasts'] = array_slice($ref['broadcasts'], 0, 30);
 }
 
 /* ---------- palette du commerce ---------- */
