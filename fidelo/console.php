@@ -430,12 +430,24 @@ if ($a !== '') {
 /* ---- données pour l'affichage ---- */
 $acsrf = $_SESSION['acsrf'] ?? '';
 $db = $isAdmin ? db_load() : ['shops'=>[]];
-$PRICE = $db['settings']['price'] ?? 29;
 $shops = $db['shops'] ?? [];
 $actifs = array_filter($shops, fn($s)=>($s['status']??'')==='active');
-$mrr = count($actifs)*$PRICE;
 $essais = count(array_filter($shops, fn($s)=>($s['status']??'')==='trial'));
 $impayes = count(array_filter($shops, fn($s)=>($s['status']??'')==='impaye'));
+
+/* Revenus réels par formule. L'à-vie est un paiement ponctuel (pas un
+   abonnement) : il alimente le cumulé « à vie », jamais le MRR. */
+function shop_mrr(array $s): float {
+  if (($s['status'] ?? '') !== 'active') return 0;
+  $p = plan_of($s);
+  if ($p === 'mensuel') return TARIFS['mensuel'];
+  if ($p === 'annuel')  return TARIFS['annuel'] / 12;
+  return 0;   // découverte (gratuit) ou à vie (hors MRR)
+}
+$planActifs = ['mensuel'=>0,'annuel'=>0,'avie'=>0,'decouverte'=>0];
+foreach ($actifs as $s) $planActifs[plan_of($s)]++;
+$mrr = 0; foreach ($actifs as $s) $mrr += shop_mrr($s);
+$avieTotal = $planActifs['avie'] * TARIFS['avie'];
 $te = ['Café'=>'☕','Restaurant'=>'🍽️','Boulangerie'=>'🥐','Salon'=>'💈','Commerce'=>'🛍️'];
 $stl = ['active'=>'Actif','trial'=>'Essai','impaye'=>'Impayé','annule'=>'Annulé'];
 $pll = ['decouverte'=>'Découverte (30 max)','mensuel'=>'Mensuel','annuel'=>'Annuel','avie'=>'À vie'];
@@ -544,12 +556,21 @@ select.st{padding:7px 10px;border-radius:9px;border:1.5px solid var(--line);back
     <div class="kpi hero"><div class="k">MRR · revenu mensuel</div><div class="v"><?= number_format($mrr,0,',',' ') ?> €</div><div class="sub"><?= count($actifs) ?> abonnés actifs</div></div>
     <div class="kpi"><div class="k">Commerces</div><div class="v"><?= count($shops) ?></div><div class="sub"><?= count($actifs) ?> actifs</div></div>
     <div class="kpi"><div class="k">En essai</div><div class="v"><?= $essais ?></div><div class="sub"><?= $impayes ?> impayé<?= $impayes>1?'s':'' ?></div></div>
-    <div class="kpi"><div class="k">Revenu annualisé</div><div class="v"><?= number_format($mrr*12,0,',',' ') ?> €</div><div class="sub">ARR estimé</div></div>
+    <div class="kpi"><div class="k">Revenu annualisé</div><div class="v"><?= number_format($mrr*12,0,',',' ') ?> €</div><div class="sub">ARR (hors à vie)</div></div>
+  </div>
+  <div class="panel" style="margin-bottom:16px">
+    <div class="ph"><h3>Répartition par formule</h3><span class="n"><?= number_format($avieTotal,0,',',' ') ?> € cumulés à vie</span></div>
+    <div class="kpis" style="grid-template-columns:repeat(4,1fr);margin-bottom:0">
+      <div class="kpi"><div class="k">Mensuel</div><div class="v"><?= $planActifs['mensuel'] ?></div><div class="sub"><?= number_format($planActifs['mensuel']*TARIFS['mensuel'],0,',',' ') ?> €/mois</div></div>
+      <div class="kpi"><div class="k">Annuel</div><div class="v"><?= $planActifs['annuel'] ?></div><div class="sub"><?= number_format($planActifs['annuel']*TARIFS['annuel'],0,',',' ') ?> €/an</div></div>
+      <div class="kpi"><div class="k">À vie</div><div class="v"><?= $planActifs['avie'] ?></div><div class="sub"><?= number_format($planActifs['avie']*TARIFS['avie'],0,',',' ') ?> € cumulés</div></div>
+      <div class="kpi"><div class="k">Découverte</div><div class="v"><?= $planActifs['decouverte'] ?></div><div class="sub">gratuit</div></div>
+    </div>
   </div>
   <div class="panel">
     <div class="ph"><h3>Commerces</h3><span class="n"><?= count($shops) ?> au total</span></div>
     <table class="tbl"><thead><tr><th>Commerce</th><th>Statut</th><th>Formule</th><th>Clients</th><th class="r">MRR</th></tr></thead><tbody>
-    <?php foreach($shops as $s): $st=$s['status']??'trial'; $pay=$st==='active'; $pl=$s['plan']??'decouverte'; ?>
+    <?php foreach($shops as $s): $st=$s['status']??'trial'; $pay=$st==='active'; $pl=$s['plan']??'decouverte'; $rowMrr=shop_mrr($s); ?>
       <tr>
         <td><div class="mrow"><span class="av"><?= e(ini2($s['name'])) ?></span><div><div class="nm"><button class="opn" data-id="<?= e($s['id']) ?>" style="background:none;border:0;padding:0;font:inherit;color:inherit;cursor:pointer;text-align:left"><?= e($s['name']) ?></button></div><div class="tp"><?= ($te[$s['type']??'Commerce']??'🛍️') ?> <?= e($s['type']??'Commerce') ?> · <?= e($s['email']) ?></div></div></div></td>
         <td><select class="st" data-id="<?= e($s['id']) ?>">
@@ -559,7 +580,7 @@ select.st{padding:7px 10px;border-radius:9px;border:1.5px solid var(--line);back
           <?php foreach($pll as $k=>$v): ?><option value="<?= $k ?>" <?= $k===$pl?'selected':'' ?>><?= $v ?></option><?php endforeach; ?>
         </select></td>
         <td class="mono"><?= (int)($s['nClients'] ?? count($s['clients'] ?? [])) ?></td>
-        <td class="r"><span class="mrr <?= $pay?'':'z' ?>"><?= $pay?$PRICE.' €':'—' ?></span></td>
+        <td class="r"><span class="mrr <?= $rowMrr>0?'':'z' ?>"><?= $rowMrr>0 ? number_format($rowMrr,0,',',' ').' €' : ($pay && $pl==='avie' ? 'à vie' : '—') ?></span></td>
       </tr>
     <?php endforeach; ?>
     </tbody></table>
