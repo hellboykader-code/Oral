@@ -452,6 +452,25 @@ $te = ['Café'=>'☕','Restaurant'=>'🍽️','Boulangerie'=>'🥐','Salon'=>'�
 $stl = ['active'=>'Actif','trial'=>'Essai','impaye'=>'Impayé','annule'=>'Annulé'];
 $pll = ['decouverte'=>'Découverte (30 max)','mensuel'=>'Mensuel','annuel'=>'Annuel','avie'=>'À vie'];
 function ini2($n){return strtoupper(mb_substr(preg_replace('/\s+/','',$n),0,2));}
+
+/* Dernière activité réelle d'un commerce : connexion mot de passe OU
+   déverrouillage par code (qui prolonge l'appareil de confiance) — sinon un
+   commerçant qui n'utilise que le code serait signalé "inactif" à tort. */
+function shop_last_active(array $s): int {
+  $t = (int)($s['lastLogin'] ?? $s['createdAt'] ?? 0);
+  foreach (($s['devices'] ?? []) as $d) $t = max($t, (int)($d['at'] ?? 0));
+  return $t;
+}
+/* Alerte churn : commerces non annulés sans activité depuis CHURN_DAYS. */
+$churnDays = 14;
+$inactifs = [];
+foreach ($shops as $s) {
+  if (($s['status'] ?? '') === 'annule') continue;
+  $la = shop_last_active($s);
+  $days = $la ? intdiv(now() - $la, 86400) : null;
+  if ($days === null || $days >= $churnDays) $inactifs[] = ['s' => $s, 'days' => $days];
+}
+usort($inactifs, fn($x, $y) => ($y['days'] ?? PHP_INT_MAX) <=> ($x['days'] ?? PHP_INT_MAX));
 ?>
 <!doctype html><html lang="fr"><head>
 <meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
@@ -567,6 +586,21 @@ select.st{padding:7px 10px;border-radius:9px;border:1.5px solid var(--line);back
       <div class="kpi"><div class="k">Découverte</div><div class="v"><?= $planActifs['decouverte'] ?></div><div class="sub">gratuit</div></div>
     </div>
   </div>
+  <?php if ($inactifs): ?>
+  <div class="panel" style="margin-bottom:16px;border-color:var(--warn)">
+    <div class="ph"><h3>⚠️ Commerces inactifs</h3><span class="n"><?= count($inactifs) ?> à relancer (<?= $churnDays ?> j et +)</span></div>
+    <table class="tbl"><thead><tr><th>Commerce</th><th>Statut</th><th>Formule</th><th class="r">Dernière activité</th></tr></thead><tbody>
+    <?php foreach (array_slice($inactifs, 0, 20) as $row): $s = $row['s']; $days = $row['days']; ?>
+      <tr>
+        <td><div class="mrow"><span class="av"><?= e(ini2($s['name'])) ?></span><div><div class="nm"><button class="opn" data-id="<?= e($s['id']) ?>" style="background:none;border:0;padding:0;font:inherit;color:inherit;cursor:pointer;text-align:left"><?= e($s['name']) ?></button></div><div class="tp"><?= e($s['email']) ?></div></div></div></td>
+        <td><span class="pill <?= e($s['status'] ?? 'trial') ?>"><span class="dot"></span><?= $stl[$s['status'] ?? 'trial'] ?? 'Essai' ?></span></td>
+        <td><?= $pll[plan_of($s)] ?? 'Découverte' ?></td>
+        <td class="r mono"><?= $days === null ? 'jamais connecté' : $days . ' j' ?></td>
+      </tr>
+    <?php endforeach; ?>
+    </tbody></table>
+  </div>
+  <?php endif; ?>
   <div class="panel">
     <div class="ph"><h3>Commerces</h3><span class="n"><?= count($shops) ?> au total</span></div>
     <table class="tbl"><thead><tr><th>Commerce</th><th>Statut</th><th>Formule</th><th>Clients</th><th class="r">MRR</th></tr></thead><tbody>
