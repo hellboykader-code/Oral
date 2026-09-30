@@ -636,6 +636,14 @@ function shop_broadcast_set(array &$ref, string $title, string $body, ?array $ta
   return $n;
 }
 
+/* Annonce du propriétaire de la plateforme à TOUS les commerçants (20
+   dernières, globales — pas propres à un commerce). */
+function admin_announce(array &$db, string $title, string $body): void {
+  $db['settings']['announcements'] = $db['settings']['announcements'] ?? [];
+  array_unshift($db['settings']['announcements'], ['title' => $title, 'body' => $body, 'at' => now()]);
+  $db['settings']['announcements'] = array_slice($db['settings']['announcements'], 0, 20);
+}
+
 /* Historique des messages groupés envoyés par le commerce (30 derniers). */
 function shop_broadcast_log(array &$ref, string $title, string $body, string $segment, int $clients, int $sent): void {
   $ref['broadcasts'] = $ref['broadcasts'] ?? [];

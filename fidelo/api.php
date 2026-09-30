@@ -158,8 +158,10 @@ case 'home': {
   $feed = array_map(fn($c)=>client_view($c,$ref['rewards']), array_slice($clients,0,5));
   if ($dayChanged) db_save($db);   // écrit seulement au changement de jour
   $inboxUnread = count(array_filter($ref['inbox'] ?? [], fn($m)=>empty($m['read'])));
+  $annUnread = count(array_filter($db['settings']['announcements'] ?? [],
+    fn($a)=>($a['at'] ?? 0) > ($ref['annReadAt'] ?? 0)));
   json_out(['ok'=>true,'today'=>$ref['today'],'goal'=>$ref['goal'],
-    'nClients'=>count($clients),'feed'=>$feed,'inboxUnread'=>$inboxUnread,
+    'nClients'=>count($clients),'feed'=>$feed,'inboxUnread'=>$inboxUnread,'annUnread'=>$annUnread,
     'quota'=>quota_restant($ref, count($clients)), 'freeMax'=>PLAN_FREE_MAX]);
 }
 
@@ -552,6 +554,15 @@ case 'inbox': {
 /* Historique des messages groupés envoyés par CE commerce (push.php?a=broadcast). */
 case 'broadcast_history': {
   json_out(['ok'=>true,'items'=>array_slice($ref['broadcasts'] ?? [],0,30)]);
+}
+
+/* Annonces du propriétaire de la plateforme (globales, console.php?a=announce).
+   Marquées lues à l'ouverture (annReadAt sert au badge non-lu de home). */
+case 'announcements': {
+  $items = array_slice($db['settings']['announcements'] ?? [], 0, 20);
+  $ref['annReadAt'] = now();
+  db_save($db);
+  json_out(['ok'=>true,'items'=>$items]);
 }
 
 case 'stats': {

@@ -136,6 +136,16 @@ if ($a !== '') {
     json_out(['ok'=>true]);
   }
 
+  /* Annonce à TOUS les commerçants (visible dans leur boîte de réception). */
+  if ($a === 'announce') {
+    $title = mb_substr(trim($_POST['title'] ?? ''), 0, 60) ?: 'Fidelo';
+    $body  = mb_substr(trim($_POST['body'] ?? ''), 0, 200);
+    if ($body === '') json_out(['ok'=>false,'error'=>'empty'],400);
+    admin_announce($db, $title, $body);
+    db_save($db);
+    json_out(['ok'=>true,'shops'=>count($db['shops'])]);
+  }
+
   /* Vue du parrainage : qui a amené qui. */
   if ($a === 'parrainages') {
     $noms = []; foreach ($db['shops'] as $s) $noms[$s['id']] = $s['name'];
@@ -570,6 +580,7 @@ select.st{padding:7px 10px;border-radius:9px;border:1.5px solid var(--line);back
     <button class="btn btn-g" id="gwBtn" style="background:var(--card);border:1.5px solid var(--line);color:var(--text)"><?= gw_live($db)?'💳 Wallet actif':(gw_on($db)?'💳 Wallet en attente':'💳 Google Wallet') ?></button>
     <button class="btn btn-g" id="stBtn" style="background:var(--card);border:1.5px solid var(--line);color:var(--text)"><?= st_on($db)?(empty(st_conf($db)['prices'])?'💰 Stripe (tarifs à créer)':'💰 Stripe actif'):'💰 Stripe' ?></button>
     <button class="btn btn-p" id="addBtn"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4"><path d="M12 5v14M5 12h14"/></svg> Ajouter un commerce</button>
+    <button class="btn btn-g" id="annBtn" style="background:var(--card);border:1.5px solid var(--line);color:var(--text)">📣 Annonce à tous les commerçants</button>
   </div>
   <div class="kpis">
     <div class="kpi hero"><div class="k">MRR · revenu mensuel</div><div class="v"><?= number_format($mrr,0,',',' ') ?> €</div><div class="sub"><?= count($actifs) ?> abonnés actifs</div></div>
@@ -881,6 +892,22 @@ function showCreds(title,r){
   $('#cc').onclick=()=>{navigator.clipboard?.writeText(`Fidelo\nE-mail: ${r.email}\nMot de passe: ${r.pass}\nCode: ${r.pin}`).then(()=>toast('🔗 Copié'));};
   $('#cok').onclick=()=>location.reload();
 }
+$('#annBtn').onclick=()=>{
+  $('#dlg').innerHTML=`<h3>📣 Annonce à tous les commerçants</h3><div class="sub">Visible dans la boîte de réception de chaque commerce (<?= (int)count($shops) ?> au total). Gardez-la courte.</div>
+   <label>Titre</label><input class="inp" id="anT" maxlength="60" placeholder="Ex. Nouvelle fonctionnalité">
+   <label>Message</label><textarea class="inp" id="anB" maxlength="200" style="min-height:80px;resize:vertical"></textarea>
+   <div class="drow"><button class="btn btn-g" id="anX">Annuler</button><button class="btn btn-p" id="anO">Envoyer</button></div>`;
+  $('#mask').classList.add('on');
+  $('#anX').onclick=()=>$('#mask').classList.remove('on');
+  $('#anO').onclick=async()=>{
+    const title=$('#anT').value.trim(),body=$('#anB').value.trim();
+    if(!body){$('#anB').focus();return;}
+    $('#anO').disabled=true;$('#anO').textContent='Envoi…';
+    const r=await api('announce',{title,body});
+    if(r.ok){toast('📣 Annonce envoyée à '+r.shops+' commerce'+(r.shops>1?'s':''));$('#mask').classList.remove('on');}
+    else {toast('Erreur');$('#anO').disabled=false;$('#anO').textContent='Envoyer';}
+  };
+};
 $$('.rst').forEach(b=>b.onclick=async()=>{
   if(!confirm('Réinitialiser l\'accès de '+b.dataset.nm+' ? Un nouveau mot de passe sera généré (l\'ancien cessera de marcher).'))return;
   const r=await api('reset',{id:b.dataset.id});if(r.ok)showCreds('Nouvel accès — '+b.dataset.nm,r);else toast('Erreur');});
