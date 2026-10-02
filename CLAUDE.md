@@ -968,3 +968,157 @@ cartoon ombre dure). Sources scratchpad/resto/ (tpl + resto-assets.json).
 Le champ « Ne pas appeler » est **déjà couvert** par le statut **« Pas intéressé »**
 déjà présent dans l'espace. Ne PAS ajouter un champ séparé : marquer un prospect
 « Pas intéressé » vaut opposition (ne plus rappeler).
+
+## ⭐⭐ AUTRES PROJETS DU PROPRIÉTAIRE — totalement indépendants de DentWebPro
+
+Le propriétaire (AK DEV / Hammou-Boutrig Abdelkader) gère plusieurs projets
+distincts dans ce même dépôt/compte. Ne JAMAIS mélanger leurs conventions,
+designs ou données avec celles de DentWebPro ci-dessus.
+
+### Fidelo — carte de fidélité SaaS
+
+Dossier `fidelo/` de ce dépôt, domaine **fidelo.site**. **Mémoire technique
+complète dans `fidelo/CLAUDE.md`** (architecture, modèle de données, API,
+sécurité, registre des fonctionnalités livrées) — le lire avant toute
+intervention sur Fidelo plutôt que de redécouvrir le projet à chaque fois.
+
+### City Phone & Vape (nom de code interne : « Koko ») — gestion de magasin
+
+Application de gestion pour une boutique de téléphonie/vape réelle,
+**« City Phone & Vape »**, 74ter Rue du Général Leclerc, 94000 Créteil
+(ventes, réparations, recharges, stock, caisse). PHP pur, même style
+architectural que Fidelo (pas de framework, JSON-file DB, sessions PHP).
+
+**⚠️ Ce code n'est PAS dans ce dépôt git** — il vit uniquement sur le même
+compte d'hébergement cPanel que fidelo.site, à l'URL
+`https://fidelo.site/g-c663f6d1/` (dossier `public_html/g-c663f6d1/` sur le
+serveur — un sous-dossier sans rapport avec Fidelo, juste hébergé côte à
+côte). Jamais commité, jamais de copie locale persistante entre sessions
+hors scratchpad temporaire → **toujours redemander le zip du dossier complet
+à l'utilisateur** (cPanel File Manager → `g-c663f6d1` → sélectionner tout →
+Compress → télécharger → envoyer dans le chat) avant toute modification,
+travailler sur une copie scratchpad, puis renvoyer UNIQUEMENT les fichiers
+PHP modifiés/créés en zip (**jamais `data/`** — ce sont les vraies données
+clients/ventes de la boutique, ne jamais les redemander inutilement ni les
+renvoyer dans un zip de livraison).
+
+**Accès (deux portes, comme console.php de Fidelo)** :
+1. `gate.php?k=<GATE_KEY>` — portail secret (pose un cookie `koko_pass`,
+   60 jours). `GATE_KEY` définie dans `lib.php` avec un **fallback codé en
+   dur** (`getenv('KOKO_GATE') ?: 'koko-...'`) — contrairement à Fidelo, ce
+   n'est PAS un risque critique puisque ce code n'est jamais poussé sur un
+   dépôt public, mais rester prudent si ce code devait un jour être commité
+   quelque part.
+2. `login.php` — Identifiant/Mot de passe du compte boutique (`auth_login()`
+   dans `lib.php`, table `users`). Compte par défaut créé par
+   `seed_if_empty()` au premier lancement : `admin` / `koko123456`
+   (`mustChange: true` — à changer en prod, probablement déjà fait).
+
+**Architecture fichiers** (racine du dossier `g-c663f6d1/`) :
+- `lib.php` — modèle de données + helpers (équivalent du `lib.php` de
+  Fidelo). Fonctions clés : `jread/jwrite` (un fichier JSON par collection
+  sous `data/`), `col($name)/col_insert($name,$row)` (ajoute un id
+  auto-incrémenté + `createdAt`), `with_lock()` (verrou réentrant),
+  `gate_ok/gate_open/require_gate`, `auth_user/auth_login/auth_logout
+  /is_admin`, `login_throttle_*` (anti brute-force, 5 tentatives/5min),
+  `csrf/csrf_ok`, `require_login/require_admin_page`, `seed_if_empty`
+  (amorçage 1er lancement : compte admin + produits d'exemple),
+  `day_encaisse($d0,$d1)` → `{total,cb,esp,ventes,repar,recharge,n}` sur un
+  intervalle (**fonction centrale des rapports**, déjà écrite, réutilisée
+  partout), `week_bounds($ref)` (dimanche→samedi). Constantes métier :
+  `BUSINESS_NAME='City Phone & Vape'`, `BUSINESS_PHONE`, `BUSINESS_ADDR`,
+  `BUSINESS_CITY`.
+- `api.php` — API JSON de l'app (ventes, réparations, recharges, stock…).
+- `app.php` — point d'entrée des pages internes (`?p=home|sales|repairs|…`).
+- `ui.php` — design system partagé (CSS, `.grid2`/`.grid3`, `.card`, `.btn`…
+  thème bleu dégradé/sombre, mobile-first, bottom-nav à 5 onglets).
+- `index.php` — redirige vers `app.php` après vérif du gate.
+- `gate.php`, `login.php`, `logout.php` — authentification (voir ci-dessus).
+- `print.php` — **rapport du jour**, feuille imprimable.
+- `semaine.php` — **rapport de la semaine** (dimanche→samedi), feuille
+  imprimable jour par jour (CB/Espèces/Total), navigation semaine
+  précédente/suivante.
+- `mois.php` — **rapport du mois** (ajouté cette session, voir Registre
+  ci-dessous), même esprit que `semaine.php`.
+- `rachat.php` — rachat d'appareils d'occasion (probable, à confirmer au
+  besoin).
+- `print.php`, `jsbarcode.min.js`, `zxing.min.js`, `h5q.min.js` — impression
+  étiquettes + scan code-barres/QR (vente, réparation).
+- `pages/` — `home.php` (tableau de bord), `sales.php` (ventes), `repairs.php`
+  (réparations), `recharge.php` (recharges téléphone/jeux — voir capture
+  d'écran : Orange/SFR/Bouygues/Free/Lycamobile/Lebara/Transcash/PCS/Google
+  Play/Steam/Netflix/Autre), `products.php` (catalogue), `shopping.php`
+  (liste d'achats), `cash.php` (caisse), `journal.php`, `reports.php`
+  (**le tableau de bord Rapports** — 3 boutons jour/semaine/mois + stats
+  Aujourd'hui/7j/30j + top employés), `ruptures.php` (ruptures de stock),
+  `users.php` (comptes employés), `account.php`, `settings.php`,
+  `recherche.php`, `more.php`, `_stats.php` (`period_stats()`, agrégats
+  utilisés par `reports.php`).
+
+**Modèle de données** (`data/*.json`, un fichier par collection, via
+`jread/jwrite` — PAS de sharding par commerce ici, un seul magasin) :
+`sales.json` (ventes — `productName, qty, unitPrice, total, profit, payment
+[cash|card], sellerId, sellerName, createdAt`), `repairs.json` (réparations —
+`ticket, customer, model, problem, status, totalCost, paid, payments[]
+{at,amount,method}`), `recharge.json` (recharges — créé au premier insert,
+champ `ourPrice`), `products.json`, `users.json` (`username, name, passHash,
+role[admin], status, mustChange`), `cash.json`, `ruptures.json`,
+`shopping.json`, `settings.json`, `audit.json`, `meta.json`,
+`data/backups/koko-<date>.json.gz` (backups auto).
+
+**Rapports imprimables — convention commune** (`print.php`/`semaine.php`
+/`mois.php`) : feuille HTML autonome (pas de layout partagé avec `ui.php`),
+palette noir/blanc impression-friendly (`--ink:#16130e`), bouton
+`window.print()`, `@media print` masque nav/boutons, tableau CB/Espèces/
+Total par jour + ligne `tfoot` TOTAL, bloc signature en bas. **Toujours
+suivre ce patron exact pour un nouveau rapport** plutôt que réinventer un
+style.
+
+## Registre des fonctionnalités livrées — City Phone & Vape (session
+claude/session-yk6nza)
+
+1. **`mois.php`** (nouveau fichier) : sans `?m=`, liste les 12 derniers mois
+   (nom + total encaissé, calculé via `day_encaisse()` sur toute la plage du
+   mois — pas de boucle jour par jour pour la liste). Avec `?m=AAAA-MM`,
+   feuille détaillée jour par jour du mois (même format que `semaine.php` :
+   CB/Espèces/Total par jour + `TOTAL MOIS`), navigation mois précédent
+   /courant/suivant (le lien "suivant" n'apparaît pas sur le mois courant —
+   empêche de naviguer vers un mois futur). N'affiche pas les jours futurs
+   du mois en cours (`if ($d0 >= now()) break;`).
+2. Bouton **"📆 Rapport mois"** ajouté à CÔTÉ de "Rapport jour"/"Rapport
+   semaine" à **DEUX endroits** (leçon DentWebPro appliquée : toujours tous
+   les emplacements, pas un seul) : `pages/home.php` (tableau de bord,
+   `.grid2`→`.grid3`) et `pages/reports.php` (écran Rapports dédié,
+   `.grid2`→`.grid3`).
+3. Testé en isolation : copie scratchpad, `data/` vidé (seed auto via
+   `seed_if_empty()` → admin/koko123456), données synthétiques de septembre
+   injectées directement dans `sales.json`/`repairs.json` reproduisant
+   l'exemple exact donné par le propriétaire (1er sept. : CB=200€,
+   Cash=100€, Total=300€) — vérifié identique au centime près en sortie,
+   plus capture Playwright du rendu.
+
+## Discussion en cours — City Phone & Vape
+
+Le propriétaire veut connecter un **service de recharge mobile par API**
+(voir capture `pages/recharge.php` : Orange/SFR/Bouygues/Free/Lycamobile
+/Lebara + Transcash/PCS/Google Play/Steam/Netflix — priorité donnée aux
+opérateurs téléphoniques). Recherche faite (non implémentée) :
+- **Reloadly** (`reloadly.com`) — piste la plus solide : API REST/OAuth2
+  réelle, sandbox gratuit, couvre Orange/SFR/Bouygues/Free France. Modèle
+  wholesale (marge selon volume, pas de taux publié sans compte). Prochaine
+  étape suggérée : créer un compte Sandbox gratuit, vérifier la liste réelle
+  des opérateurs FR et la marge proposée, avant d'écrire le code
+  d'intégration dans `api.php`.
+- **Nepting** : écarté — c'est une plateforme de TERMINAL DE PAIEMENT
+  (monétique/TPE), aucun rapport avec la recharge opérateur.
+- **France Téléphone** (programme partenaire) : écarté — vend des
+  commissions sur ABONNEMENTS (forfaits), pas du rechargement instantané
+  comptoir.
+- Voie traditionnelle (devenir point de vente recharge directement chez
+  Orange/SFR/etc., comme les ~50 000 bureaux de tabac) : identifiée mais pas
+  de détails concrets trouvés en ligne — nécessite contact direct avec
+  chaque opérateur.
+- Rien d'implémenté côté code à ce stade — attendre que le propriétaire
+  valide une piste (il a mentionné vouloir aussi s'inscrire Apple/Google
+  developer, projet qui prendra du temps — ne pas présumer de l'ordre des
+  priorités, redemander avant d'agir).
