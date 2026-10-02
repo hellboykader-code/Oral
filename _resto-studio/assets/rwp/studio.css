@@ -1,0 +1,81 @@
+/* ===== RestoWebPro — surcouche studio sur le template Foodee =====
+   Masque les sections « restaurant » et style la galerie de nos réalisations.
+   Les !important survivent à l'hydratation React (règle FRAMER-SYSTEM). */
+
+[data-framer-name="Section - Popular"],
+[data-framer-name="Section - Restaurant"],
+[data-framer-name="Section - Menu"],
+[data-framer-name="Section - About"],
+[data-framer-name="Section - Testimonials"],
+[data-framer-name="Section - Why Choose"],
+[data-framer-name="Section - Chef"]{ display:none !important; }
+
+/* Item de nav masqué (ajouté par studio.js) */
+.rwp-nav-hidden{ display:none !important; }
+
+/* ---------- Galerie « Nos réalisations » ---------- */
+#rwp-real{
+  --ink:#1b1510; --soft:#7c6f5f; --cream:#f7f1e8; --card:#fffdf9;
+  --line:#eaded0; --accent:#e0632a;
+  background:var(--cream); color:var(--ink);
+  padding:96px 24px; font-family:'Figtree','Jost',system-ui,sans-serif;
+}
+#rwp-real *{ box-sizing:border-box; }
+#rwp-real .rwp-wrap{ max-width:1180px; margin:0 auto; }
+#rwp-real .rwp-head{ text-align:center; max-width:680px; margin:0 auto 52px; }
+#rwp-real .rwp-kicker{
+  display:inline-block; font-size:13px; letter-spacing:.18em; text-transform:uppercase;
+  color:var(--accent); font-weight:700; margin-bottom:14px;
+}
+#rwp-real .rwp-head h2{
+  font-family:'Cormorant Garamond',Georgia,serif; font-size:clamp(34px,5vw,54px);
+  line-height:1.05; font-weight:600; margin:0 0 14px;
+}
+#rwp-real .rwp-head p{ font-size:17px; line-height:1.6; color:var(--soft); margin:0; }
+
+#rwp-real .rwp-grid{
+  display:grid; grid-template-columns:repeat(3,1fr); gap:26px;
+}
+@media(max-width:900px){ #rwp-real .rwp-grid{ grid-template-columns:1fr; max-width:420px; margin:0 auto; } }
+
+#rwp-real .rwp-card{
+  background:var(--card); border:1px solid var(--line); border-radius:18px; overflow:hidden;
+  cursor:pointer; transition:transform .28s ease, box-shadow .28s ease, border-color .28s ease;
+  display:flex; flex-direction:column;
+}
+#rwp-real .rwp-card:hover{
+  transform:translateY(-6px);
+  box-shadow:0 22px 44px rgba(27,21,16,.16);
+  border-color:var(--a,var(--accent));
+}
+#rwp-real .rwp-media{ position:relative; aspect-ratio:4/3; overflow:hidden; background:#eee; }
+#rwp-real .rwp-media img{ width:100%; height:100%; object-fit:cover; display:block; transition:transform .5s ease; }
+#rwp-real .rwp-card:hover .rwp-media img{ transform:scale(1.06); }
+#rwp-real .rwp-badge{
+  position:absolute; top:12px; left:12px; background:rgba(27,21,16,.82); color:#fff;
+  font-size:11px; letter-spacing:.08em; text-transform:uppercase; font-weight:700;
+  padding:6px 11px; border-radius:999px; backdrop-filter:blur(4px);
+}
+#rwp-real .rwp-body{ padding:20px 22px 24px; }
+#rwp-real .rwp-body h3{
+  font-family:'Cormorant Garamond',Georgia,serif; font-size:28px; font-weight:600; margin:0;
+}
+#rwp-real .rwp-tag{ display:block; font-size:12.5px; letter-spacing:.06em; text-transform:uppercase; color:var(--a,var(--accent)); font-weight:700; margin:3px 0 10px; }
+#rwp-real .rwp-body p{ font-size:14.5px; line-height:1.55; color:var(--soft); margin:0 0 16px; }
+#rwp-real .rwp-link{ font-size:14px; font-weight:700; color:var(--ink); }
+#rwp-real .rwp-card:hover .rwp-link{ color:var(--a,var(--accent)); }
+
+/* CTA prix */
+#rwp-real .rwp-cta{
+  margin-top:48px; background:#1b1510; color:#fff; border-radius:20px;
+  padding:30px 34px; display:flex; align-items:center; justify-content:space-between;
+  flex-wrap:wrap; gap:20px;
+}
+#rwp-real .rwp-cta strong{ display:block; font-size:26px; font-family:'Cormorant Garamond',Georgia,serif; font-weight:600; }
+#rwp-real .rwp-cta span{ font-size:14px; color:#c8bba9; }
+#rwp-real .rwp-btns{ display:flex; gap:12px; flex-wrap:wrap; }
+#rwp-real .rwp-btn{ cursor:pointer; font-weight:700; font-size:15px; padding:13px 22px; border-radius:999px; transition:transform .15s ease, opacity .15s ease; }
+#rwp-real .rwp-btn:active{ transform:scale(.97); }
+#rwp-real .rwp-wa{ background:#25d366; color:#0b2e17; }
+#rwp-real .rwp-ghost{ background:transparent; color:#fff; border:1.5px solid rgba(255,255,255,.35); }
+#rwp-real .rwp-ghost:hover{ border-color:#fff; }

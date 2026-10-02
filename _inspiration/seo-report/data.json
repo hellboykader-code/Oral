@@ -1,0 +1,70 @@
+[
+  {
+    "url": "https://inspirational-version-786806.framer.app/",
+    "score": 77,
+    "issues": [
+      {
+        "type": "warning",
+        "message": "Title too short (6 chars). Aim for 50-60 characters."
+      },
+      {
+        "type": "warning",
+        "message": "Meta description too short (26 chars). Aim for 150-160 characters."
+      },
+      {
+        "type": "warning",
+        "message": "Multiple <h1> tags found (81). Best practice is to have only one."
+      },
+      {
+        "type": "warning",
+        "message": "46 image(s) missing alt text"
+      }
+    ],
+    "passed": [
+      "Canonical URL is set",
+      "Open Graph meta tags present",
+      "Viewport meta tag present",
+      "Language attribute set"
+    ],
+    "meta": {
+      "title": "Foodee",
+      "description": "Food & Restaurant Template",
+      "canonical": "https://inspirational-version-786806.framer.app/",
+      "ogImage": "https://framerusercontent.com/images/vSvDbFTThCVQRULlVjHWDhB1nRE.png"
+    }
+  },
+  {
+    "url": "https://inspirational-version-786806.framer.app/fr",
+    "score": 77,
+    "issues": [
+      {
+        "type": "warning",
+        "message": "Title too short (6 chars). Aim for 50-60 characters."
+      },
+      {
+        "type": "warning",
+        "message": "Meta description too short (37 chars). Aim for 150-160 characters."
+      },
+      {
+        "type": "warning",
+        "message": "Multiple <h1> tags found (81). Best practice is to have only one."
+      },
+      {
+        "type": "warning",
+        "message": "46 image(s) missing alt text"
+      }
+    ],
+    "passed": [
+      "Canonical URL is set",
+      "Open Graph meta tags present",
+      "Viewport meta tag present",
+      "Language attribute set"
+    ],
+    "meta": {
+      "title": "Foodee",
+      "description": "Modèle pour Alimentation & Restaurant",
+      "canonical": "https://inspirational-version-786806.framer.app/fr/",
+      "ogImage": "https://framerusercontent.com/images/vSvDbFTThCVQRULlVjHWDhB1nRE.png"
+    }
+  }
+]

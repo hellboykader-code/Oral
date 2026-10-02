@@ -1,0 +1,2 @@
+import{t as e}from"./rolldown-runtime.Dh6celcD.mjs";var t,n;e((()=>{t=`Des plats mijotés pour toutes les envies`,n={exports:{v0:{type:`variable`,annotations:{framerContractVersion:`1`}},__FramerMetadata__:{type:`variable`}}}}))();export{n as __FramerMetadata__,t as v0};
+//# sourceMappingURL=MY0QCGs0w-0.BPio1SxR.mjs.map

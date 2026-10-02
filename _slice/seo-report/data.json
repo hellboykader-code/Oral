@@ -1,0 +1,114 @@
+[
+  {
+    "url": "https://diplomatic-celery-564907.framer.app/home-burger",
+    "score": 91,
+    "issues": [
+      {
+        "type": "warning",
+        "message": "Multiple <h1> tags found (2). Best practice is to have only one."
+      },
+      {
+        "type": "warning",
+        "message": "1 image(s) missing alt text"
+      },
+      {
+        "type": "info",
+        "message": "No canonical URL specified"
+      }
+    ],
+    "passed": [
+      "Title tag is properly configured",
+      "Meta description is properly configured",
+      "Open Graph meta tags present",
+      "Viewport meta tag present",
+      "Language attribute set"
+    ],
+    "meta": {
+      "title": "Slice Town - Restaurant Website Template",
+      "description": "Bring your pizza slices to life with this flavorful website template. Perfect for pizzerias and pizza delivery brands looking to turn clicks into cravings.",
+      "canonical": null,
+      "ogImage": "https://framerusercontent.com/images/OrAvseTymzPxDV7Ous4bzzBM.jpg"
+    }
+  },
+  {
+    "url": "https://diplomatic-celery-564907.framer.app/legal-pages/privacy-policy",
+    "score": 93,
+    "issues": [
+      {
+        "type": "warning",
+        "message": "Title too short (14 chars). Aim for 50-60 characters."
+      },
+      {
+        "type": "info",
+        "message": "No canonical URL specified"
+      }
+    ],
+    "passed": [
+      "Meta description is properly configured",
+      "Single H1 heading present",
+      "All images have alt attributes",
+      "Open Graph meta tags present",
+      "Viewport meta tag present",
+      "Language attribute set"
+    ],
+    "meta": {
+      "title": "Privacy Policy",
+      "description": "Bring your pizza slices to life with this flavorful website template. Perfect for pizzerias and pizza delivery brands looking to turn clicks into cravings.",
+      "canonical": null,
+      "ogImage": "https://framerusercontent.com/images/OrAvseTymzPxDV7Ous4bzzBM.jpg"
+    }
+  },
+  {
+    "url": "https://diplomatic-celery-564907.framer.app/fr",
+    "score": 96,
+    "issues": [
+      {
+        "type": "warning",
+        "message": "Meta description too long (203 chars). May be truncated."
+      },
+      {
+        "type": "warning",
+        "message": "1 image(s) missing alt text"
+      }
+    ],
+    "passed": [
+      "Title tag is properly configured",
+      "Single H1 heading present",
+      "Canonical URL is set",
+      "Open Graph meta tags present",
+      "Viewport meta tag present",
+      "Language attribute set"
+    ],
+    "meta": {
+      "title": "Slice Town - Modèle de site web pour restaurant",
+      "description": "Donnez vie à vos parts de pizza grâce à ce modèle de site web plein de saveurs. Parfait pour les pizzerias et les marques de livraison de pizzas qui souhaitent transformer les clics en envies gourmandes.",
+      "canonical": "https://diplomatic-celery-564907.framer.app/fr/",
+      "ogImage": "https://framerusercontent.com/assets/OrAvseTymzPxDV7Ous4bzzBM.jpg"
+    }
+  },
+  {
+    "url": "https://diplomatic-celery-564907.framer.app/",
+    "score": 98,
+    "issues": [
+      {
+        "type": "warning",
+        "message": "1 image(s) missing alt text"
+      }
+    ],
+    "passed": [
+      "Title tag is properly configured",
+      "Meta description is properly configured",
+      "Single H1 heading present",
+      "Canonical URL is set",
+      "Open Graph meta tags present",
+      "Viewport meta tag present",
+      "Language attribute set"
+    ],
+    "meta": {
+      "title": "Slice Town - Restaurant Website Template",
+      "description": "Bring your pizza slices to life with this flavorful website template. Perfect for pizzerias and pizza delivery brands looking to turn clicks into cravings.",
+      "canonical": "https://diplomatic-celery-564907.framer.app/",
+      "ogImage": "https://framerusercontent.com/assets/OrAvseTymzPxDV7Ous4bzzBM.jpg"
+    }
+  }
+]

@@ -1,0 +1,70 @@
+# Fidelo — sécurité serveur
+Options -Indexes
+
+# Page d'accueil publique (présentation) ; l'espace commerçant reste sur index.php
+DirectoryIndex accueil.php index.php
+
+# Lien court d'inscription : /j/CODE  ->  rejoindre.php?j=CODE
+<IfModule mod_rewrite.c>
+  RewriteEngine On
+  # Forcer HTTPS (cookies sécurisés, caméra, push l'exigent)
+  RewriteCond %{HTTPS} !=on
+  RewriteCond %{HTTP:X-Forwarded-Proto} !=https
+  RewriteRule ^ https://%{HTTP_HOST}%{REQUEST_URI} [R=301,L]
+  # Lien court d'inscription : /j/CODE  ->  rejoindre.php?j=CODE
+  RewriteRule ^j/([A-Za-z0-9]{3,8})/?$ rejoindre.php?j=$1 [L,QSA]
+</IfModule>
+
+<IfModule mod_headers.c>
+  Header always set X-Content-Type-Options "nosniff"
+  Header always set X-Frame-Options "SAMEORIGIN"
+  Header always set Referrer-Policy "strict-origin-when-cross-origin"
+  Header always set Permissions-Policy "camera=(self), microphone=(), geolocation=()"
+  # HSTS uniquement en HTTPS
+  Header always set Strict-Transport-Security "max-age=31536000; includeSubDomains" env=HTTPS
+
+  # Politique de sécurité du contenu : limite d'où peuvent venir scripts,
+  # styles et images. 'unsafe-inline' est nécessaire (l'app est en un fichier),
+  # mais aucun script distant ne peut plus être injecté.
+  Header always set Content-Security-Policy "default-src 'self'; script-src 'self' 'unsafe-inline'; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' https://fonts.gstatic.com data:; img-src 'self' data: blob: https://*.google.com https://*.gstatic.com https://*.googleusercontent.com; connect-src 'self'; frame-ancestors 'self'; frame-src https://www.google.com https://maps.google.com; form-action 'self' https://pay.google.com; base-uri 'self'; object-src 'none'"
+</IfModule>
+
+# Les 5 pages marketing (design 3D claude.ai/design) transpilent du JSX dans
+# le navigateur via Babel standalone : ça exige 'unsafe-eval'. On ne relâche
+# CETTE règle que pour ces fichiers précis — le reste du site (app commerçant,
+# carte client, console) garde le CSP strict sans 'unsafe-eval' au-dessus.
+<FilesMatch "^(accueil|tarifs|contact|confidentialite|mentions-legales)\.php$">
+  <IfModule mod_headers.c>
+    Header always set Content-Security-Policy "default-src 'self'; script-src 'self' 'unsafe-inline' 'unsafe-eval'; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' https://fonts.gstatic.com data:; img-src 'self' data: blob: https://*.google.com https://*.gstatic.com https://*.googleusercontent.com; connect-src 'self'; frame-ancestors 'self'; frame-src https://www.google.com https://maps.google.com; form-action 'self'; base-uri 'self'; object-src 'none'"
+  </IfModule>
+</FilesMatch>
+
+# La console propriétaire ne doit jamais fuiter son URL (clé de secours ?k=)
+# ni pouvoir être encadrée dans une autre page.
+<Files "console.php">
+  <IfModule mod_headers.c>
+    Header always set Referrer-Policy "no-referrer"
+    Header always set X-Frame-Options "DENY"
+    Header always set Cache-Control "no-store, no-cache, must-revalidate, private"
+  </IfModule>
+</Files>
+
+# Bloquer l'accès direct aux fichiers sensibles
+# Le guide d'installation contient l'URL de la console et des identifiants de démo :
+# il ne doit JAMAIS être accessible en ligne.
+<Files "INSTALLATION.txt">
+  Require all denied
+</Files>
+
+<FilesMatch "\.(json|log|md|sql|bak|tmp|ini|env|lock|ttf|txt|p12|pem|key|csr|cer|pfx|zip|tar|gz)$">
+  Require all denied
+</FilesMatch>
+# (manifest.php sert le manifeste PWA : c'est du PHP, il n'est pas concerné)
+
+# Le noyau et les modules internes ne sont jamais appelés directement
+# (stripe-webhook.php N'EST PAS concerné : Stripe doit pouvoir l'appeler directement,
+# son authenticité vient de la signature du webhook, pas d'un accès direct interdit)
+<FilesMatch "^(lib|gwallet|stripe)\.php$">
+  Require all denied
+</FilesMatch>
+

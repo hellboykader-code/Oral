@@ -1,0 +1,2 @@
+import{t as e}from"./rolldown-runtime.Dh6celcD.mjs";var t,n,r,i;e((()=>{t=`NOS ÉVÉNEMENTS`,n=`burger avec frites`,r=`Soirées Acoustiques Autour d'un Dîner`,i={exports:{v2:{type:`variable`,annotations:{framerContractVersion:`1`}},v1:{type:`variable`,annotations:{framerContractVersion:`1`}},v0:{type:`variable`,annotations:{framerContractVersion:`1`}},__FramerMetadata__:{type:`variable`}}}}))();export{i as __FramerMetadata__,t as v0,n as v1,r as v2};
+//# sourceMappingURL=JgzsY42Cy-0.DOQMdVp8.mjs.map

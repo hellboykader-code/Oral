@@ -1,0 +1,44 @@
+/* ---------- Nos soins — aperçu ---------- */
+.home-soins__head {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-end;
+  gap: 2rem;
+  margin-bottom: 2.6rem;
+}
+.home-soins__more-btn {
+  flex-shrink: 0;
+}
+.home-soins__grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 1.5rem;
+}
+.home-soins__foot {
+  display: none;
+  margin-top: 2rem;
+  text-align: center;
+}
+
+@media (max-width: 1000px) {
+  .home-soins__grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+@media (max-width: 860px) {
+  .home-soins__head {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+  .home-soins__more-btn {
+    display: none;
+  }
+  .home-soins__foot {
+    display: block;
+  }
+}
+@media (max-width: 600px) {
+  .home-soins__grid {
+    grid-template-columns: 1fr;
+  }
+}

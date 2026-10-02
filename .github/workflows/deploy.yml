@@ -1,0 +1,133 @@
+name: Déploiement GitHub Pages
+
+on:
+  push:
+    branches: [main, claude/session-yk6nza]
+  workflow_dispatch:
+
+# Permissions nécessaires au déploiement Pages
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+# Un seul déploiement à la fois
+concurrency:
+  group: pages
+  cancel-in-progress: true
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: npm
+      - run: npm ci
+      - name: Build
+        run: npm run build
+        env:
+          VITE_BASE: /Oral/
+      # Repli SPA : toute route inconnue sert l'app (React Router)
+      - run: cp dist/index.html dist/404.html
+      # --- Site « Sérène » (modèle Dentiva reconstruit) -> /Oral/serene/ ---
+      - name: Build site Sérène
+        run: |
+          cd serene
+          npm install --no-audit --no-fund
+          VITE_BASE=/Oral/serene/ npm run build
+          cp dist/index.html dist/404.html
+          mkdir -p ../dist/serene
+          cp -r dist/* ../dist/serene/
+      # --- Site 2 : export Framer OralCare traduit en français (/comparaison/) ---
+      - name: Build site 2 (Framer FR)
+        continue-on-error: true
+        run: |
+          bash _site2/build.sh
+          mkdir -p dist/comparaison
+          cp -r _site2/site/* dist/comparaison/ || true
+      # --- Studio restaurants « RestoWebPro » (export Framer Foodee édité) -> /Oral/resto-studio/ ---
+      - name: Copie studio RestoWebPro
+        run: |
+          mkdir -p dist/resto-studio
+          cp -r _resto-studio/* dist/resto-studio/
+      # --- Aperçu « Slice Town » (export Framer, site non modifié) -> /Oral/slice/ ---
+      - name: Copie aperçu Slice Town
+        run: |
+          mkdir -p dist/slice
+          cp -r _slice/* dist/slice/
+      # --- Aperçu « Foodly » (export Framer) -> /Oral/foodly/ ---
+      - name: Copie aperçu Foodly
+        run: |
+          mkdir -p dist/foodly
+          cp -r _foodly/* dist/foodly/
+      # --- Aperçu « Umami » (export Framer) -> /Oral/umami/ ---
+      - name: Copie aperçu Umami
+        run: |
+          mkdir -p dist/umami
+          cp -r _umami/* dist/umami/
+      # --- Aperçu « Inspiration » (export Framer, tel quel) -> /Oral/inspiration/ ---
+      - name: Copie aperçu Inspiration
+        run: |
+          mkdir -p dist/inspiration
+          cp -r _inspiration/* dist/inspiration/
+      # --- Aperçu « Pastora » (export Framer multi-pages, tel quel) -> /Oral/pastora/ ---
+      - name: Copie aperçu Pastora
+        run: |
+          mkdir -p dist/pastora
+          cp -r _pastora/* dist/pastora/
+      # --- Nouveau studio « L’Appétit Digital » (export Framer) -> /Oral/studio/ ---
+      - name: Copie studio (nouveau)
+        run: |
+          mkdir -p dist/studio
+          cp -r _studio/* dist/studio/
+      # --- Aperçu « Le Festin » (export Framer Sofra, FR) -> /Oral/lefestin/ ---
+      - name: Copie aperçu Le Festin
+        run: |
+          mkdir -p dist/lefestin
+          cp -r _lefestin/* dist/lefestin/
+      # --- Studio « RestoWebPro » -> /Oral/restowebpro/ ---
+      - name: Copie studio RestoWebPro
+        run: |
+          mkdir -p dist/restowebpro
+          cp -r _restowebpro/* dist/restowebpro/
+      # --- Studio « L’Appétit Digital » (export Framer Hanzo) -> /Oral/appetit-digital/ ---
+      - name: Copie studio Appetit Digital
+        run: |
+          mkdir -p dist/appetit-digital
+          cp -r _appetit/* dist/appetit-digital/
+      # --- Site auto-école « Permia » -> /Oral/permia/ ---
+      - name: Copie site Permia
+        run: |
+          mkdir -p dist/permia
+          cp -r _permia/* dist/permia/
+      # --- Site auto-école « Rouléo » -> /Oral/rouleo/ ---
+      - name: Copie site Rouleo
+        run: |
+          mkdir -p dist/rouleo
+          cp -r _rouleo/* dist/rouleo/
+      # --- Site auto-école « Vialo » -> /Oral/vialo/ ---
+      - name: Copie site Vialo
+        run: |
+          mkdir -p dist/vialo
+          cp -r _vialo/* dist/vialo/
+      # --- Landing « Cercle 500 » -> /Oral/cercle500/ ---
+      - name: Copie Cercle 500
+        run: |
+          mkdir -p dist/cercle500
+          cp -r _cercle500/* dist/cercle500/
+      - uses: actions/upload-pages-artifact@v3
+        with:
+          path: dist
+
+  deploy:
+    needs: build
+    runs-on: ubuntu-latest
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
+      - id: deployment
+        uses: actions/deploy-pages@v4

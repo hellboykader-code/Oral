@@ -1,0 +1,437 @@
+<!doctype html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Rouléo — Auto-école</title>
+<meta name="description" content="Rouléo, auto-école moderne : obtenez votre permis en 6 semaines avec des moniteurs certifiés. Cours de code, conduite et préparation à l'examen.">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 48 48'%3E%3Crect width='48' height='48' rx='13' fill='%23f7581e'/%3E%3Cpath d='M11 30c6 0 8-11 15-11 5 0 8 6 11 6' fill='none' stroke='white' stroke-width='3.4' stroke-linecap='round'/%3E%3Ccircle cx='16' cy='33' r='3.2' fill='white'/%3E%3Ccircle cx='31' cy='33' r='3.2' fill='white'/%3E%3C/svg%3E">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@500;600;700;800&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+:root{
+  --orange:#f7581e; --orange-d:#e04510; --orange-soft:#fff1ea;
+  --ink:#1a1a1a; --ink-2:#3f3f46; --muted:#71717a; --line:#ececec;
+  --bg:#fcfcfc; --card:#ffffff; --soft:#f5f5f4;
+  --shadow:0 14px 40px rgba(24,20,18,.09); --shadow-s:0 6px 20px rgba(24,20,18,.06);
+  --wrap:1180px; --font:"Inter",system-ui,sans-serif; --disp:"Plus Jakarta Sans",system-ui,sans-serif;
+}
+*{margin:0;padding:0;box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{font-family:var(--font);color:var(--ink);background:var(--bg);line-height:1.6;-webkit-font-smoothing:antialiased;overflow-x:hidden}
+a{color:inherit;text-decoration:none}
+img{max-width:100%;display:block}
+.wrap{max-width:var(--wrap);margin:0 auto;padding:0 22px}
+section{padding:90px 0}
+section[id]{scroll-margin-top:86px}
+h1,h2,h3{font-family:var(--disp);font-weight:800;letter-spacing:-.02em;line-height:1.06;color:var(--ink)}
+.accent{color:var(--orange)}
+.pill{display:inline-flex;align-items:center;gap:8px;background:#fff;border:1px solid var(--line);box-shadow:var(--shadow-s);color:var(--ink-2);font:600 13px var(--font);padding:8px 16px;border-radius:999px}
+.sec-head{text-align:center;max-width:720px;margin:0 auto 52px}
+.sec-head h2{font-size:clamp(32px,4.6vw,54px);margin:18px 0 0}
+.sec-head p{color:var(--muted);font-size:17px;margin-top:16px}
+
+.btn{display:inline-flex;align-items:center;gap:9px;font:600 15px var(--font);padding:14px 26px;border-radius:999px;border:0;cursor:pointer;transition:transform .18s,box-shadow .18s,background .18s}
+.btn:active{transform:scale(.97)}
+.btn-o{background:var(--orange);color:#fff;box-shadow:0 10px 24px rgba(247,88,30,.32)}
+.btn-o:hover{background:var(--orange-d);transform:translateY(-2px)}
+.btn-dark{background:var(--ink);color:#fff}
+.btn-dark:hover{transform:translateY(-2px)}
+.btn-ghost{background:#fff;color:var(--ink);border:1px solid var(--line);box-shadow:var(--shadow-s)}
+.btn-ghost:hover{border-color:var(--orange);color:var(--orange);transform:translateY(-2px)}
+.btn svg{width:16px;height:16px}
+
+/* NAV */
+header{position:fixed;top:0;left:0;right:0;z-index:100;transition:background .28s,box-shadow .28s,backdrop-filter .28s}
+header.solid{background:rgba(252,252,252,.85);backdrop-filter:saturate(1.2) blur(12px);box-shadow:0 1px 0 rgba(24,20,18,.06)}
+.nav{display:flex;align-items:center;justify-content:space-between;height:74px}
+.brand{display:flex;align-items:center;gap:10px}
+.brand .wm{font:800 21px var(--disp);color:var(--ink);letter-spacing:-.02em}
+.nav-menu{display:flex;align-items:center;gap:32px}
+.nav-menu a{font-weight:500;color:var(--ink-2);transition:color .15s}
+.nav-menu a:hover{color:var(--orange)}
+.nav-right{display:flex;align-items:center;gap:14px}
+.soc-ic{display:flex;gap:10px}
+.soc-ic a{width:38px;height:38px;border-radius:50%;display:grid;place-items:center;color:var(--orange);border:1px solid var(--line);transition:.2s}
+.soc-ic a:hover{background:var(--orange);color:#fff;border-color:var(--orange)}
+.soc-ic svg{width:18px;height:18px}
+.burger{display:none;flex-direction:column;gap:5px;background:none;border:0;cursor:pointer;padding:8px}
+.burger span{width:24px;height:2.4px;background:var(--ink);border-radius:2px}
+.mobile{position:fixed;inset:0;z-index:99;background:rgba(252,252,252,.98);backdrop-filter:blur(6px);display:flex;flex-direction:column;justify-content:center;align-items:center;gap:24px;transform:translateY(-100%);transition:transform .4s cubic-bezier(.6,.2,.1,1);visibility:hidden}
+.mobile.open{transform:translateY(0);visibility:visible}
+.mobile a{font:700 25px var(--disp);color:var(--ink)}
+
+/* HERO */
+.hero{text-align:center;padding:150px 0 60px}
+.hero h1{font-size:clamp(40px,7vw,82px);max-width:14ch;margin:22px auto 0}
+.hero .lead{color:var(--muted);font-size:clamp(16px,2vw,20px);max-width:560px;margin:22px auto 0}
+.social-proof{display:flex;align-items:center;justify-content:center;gap:14px;margin:30px 0}
+.social-proof .avs{display:flex}
+.social-proof .avs img{width:44px;height:44px;border-radius:50%;border:2.5px solid var(--bg);object-fit:cover;margin-left:-12px}
+.social-proof .avs img:first-child{margin-left:0}
+.social-proof .rr{text-align:left}
+.social-proof .stars{color:var(--orange);font-size:14px;letter-spacing:1px}
+.social-proof .rr small{display:block;color:var(--muted);font-size:12.5px}
+.hero-img{margin-top:44px;border-radius:28px;overflow:hidden;box-shadow:var(--shadow);aspect-ratio:16/8}
+.hero-img img{width:100%;height:100%;object-fit:cover;transform:scale(1.06);animation:hz 12s ease-out forwards}
+@keyframes hz{to{transform:scale(1)}}
+
+/* reveal */
+.reveal{opacity:0;transform:translateY(28px);transition:opacity .7s,transform .7s cubic-bezier(.2,.7,.2,1)}
+.reveal.in{opacity:1;transform:none}
+.reveal.d1{transition-delay:.08s}.reveal.d2{transition-delay:.16s}.reveal.d3{transition-delay:.24s}.reveal.d4{transition-delay:.32s}.reveal.d5{transition-delay:.4s}
+
+/* SKILLS */
+.skills-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:22px}
+.skill{background:var(--card);border:1px solid var(--line);border-radius:20px;padding:30px 26px;box-shadow:var(--shadow-s);transition:transform .25s,box-shadow .25s}
+.skill:hover{transform:translateY(-6px);box-shadow:var(--shadow)}
+.skill .ic{width:52px;height:52px;border-radius:14px;background:var(--orange-soft);color:var(--orange);display:grid;place-items:center;margin-bottom:18px}
+.skill .ic svg{width:26px;height:26px}
+.skill h3{font-size:19px;margin-bottom:8px}
+.skill p{color:var(--muted);font-size:14.5px}
+
+/* INCLUDED */
+.inc-grid{display:grid;grid-template-columns:1fr 1fr;gap:24px}
+.inc-card{background:var(--card);border:1px solid var(--line);border-radius:22px;padding:34px 30px;box-shadow:var(--shadow-s)}
+.inc-card .ic{width:48px;height:48px;border-radius:12px;background:var(--orange);color:#fff;display:grid;place-items:center;margin-bottom:18px}
+.inc-card .ic svg{width:24px;height:24px}
+.inc-card h3{font-size:22px;margin-bottom:16px}
+.inc-card ul{list-style:none;display:flex;flex-direction:column;gap:12px}
+.inc-card li{display:flex;align-items:flex-start;gap:10px;color:var(--ink-2);font-size:15px}
+.inc-card li::before{content:"";flex:none;width:8px;height:8px;border-radius:50%;background:var(--orange);margin-top:8px}
+.inc-card .media{margin-top:22px;border-radius:16px;overflow:hidden;aspect-ratio:16/9}
+.inc-card .media img{width:100%;height:100%;object-fit:cover}
+
+/* STEPS */
+.steps5{display:grid;grid-template-columns:repeat(5,1fr);gap:18px}
+.st{background:var(--card);border:1px solid var(--line);border-radius:18px;padding:26px 20px;box-shadow:var(--shadow-s);transition:transform .25s,box-shadow .25s}
+.st:hover{transform:translateY(-6px);box-shadow:var(--shadow);border-color:var(--orange)}
+.st .n{font:800 30px var(--disp);color:var(--orange);opacity:.9}
+.st h3{font-size:17px;margin:12px 0 8px}
+.st p{color:var(--muted);font-size:13.5px}
+
+/* TEAM */
+.team-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:24px}
+.tm{background:var(--card);border:1px solid var(--line);border-radius:22px;overflow:hidden;box-shadow:var(--shadow-s);display:flex;flex-direction:column}
+.tm .ph{aspect-ratio:1/1;overflow:hidden}
+.tm .ph img{width:100%;height:100%;object-fit:cover;transition:transform .5s}
+.tm:hover .ph img{transform:scale(1.05)}
+.tm .body{padding:24px 24px 26px;display:flex;flex-direction:column;flex:1}
+.tm .body b{font:700 19px var(--disp)}
+.tm .body p{color:var(--muted);font-size:14px;margin:6px 0 18px}
+.tm .body .btn{margin-top:auto;justify-content:center;width:100%}
+
+/* ABOUT */
+.about-wrap{display:grid;grid-template-columns:1fr 1fr;gap:50px;align-items:center}
+.about-txt h2{font-size:clamp(30px,4vw,48px);margin:18px 0}
+.about-txt p{color:var(--muted);font-size:16px;margin-bottom:14px}
+.about-stats{display:flex;gap:34px;margin-top:26px}
+.about-stats .s b{font:800 34px var(--disp);color:var(--ink);display:block}
+.about-stats .s span{color:var(--muted);font-size:13.5px}
+.about-img{border-radius:24px;overflow:hidden;box-shadow:var(--shadow);aspect-ratio:4/5}
+.about-img img{width:100%;height:100%;object-fit:cover}
+
+/* PRICING */
+.pricing{background:var(--soft)}
+.price-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:22px;align-items:stretch}
+.plan{position:relative;background:var(--card);border:1px solid var(--line);border-radius:22px;padding:34px 28px;display:flex;flex-direction:column;box-shadow:var(--shadow-s);transition:transform .25s}
+.plan:hover{transform:translateY(-6px);box-shadow:var(--shadow)}
+.plan.pop{border:2px solid var(--orange);box-shadow:0 20px 44px rgba(247,88,30,.18)}
+.plan .badge{position:absolute;top:-13px;left:50%;transform:translateX(-50%);background:var(--orange);color:#fff;font:600 12px var(--font);padding:6px 15px;border-radius:999px;display:flex;align-items:center;gap:6px;box-shadow:0 8px 18px rgba(247,88,30,.35)}
+.plan .pname{font:700 20px var(--disp)}
+.plan ul{list-style:none;margin:20px 0 24px;display:flex;flex-direction:column;gap:12px}
+.plan li{display:flex;align-items:flex-start;gap:10px;font-size:14.5px;color:var(--ink-2)}
+.plan li::before{content:"";flex:none;width:7px;height:7px;border-radius:50%;background:var(--orange);margin-top:8px}
+.plan .amount{margin-top:auto;display:flex;align-items:baseline;gap:4px;padding-top:8px}
+.plan .amount .val{font:800 40px var(--disp);letter-spacing:-.02em}
+.plan .amount .per{color:var(--muted);font-size:14px}
+.plan .btn{margin-top:22px;justify-content:center}
+.price-note{text-align:center;color:var(--muted);font-size:13.5px;margin-top:26px}
+
+/* FAQ */
+.faq-wrap{display:grid;grid-template-columns:.85fr 1.15fr;gap:48px;align-items:start}
+.faq-left h2{font-size:clamp(30px,4vw,46px)}
+.faq-left p{color:var(--muted);margin:18px 0 26px}
+.faq-list{display:flex;flex-direction:column;gap:14px}
+.q{background:var(--card);border:1px solid var(--line);border-radius:16px;box-shadow:var(--shadow-s);overflow:hidden}
+.q-head{display:flex;align-items:center;justify-content:space-between;gap:16px;padding:20px 22px;cursor:pointer}
+.q-head h3{font:600 17px var(--disp);color:var(--ink)}
+.q-tog{flex:none;width:30px;height:30px;border-radius:50%;background:var(--orange-soft);color:var(--orange);display:grid;place-items:center;font-size:19px;transition:transform .3s,background .3s,color .3s}
+.q.open .q-tog{transform:rotate(45deg);background:var(--orange);color:#fff}
+.q-body{max-height:0;overflow:hidden;transition:max-height .35s}
+.q-body p{padding:0 22px 22px;color:var(--muted)}
+
+/* FOOTER */
+footer{background:#fff;border-top:1px solid var(--line);padding:60px 0 30px}
+.foot-grid{display:grid;grid-template-columns:1.5fr 1fr 1fr 1fr;gap:30px}
+.foot-brand .wm{font:800 22px var(--disp)}
+.foot-brand p{color:var(--muted);font-size:14px;margin-top:14px;max-width:250px}
+.foot-brand .c{color:var(--ink-2);font-size:14px;margin-top:8px}
+.foot-col h4{font:700 15px var(--disp);margin-bottom:15px}
+.foot-col a{display:block;color:var(--muted);font-size:14px;margin-bottom:11px;transition:color .15s}
+.foot-col a:hover{color:var(--orange)}
+.foot-bottom{margin-top:34px;padding-top:22px;border-top:1px solid var(--line);display:flex;justify-content:space-between;gap:12px;flex-wrap:wrap;color:var(--muted);font-size:13px}
+
+@media(max-width:960px){
+  .skills-grid{grid-template-columns:1fr 1fr}
+  .steps5{grid-template-columns:1fr 1fr 1fr}
+  .about-wrap{grid-template-columns:1fr;gap:32px}
+  .faq-wrap{grid-template-columns:1fr;gap:26px}
+  .foot-grid{grid-template-columns:1fr 1fr}
+}
+@media(max-width:760px){
+  section{padding:66px 0}
+  .nav-menu,.nav-right .soc-ic,.nav-right .btn-o{display:none}
+  .burger{display:flex}
+  .inc-grid{grid-template-columns:1fr}
+  .price-grid{grid-template-columns:1fr}
+}
+@media(max-width:560px){
+  .skills-grid,.steps5,.team-grid{grid-template-columns:1fr}
+  .foot-grid{grid-template-columns:1fr}
+}
+</style>
+</head>
+<body id="top">
+
+<svg width="0" height="0" style="position:absolute"><symbol id="rl-mark" viewBox="0 0 48 48"><path d="M11 30c6 0 8-11 15-11 5 0 8 6 11 6" fill="none" stroke="currentColor" stroke-width="3.4" stroke-linecap="round"/><circle cx="16" cy="33" r="3.2" fill="currentColor"/><circle cx="31" cy="33" r="3.2" fill="currentColor"/></symbol></svg>
+
+<header id="hdr">
+  <div class="wrap nav">
+    <a class="brand" href="#top">
+      <span style="width:38px;height:38px;border-radius:11px;background:var(--orange);color:#fff;display:grid;place-items:center"><svg width="24" height="24"><use href="#rl-mark"/></svg></span>
+      <span class="wm">Rouléo</span>
+    </a>
+    <nav class="nav-menu">
+      <a href="#apropos">À propos</a>
+      <a href="#programme">Programme</a>
+      <a href="#tarifs">Tarifs</a>
+      <a href="#contact">Contact</a>
+    </nav>
+    <div class="nav-right">
+      <div class="soc-ic">
+        <a href="#" aria-label="Instagram"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="18" height="18" rx="5"/><circle cx="12" cy="12" r="4"/><circle cx="17.5" cy="6.5" r="1" fill="currentColor" stroke="none"/></svg></a>
+        <a href="#" aria-label="WhatsApp"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 2a10 10 0 0 0-8.5 15.3L2 22l4.8-1.5A10 10 0 1 0 12 2zm0 18a8 8 0 0 1-4.1-1.1l-.3-.2-2.9.9.9-2.8-.2-.3A8 8 0 1 1 12 20zm4.4-6c-.2-.1-1.4-.7-1.6-.8s-.4-.1-.5.1-.6.8-.8 1-.3.2-.5.1a6.5 6.5 0 0 1-3.2-2.8c-.2-.4.2-.4.6-1.2a.5.5 0 0 0 0-.5c0-.1-.5-1.3-.7-1.7s-.4-.4-.5-.4h-.5a1 1 0 0 0-.7.3A2.8 2.8 0 0 0 6.5 9a5 5 0 0 0 1 2.6 11 11 0 0 0 4.3 3.8c1.6.7 1.8.5 2.2.5a2.4 2.4 0 0 0 1.6-1.1 2 2 0 0 0 .1-1.1c0-.1-.2-.2-.4-.3z"/></svg></a>
+      </div>
+      <a class="btn btn-o" href="tel:+33100000000">Appelez-nous</a>
+      <button class="burger" id="burger" aria-label="Menu"><span></span><span></span><span></span></button>
+    </div>
+  </div>
+</header>
+
+<div class="mobile" id="mobile">
+  <a href="#apropos">À propos</a>
+  <a href="#programme">Programme</a>
+  <a href="#tarifs">Tarifs</a>
+  <a href="#contact">Contact</a>
+  <a class="btn btn-o" href="#contact">Réserver une leçon</a>
+</div>
+
+<!-- HERO -->
+<section class="hero">
+  <div class="wrap">
+    <span class="pill reveal in">🚗 Auto-école agréée · 300+ élèves reçus</span>
+    <h1 class="reveal in">Obtenez votre permis en <span class="accent">6 semaines</span></h1>
+    <p class="lead reveal in">Apprenez avec des moniteurs certifiés, dans des voitures récentes. Cours de code et conduite pour réussir en confiance, dès la première leçon.</p>
+    <div class="social-proof reveal in">
+      <div class="avs">
+        <img src="assets/a1.jpg" alt=""><img src="assets/m1.jpg" alt=""><img src="assets/m2.jpg" alt=""><img src="assets/a2.jpg" alt=""><img src="assets/m3.jpg" alt="">
+      </div>
+      <div class="rr"><div class="stars">★★★★★</div><small>Noté 4,9/5 par 300+ élèves</small></div>
+    </div>
+    <div class="reveal in"><a class="btn btn-o" href="#contact">Réserver une leçon gratuite
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4"><path d="M5 12h14M13 6l6 6-6 6" stroke-linecap="round" stroke-linejoin="round"/></svg></a></div>
+    <div class="hero-img reveal"><img src="assets/hero.jpg" alt="Conduite avec Rouléo"></div>
+  </div>
+</section>
+
+<!-- SKILLS -->
+<section id="programme">
+  <div class="wrap">
+    <div class="sec-head reveal">
+      <span class="pill">Compétences</span>
+      <h2>Tout ce que vous saurez faire</h2>
+      <p>Un apprentissage structuré qui couvre chaque situation de conduite réelle.</p>
+    </div>
+    <div class="skills-grid">
+      <div class="skill reveal d1"><div class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="5" width="18" height="14" rx="2"/><path d="M7 19v2M17 19v2M3 11h18"/></svg></div><h3>Stationnement & créneau</h3><p>Maîtrisez le créneau et la marche arrière avec précision et sérénité.</p></div>
+      <div class="skill reveal d2"><div class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 20l4-14h8l4 14M6 14h12"/></svg></div><h3>Ville & voie rapide</h3><p>Prenez confiance en circulation urbaine comme sur les grands axes.</p></div>
+      <div class="skill reveal d3"><div class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 3l9 16H3z"/><path d="M12 10v4M12 17h.01"/></svg></div><h3>Situations d'urgence</h3><p>Réagissez avec calme et gardez le contrôle face aux imprévus.</p></div>
+      <div class="skill reveal d1"><div class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M8 3v18M16 3v18M4 8h8M12 16h8"/></svg></div><h3>Changements de voie</h3><p>Contrôles, clignotants et virages exécutés avec fluidité.</p></div>
+      <div class="skill reveal d2"><div class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="9"/><path d="M12 12l4-3M12 7v.01"/></svg></div><h3>Vitesse & distances</h3><p>Adaptez votre allure et gardez toujours une distance de sécurité.</p></div>
+      <div class="skill reveal d3"><div class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M12 5l7 7-7 7"/></svg></div><h3>Démarrage & arrêt</h3><p>Dosez accélération et freinage pour une conduite souple et sûre.</p></div>
+    </div>
+  </div>
+</section>
+
+<!-- INCLUDED -->
+<section style="background:var(--soft)">
+  <div class="wrap">
+    <div class="sec-head reveal">
+      <span class="pill">Programme complet</span>
+      <h2>Théorie et pratique</h2>
+      <p>Un cursus qui combine le code et la conduite, du premier cours à l'examen.</p>
+    </div>
+    <div class="inc-grid">
+      <div class="inc-card reveal d1">
+        <div class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 5h16v14H4z"/><path d="M8 9h8M8 13h5"/></svg></div>
+        <h3>Cours de code</h3>
+        <ul><li>Règles de circulation et panneaux</li><li>Techniques de conduite sûre</li><li>Préparation et examens blancs</li><li>Supports en ligne en accès libre</li></ul>
+        <div class="media"><img src="assets/city.jpg" alt="Code de la route"></div>
+      </div>
+      <div class="inc-card reveal d2">
+        <div class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 11l1.5-4.5A2 2 0 0 1 8.4 5h7.2a2 2 0 0 1 1.9 1.5L19 11M5 11h14v5H5zM7 16v2M17 16v2"/></svg></div>
+        <h3>Conduite pratique</h3>
+        <ul><li>Conduite en ville et sur voie rapide</li><li>Freinage d'urgence et contrôle</li><li>Manœuvres et stationnement</li><li>Heures avec un moniteur dédié</li></ul>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- STEPS -->
+<section>
+  <div class="wrap">
+    <div class="sec-head reveal">
+      <span class="pill">Comment ça marche</span>
+      <h2>Votre parcours en 5 étapes</h2>
+    </div>
+    <div class="steps5">
+      <div class="st reveal d1"><div class="n">01</div><h3>Inscription & bilan</h3><p>On définit vos objectifs et le forfait adapté.</p></div>
+      <div class="st reveal d2"><div class="n">02</div><h3>Cours de code</h3><p>Apprenez les règles et la sécurité, pas à pas.</p></div>
+      <div class="st reveal d3"><div class="n">03</div><h3>Conduite</h3><p>Roulez en ville et sur route avec un moniteur.</p></div>
+      <div class="st reveal d4"><div class="n">04</div><h3>Préparation examen</h3><p>Examens blancs et derniers réglages.</p></div>
+      <div class="st reveal d5"><div class="n">05</div><h3>Votre permis</h3><p>Passez l'examen, accompagné jusqu'au bout.</p></div>
+    </div>
+  </div>
+</section>
+
+<!-- TEAM -->
+<section style="background:var(--soft)">
+  <div class="wrap">
+    <div class="sec-head reveal">
+      <span class="pill">L'équipe</span>
+      <h2>Nos moniteurs</h2>
+      <p>Des professionnels patients qui vous mettent à l'aise dès la première leçon.</p>
+    </div>
+    <div class="team-grid">
+      <div class="tm reveal d1"><div class="ph"><img src="assets/m1.jpg" alt="Julien Faure"></div><div class="body"><b>Julien Faure</b><p>Moniteur patient, 10 ans à accompagner les débutants en confiance.</p><a class="btn btn-o" href="#contact">Leçon avec Julien</a></div></div>
+      <div class="tm reveal d2"><div class="ph"><img src="assets/m2.jpg" alt="Léa Marchand"></div><div class="body"><b>Léa Marchand</b><p>Spécialiste conduite en ville et manœuvres, 8 ans d'expérience.</p><a class="btn btn-o" href="#contact">Leçon avec Léa</a></div></div>
+      <div class="tm reveal d3"><div class="ph"><img src="assets/m3.jpg" alt="Marc Legrand"></div><div class="body"><b>Marc Legrand</b><p>Expert voie rapide et sécurité, 12 ans à former de bons conducteurs.</p><a class="btn btn-o" href="#contact">Leçon avec Marc</a></div></div>
+    </div>
+  </div>
+</section>
+
+<!-- ABOUT -->
+<section id="apropos">
+  <div class="wrap about-wrap">
+    <div class="about-txt reveal">
+      <span class="pill">Agréée préfecture</span>
+      <h2>Une auto-école <span class="accent">moderne</span></h2>
+      <p>Rouléo propose des leçons claires, structurées et sans stress qui transforment les débutants en conducteurs sûrs d'eux. Voitures récentes, planning flexible et suivi personnalisé de votre progression.</p>
+      <p>Notre objectif : que vous soyez à l'aise au volant bien avant le jour de l'examen.</p>
+      <div class="about-stats">
+        <div class="s"><b>300+</b><span>élèves formés</span></div>
+        <div class="s"><b>94%</b><span>de réussite</span></div>
+        <div class="s"><b>6 sem.</b><span>en moyenne</span></div>
+      </div>
+    </div>
+    <div class="about-img reveal d2"><img src="assets/about.jpg" alt="Auto-école Rouléo"></div>
+  </div>
+</section>
+
+<!-- PRICING -->
+<section class="pricing" id="tarifs">
+  <div class="wrap">
+    <div class="sec-head reveal">
+      <span class="pill">Tarifs</span>
+      <h2>Nos <span class="accent">forfaits</span></h2>
+      <p>Des programmes flexibles, adaptés à votre rythme. Payez à la semaine, sans engagement.</p>
+    </div>
+    <div class="price-grid">
+      <div class="plan reveal d1">
+        <div class="pname">Essentiel</div>
+        <ul><li>Règles de circulation et panneaux</li><li>Techniques de conduite sûre</li><li>Examens blancs illimités</li><li>Supports en ligne inclus</li><li>Conduite sur aire d'entraînement</li></ul>
+        <div class="amount"><span class="val">79 €</span><span class="per">/ semaine</span></div>
+        <a class="btn btn-ghost" href="#contact">Réserver une leçon</a>
+      </div>
+      <div class="plan pop reveal d2">
+        <div class="badge">⚡ Le plus populaire</div>
+        <div class="pname">Standard</div>
+        <ul><li>3 leçons de conduite par semaine</li><li>Programme de code complet + examens blancs</li><li>Planning flexible et suivi</li><li>Moniteur personnel attribué</li><li>Conduite en ville et stationnement</li></ul>
+        <div class="amount"><span class="val">99 €</span><span class="per">/ semaine</span></div>
+        <a class="btn btn-o" href="#contact">Réserver une leçon</a>
+      </div>
+      <div class="plan reveal d3">
+        <div class="pname">Premium</div>
+        <ul><li>4+ leçons de conduite par semaine</li><li>Pratique avancée + simulations</li><li>Planning prioritaire au choix</li><li>Test final avec séance de révision</li><li>Conduite voie rapide et de nuit</li></ul>
+        <div class="amount"><span class="val">129 €</span><span class="per">/ semaine</span></div>
+        <a class="btn btn-ghost" href="#contact">Réserver une leçon</a>
+      </div>
+    </div>
+    <p class="price-note">Tarifs indicatifs, à personnaliser selon votre agence · sans frais cachés.</p>
+  </div>
+</section>
+
+<!-- FAQ / CONTACT -->
+<section id="contact">
+  <div class="wrap faq-wrap">
+    <div class="faq-left reveal">
+      <span class="pill">FAQ</span>
+      <h2 style="margin-top:16px">Questions <span class="accent">fréquentes</span></h2>
+      <p>Des réponses rapides sur les leçons, le planning et les paiements. Une autre question ? Notre équipe vous répond.</p>
+      <a class="btn btn-dark" href="tel:+33100000000">Poser une question</a>
+    </div>
+    <div class="faq-list reveal d1">
+      <div class="q"><div class="q-head"><h3>Puis-je choisir mon moniteur ?</h3><div class="q-tog">+</div></div><div class="q-body"><p>Oui. Vous pouvez demander un moniteur en particulier, et garder le même tout au long de votre formation pour un meilleur suivi.</p></div></div>
+      <div class="q"><div class="q-head"><h3>Et si je n'ai jamais conduit ?</h3><div class="q-tog">+</div></div><div class="q-body"><p>Aucun souci : la plupart de nos élèves débutent de zéro. On commence en douceur, sur des zones calmes, puis on progresse à votre rythme.</p></div></div>
+      <div class="q"><div class="q-head"><h3>Proposez-vous la boîte automatique ?</h3><div class="q-tog">+</div></div><div class="q-body"><p>Oui, la formation est disponible en boîte manuelle et en boîte automatique. On vous conseille l'option la plus adaptée à vos besoins.</p></div></div>
+      <div class="q"><div class="q-head"><h3>Comment se passe le paiement ?</h3><div class="q-tog">+</div></div><div class="q-body"><p>Vous payez à la semaine, sans engagement de longue durée. Plusieurs moyens de paiement sont acceptés, et un devis clair vous est remis avant de commencer.</p></div></div>
+    </div>
+  </div>
+</section>
+
+<footer>
+  <div class="wrap">
+    <div class="foot-grid">
+      <div class="foot-brand">
+        <div class="brand"><span style="width:34px;height:34px;border-radius:10px;background:var(--orange);color:#fff;display:grid;place-items:center"><svg width="22" height="22"><use href="#rl-mark"/></svg></span><span class="wm">Rouléo</span></div>
+        <p>Auto-école moderne. On vous accompagne jusqu'à votre permis, en confiance.</p>
+        <div class="c">Votre adresse — Votre ville</div>
+        <div class="c">contact@rouleo.fr</div>
+        <div class="c">01 00 00 00 00</div>
+      </div>
+      <div class="foot-col"><h4>Navigation</h4><a href="#top">Accueil</a><a href="#programme">Programme</a><a href="#apropos">À propos</a><a href="#tarifs">Tarifs</a></div>
+      <div class="foot-col"><h4>Aide</h4><a href="#contact">Contact</a><a href="#contact">FAQ</a><a href="#">Mentions légales</a></div>
+      <div class="foot-col"><h4>Réseaux</h4><a href="#">Instagram</a><a href="#">Facebook</a><a href="#">WhatsApp</a></div>
+    </div>
+    <div class="foot-bottom">
+      <span>© <span id="yr"></span> Rouléo — Auto-école. Tous droits réservés.</span>
+      <span>Site démo — coordonnées à personnaliser.</span>
+    </div>
+  </div>
+</footer>
+
+<script>
+(function(){
+  document.getElementById('yr').textContent=new Date().getFullYear();
+  var hdr=document.getElementById('hdr');
+  function os(){hdr.classList.toggle('solid',window.pageYOffset>24);}
+  window.addEventListener('scroll',os,{passive:true});os();
+  var burger=document.getElementById('burger'),mob=document.getElementById('mobile');
+  burger.addEventListener('click',function(){mob.classList.toggle('open');});
+  mob.querySelectorAll('a').forEach(function(a){a.addEventListener('click',function(){mob.classList.remove('open');});});
+  var io=new IntersectionObserver(function(es){es.forEach(function(e){if(e.isIntersecting){e.target.classList.add('in');io.unobserve(e.target);}});},{threshold:.14});
+  document.querySelectorAll('.reveal:not(.in)').forEach(function(el){io.observe(el);});
+  document.querySelectorAll('.q').forEach(function(q){
+    var h=q.querySelector('.q-head'),b=q.querySelector('.q-body');
+    h.addEventListener('click',function(){
+      var open=q.classList.contains('open');
+      document.querySelectorAll('.q').forEach(function(o){o.classList.remove('open');o.querySelector('.q-body').style.maxHeight=null;});
+      if(!open){q.classList.add('open');b.style.maxHeight=b.scrollHeight+'px';}
+    });
+  });
+})();
+</script>
+</body>
+</html>

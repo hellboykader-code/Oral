@@ -1,0 +1,66 @@
+.btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.55rem;
+  font-family: var(--font-body);
+  font-weight: 600;
+  line-height: 1;
+  border-radius: var(--radius-pill);
+  white-space: nowrap;
+  transition: background-color var(--dur-fast) var(--ease-out),
+    color var(--dur-fast) var(--ease-out), border-color var(--dur-fast);
+  will-change: transform;
+}
+
+.btn--md {
+  padding: 0.95rem 1.6rem;
+  font-size: 1rem;
+}
+.btn--lg {
+  padding: 1.15rem 2.1rem;
+  font-size: 1.05rem;
+}
+.btn--sm {
+  padding: 0.6rem 1.1rem;
+  font-size: 0.9rem;
+}
+
+/* Accent vert citron sur fond sombre */
+.btn--primary {
+  background: var(--color-accent);
+  color: var(--color-accent-ink);
+}
+/* Au survol, le bouton passe au vert foncé (comme le modèle original). */
+.btn--primary:hover {
+  background: var(--color-ink);
+  color: var(--color-cream);
+}
+
+/* Sombre plein */
+.btn--dark {
+  background: var(--color-ink);
+  color: var(--color-cream);
+}
+.btn--dark:hover {
+  background: #16281f;
+}
+
+/* Contour */
+.btn--ghost {
+  background: transparent;
+  color: var(--text);
+  border: 1.5px solid var(--border);
+}
+.btn--ghost:hover {
+  border-color: var(--color-ink);
+}
+
+/* Clair sur fond sombre */
+.btn--light {
+  background: var(--color-cream);
+  color: var(--color-ink);
+}
+.btn--light:hover {
+  background: #fff;
+}
