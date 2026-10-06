@@ -242,6 +242,100 @@ commit+push+zip :
     header (renommé "Annonces et messages") affiche annonces + messages
     clients dans un seul panneau à deux sections.
 
+## ⭐⭐ Google Wallet — changement de compte + bug 403 résolu (saga complète, 4-6 oct 2026)
+
+**État final : 100% fonctionnel, vérifié de bout en bout contre l'API Google
+réelle.** `gw_test` → `{"ok":true,"name":"Fidelo"}`. Issuer : **Fidelo**
+(`3388000000023209432`). Compte de service : `fidelo@fidelo-508713.iam
+.gserviceaccount.com` (rôle **Développeur** dans pay.google.com/business/console,
+à côté de `kaderhb33@gmail.com` en **Administrateur**). `settings.gw.live = true`
+dans Fidelo (checké dans console.php → panneau Google Wallet).
+
+**Demande initiale** : le propriétaire a changé de compte Google → "ajoute un
+nouveau compte, supprime l'ancien". Instruction explicite : **"انت رح تفعل كل
+شيء"** (fais tout toi-même) → tout ce qui suit a été fait en autonomie (curl
+direct sur console.php en prod, avec confirmation régulière au propriétaire).
+
+**Étapes traversées (dans l'ordre, pour ne pas revivre les mêmes fausses
+pistes si un futur compte Wallet doit être reconfiguré)** :
+1. Nouveau compte de service créé par le propriétaire sur Google Cloud Console
+   (PAS pay.google.com — piège : il avait d'abord envoyé le JSON d'exemple
+   officiel Google "Baconrista", reconnu immédiatement comme non-réel).
+2. **Bloqué par l'Org Policy** `iam.disableServiceAccountKeyCreation` (héritée,
+   bouton grisé) → la vraie cause était l'absence du rôle IAM **"Administration
+   des règles de l'organisation"** (`orgpolicy.policyAdmin`) au niveau
+   **Organisation** (pas Projet) sur le compte du propriétaire. Ajouté via
+   console.cloud.google.com/cloud-resource-manager → clic sur l'organisation →
+   IAM. Résolu.
+3. Clé JSON générée, transmise à Fidelo via `gw_set` (curl direct, clé passée
+   en `--data-urlencode sa@<fichier>` pour ne jamais la retaper en clair).
+   `gw_set` → `ready:true`. Mais `gw_test` → `{"error":"access"}` pendant
+   **~2 jours**, malgré un compte Développeur correctement ajouté (vérifié
+   par capture : bon email, bon rôle, dès le début).
+4. Découvert ensuite : le compte Wallet Business Console était en **"Mode
+   démo"**, checklist 3 étapes ("Obtenir l'accès en publication") :
+   Créer une classe / Finaliser la fiche d'établissement / Demander l'accès
+   en publication. Complétées une à une (classe jetable `Fidelo_test_class`,
+   type "Carte de fidélité", champs requis remplis avec des valeurs simples ;
+   cas d'usage décrit en détail dans la demande d'accès en publication).
+   Email de confirmation Google reçu : *"Fidelo is approved to access Google
+   Wallet API"*. **`gw_test` toujours `error:access` après.**
+5. **⭐⭐ VRAIE cause (celle qui comptait) — totalement différente de tout ce
+   qui précède.** Diagnostic en contournant Fidelo : script PHP autonome qui
+   rejoue `gw_token()` + `GET /issuer/<id>` avec la même clé, pour lire le
+   **corps d'erreur complet** de Google (que `console.php` simplifie en un
+   hint générique "ajoutez l'utilisateur Developer" pour TOUT code 403, quelle
+   que soit la vraie raison). Le vrai message Google :
+   > *"Google Wallet API has not been used in project 806302982027 before or
+   > it is disabled. Enable it by visiting
+   > console.developers.google.com/apis/api/walletobjects.googleapis.com/
+   > overview?project=806302982027…"*
+
+   Autrement dit : l'**API Google Wallet n'était simplement pas activée**
+   (`Enable`) sur le projet Google Cloud — une étape GCP basique et
+   **totalement indépendante** du Mode démo / Developer user / publish access
+   (sur lesquels tout le monde, propriétaire et moi, avait passé 2 jours).
+   Une fois l'API cliquée sur "Enable" (bouton simple dans Google Cloud
+   Console → API et services), tout a marché **instantanément**.
+6. **Test de bout en bout fait directement contre l'API Google réelle**
+   (bypass complet de Fidelo, scripts PHP jetables avec la même clé de
+   service) : jeton OAuth ✅ → `POST /loyaltyClass` (avec un vrai logo
+   public `https://fidelo.site/apple-touch-icon.png`) ✅ `reviewStatus:
+   approved` instantané ✅ → `POST /loyaltyObject` ✅ `state: active` ✅ →
+   génération du JWT "Add to Google Wallet" ✅. Objet de test ensuite repassé
+   en `state:inactive` (nettoyage, laisse une classe de test inoffensive
+   `fidelo_TESTSHOP3` sous l'issuer réel — jamais vue par un vrai client).
+
+**⭐ Leçon n°1 (diagnostic 403 Wallet futur)** : un code 403 de
+`walletobjects.googleapis.com` peut vouloir dire AU MOINS 3 choses différentes
+(API non activée sur le projet GCP / utilisateur Developer manquant dans
+Wallet Business Console / restriction Mode démo), et `console.php` ne
+distingue QUE le 2ᵉ cas dans son message d'erreur. **Ne jamais se fier au hint
+simplifié** — en cas de blocage > quelques minutes, rejouer l'appel en brut
+(JWT + curl direct avec la clé de service) pour lire le `message`/`reason`
+exact renvoyé par Google (`SERVICE_DISABLED` vs autre) AVANT de creuser une
+piste.
+
+**⭐ Leçon n°2 (test local Wallet impossible)** : Google doit pouvoir
+télécharger le logo/hero depuis une URL **publique** pour créer une
+`loyaltyClass` — un test en isolation sur `127.0.0.1` échoue TOUJOURS
+(`"Image cannot be loaded"`), ce n'est PAS un bug de code. Pour tester la
+création de classe/objet Wallet, soit utiliser une image publique réelle
+(ex. `https://fidelo.site/apple-touch-icon.png`) dans un script de diagnostic
+à part, soit tester directement en production avec prudence (jamais sur de
+vraies données client — utiliser un `classId`/`objectId` de test distinct,
+et le repasser en `inactive` après).
+
+**Si un jour un nouveau compte Google Wallet doit être reconfiguré**, suivre
+dans l'ordre : (1) compte de service + clé JSON (Google Cloud Console, pas
+pay.google.com) → `gw_set`, (2) ajouter l'email du compte de service comme
+Développeur dans pay.google.com/business/console → Users, (3) compléter la
+checklist Mode démo (3 étapes) si elle apparaît, (4) **vérifier que l'API
+Google Wallet est "Enabled"** sur le projet GCP
+(`console.developers.google.com/apis/api/walletobjects.googleapis.com/overview?project=<id>`)
+— **étape la plus facile à oublier et la vraie cause la plus probable d'un
+403 persistant**, (5) `gw_test`.
+
 ## Pistes explorées, non implémentées (discussion en cours)
 
 Comparatif concurrents (Zerosix, Loyeo, Snapss, BonusQR, LittleBill) a
