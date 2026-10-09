@@ -1,0 +1,79 @@
+/* ============================================================
+   Design tokens — extraits fidèlement du modèle Oralcare (Framer)
+   Palette : vert forêt profond, accent vert citron, crème, gris
+   ============================================================ */
+:root {
+  /* Couleurs de marque */
+  --color-ink: #0d1b15;        /* vert très foncé — texte & fonds sombres */
+  --color-ink-soft: #23302a;   /* variante sombre */
+  --color-accent: #d1fc71;     /* vert citron — accent signature */
+  --color-accent-ink: #0d1b15; /* texte sur accent */
+  --color-cream: #f2f2ef;      /* fond crème */
+  --color-mist: #f5f4f7;       /* blanc lavande */
+  --color-line: #c9cbc5;       /* bordures claires */
+  --color-muted: #595e5c;      /* texte secondaire gris */
+  --color-white: #ffffff;
+
+  /* Surfaces sémantiques */
+  --bg: var(--color-cream);
+  --bg-elevated: var(--color-white);
+  --bg-invert: var(--color-ink);
+  --text: var(--color-ink);
+  --text-muted: var(--color-muted);
+  --text-invert: var(--color-cream);
+  --border: var(--color-line);
+
+  /* Typographie */
+  --font-display: 'Bricolage Grotesque', 'Jost', system-ui, sans-serif;
+  --font-body: 'Figtree', system-ui, -apple-system, sans-serif;
+  --font-serif: 'Gilda Display', Georgia, serif;
+
+  /* Échelle typographique fluide (clamp) */
+  --fs-hero: clamp(2.6rem, 6vw, 5.5rem);
+  --fs-h1: clamp(2.2rem, 4.5vw, 4rem);
+  --fs-h2: clamp(1.8rem, 3.4vw, 3rem);
+  --fs-h3: clamp(1.3rem, 2vw, 1.75rem);
+  --fs-lead: clamp(1.05rem, 1.4vw, 1.35rem);
+  --fs-body: 1rem;
+  --fs-sm: 0.875rem;
+
+  /* Rythme d'espacement */
+  --space-1: 0.5rem;
+  --space-2: 1rem;
+  --space-3: 1.5rem;
+  --space-4: 2rem;
+  --space-5: 3rem;
+  --space-6: 4rem;
+  --space-7: 6rem;
+  --space-8: 8rem;
+
+  /* Rayons & ombres */
+  --radius-sm: 12px;
+  --radius: 20px;
+  --radius-lg: 32px;
+  --radius-pill: 999px;
+  --shadow-sm: 0 2px 8px rgba(13, 27, 21, 0.06);
+  --shadow: 0 18px 50px rgba(13, 27, 21, 0.10);
+  --shadow-lg: 0 30px 80px rgba(13, 27, 21, 0.16);
+
+  /* Conteneur & mise en page */
+  --container: 1240px;
+  --container-narrow: 900px;
+  --header-h: 76px;
+
+  /* Transitions — psychologie du mouvement (anticipation + suivi) */
+  --ease-out: cubic-bezier(0.16, 1, 0.3, 1);
+  --ease-in-out: cubic-bezier(0.65, 0, 0.35, 1);
+  --dur-fast: 0.25s;
+  --dur: 0.5s;
+  --dur-slow: 0.8s;
+}
+
+/* Le thème sombre du header/footer réutilise l'inversion sémantique */
+[data-surface='dark'] {
+  --bg: var(--color-ink);
+  --bg-elevated: var(--color-ink-soft);
+  --text: var(--color-cream);
+  --text-muted: #a7b0ab;
+  --border: rgba(255, 255, 255, 0.12);
+}

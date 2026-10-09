@@ -1,0 +1,76 @@
+<!doctype html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Collecteur d'e-mails — DentWebPro</title>
+<style>
+  :root{--ink:#17171b;--accent:#f55733;--soft:#6c6c74;--line:#e7e7ec;--bg:#f4f5f7}
+  *{margin:0;box-sizing:border-box}
+  body{font-family:-apple-system,'Segoe UI',Roboto,Arial,sans-serif;background:var(--bg);color:var(--ink);padding:28px;line-height:1.65}
+  .wrap{max-width:780px;margin:0 auto}
+  h1{font-size:26px;margin-bottom:6px}
+  .sub{color:var(--soft);margin-bottom:26px}
+  .card{background:#fff;border:1px solid var(--line);border-radius:14px;padding:24px 26px;margin-bottom:18px;box-shadow:0 8px 26px -18px rgba(0,0,0,.25)}
+  .step{display:inline-grid;place-items:center;width:26px;height:26px;border-radius:50%;background:var(--accent);color:#fff;font-weight:700;font-size:13px;margin-right:8px}
+  h2{font-size:17px;margin-bottom:10px;display:flex;align-items:center}
+  .bm{display:inline-block;background:var(--accent);color:#fff;font-weight:700;font-size:15px;
+    padding:13px 24px;border-radius:99px;text-decoration:none;cursor:grab;box-shadow:0 10px 24px -10px rgba(245,87,51,.6)}
+  .hint{font-size:13px;color:var(--soft);margin-top:10px}
+  code,.mono{font-family:'SF Mono',Menlo,Consolas,monospace;font-size:12.5px;background:#f6f6fa;border-radius:6px;padding:2px 7px}
+  ol{margin:8px 0 0 20px}
+  li{margin-bottom:8px}
+  .note{background:#fff8e6;border:1px solid #f2e3b3;border-radius:10px;padding:12px 16px;font-size:13.5px;margin-top:14px}
+  .ok{background:#e9f8ef;border-color:#bfe8cd}
+</style>
+</head>
+<body>
+<div class="wrap">
+
+  <h1>🧲 Collecteur d'e-mails <span style="color:var(--accent)">DentWebPro</span></h1>
+  <p class="sub">Récolte automatiquement <b>nom + téléphone + e-mail</b> des cabinets depuis les pages
+  d'annuaires (PagesJaunes…) que VOUS visitez — votre navigateur passe partout, lui.</p>
+
+  <div class="card">
+    <h2><span class="step">1</span> Installer le bouton (une seule fois)</h2>
+    <p>Glissez ce bouton dans votre <b>barre de favoris</b> (Cmd+Shift+B si elle est cachée)&nbsp;:</p>
+    <p style="margin:16px 0">
+      <a class="bm" href="javascript:(function(){var K='dwp-collecte';var rows=JSON.parse(localStorage.getItem(K)||'[]');var seen={};rows.forEach(function(r){seen[r[2]||r[1]]=1});var added=0;var mails=document.querySelectorAll('a[href^=%22mailto:%22]');mails.forEach(function(a){var em=a.href.replace(/^mailto:/,'').split('?')[0].trim().toLowerCase();if(!em||seen[em])return;var box=a.closest('li,article,section,div[class*=%22bi%22],div[class*=%22card%22],div[class*=%22result%22]')||a.parentElement;var t=(box?box.textContent:'').replace(/\s+/g,' ').trim();var tel=(t.match(/0[1-9](?:[ .]?\d\d){4}/)||[''])[0];var nom=t.split(/[\n]|Voir |Prendre |Itin/)[0].slice(0,70).trim();rows.push([nom,tel,em]);seen[em]=1;added++});if(mails.length===0){var t2=document.body.innerText;var found=t2.match(/[a-zA-Z0-9._%2B%25+-]+@[a-zA-Z0-9.-]+\.[a-z]{2,}/g)||[];found.forEach(function(em){em=em.toLowerCase();if(seen[em])return;rows.push(['(page: '+document.title.slice(0,50)+')','',em]);seen[em]=1;added++})}localStorage.setItem(K,JSON.stringify(rows));var csv='Cabinet;Téléphone;Email\n'+rows.map(function(r){return r.join(';')}).join('\n');if(navigator.clipboard)navigator.clipboard.writeText(csv);alert('DentWebPro : +'+added+' nouveau(x) — TOTAL '+rows.length+' e-mails.\nLe CSV complet est copié dans le presse-papiers.\n(Maj+clic pour vider la récolte)');if(window.event&&window.event.shiftKey){localStorage.removeItem(K);alert('Récolte vidée.')}})();">🧲 Récolter les e-mails</a>
+    </p>
+    <p class="hint">Impossible de glisser ? Créez un favori manuellement et collez le code du bouton
+    (clic droit sur le bouton → copier le lien) dans le champ « URL ».</p>
+  </div>
+
+  <div class="card">
+    <h2><span class="step">2</span> Récolter</h2>
+    <ol>
+      <li>Ouvrez <a href="https://www.pagesjaunes.fr" target="_blank"><b>pagesjaunes.fr</b></a> →
+        cherchez <code>dentiste</code> à <code>Paris 75001</code> (puis 75002, 75003…)</li>
+      <li>Sur chaque page de résultats, cliquez votre bouton <b>🧲 Récolter</b> → il détecte les
+        boutons «&nbsp;E-mail&nbsp;» des fiches et enregistre <b>nom + téléphone + e-mail</b></li>
+      <li>Page suivante → re-cliquez. La récolte <b>s'accumule</b> (les doublons sont ignorés automatiquement)</li>
+      <li>Marche aussi sur <b>n'importe quel site</b> affichant des e-mails (annuaires, sites de mairies,
+        associations dentaires…)</li>
+    </ol>
+    <div class="note">⚠️ Toutes les fiches n'ont pas d'e-mail — c'est normal. Sur PagesJaunes,
+    comptez 2 à 5 e-mails par page de 20 résultats. En 15 minutes vous aurez 30-50 e-mails réels.</div>
+  </div>
+
+  <div class="card">
+    <h2><span class="step">3</span> Récupérer le fichier</h2>
+    <p>À chaque clic, le <b>CSV complet</b> (tout ce qui a été récolté) est copié dans votre
+    presse-papiers. À la fin&nbsp;: collez-le (Cmd+V) dans un message à votre assistant → il prépare
+    les brouillons Gmail personnalisés.</p>
+    <div class="note ok">💡 <b>Maj+clic</b> sur le bouton = vider la récolte et repartir de zéro.</div>
+  </div>
+
+  <div class="card">
+    <h2>⚖️ Rappels</h2>
+    <p style="font-size:13.5px;color:var(--soft)">Prospection B2B de professionnels référencés publiquement :
+    autorisée avec la mention STOP (opt-out) dans chaque e-mail. Max 20-30 envois/jour.
+    Retirez immédiatement quiconque répond «&nbsp;STOP&nbsp;».</p>
+  </div>
+
+</div>
+</body>
+</html>

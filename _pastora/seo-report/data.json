@@ -1,0 +1,469 @@
+[
+  {
+    "url": "https://alive-thanks-218466.framer.app/about",
+    "score": 96,
+    "issues": [
+      {
+        "type": "warning",
+        "message": "Meta description too long (195 chars). May be truncated."
+      },
+      {
+        "type": "info",
+        "message": "No canonical URL specified"
+      }
+    ],
+    "passed": [
+      "Title tag is properly configured",
+      "Single H1 heading present",
+      "All images have alt attributes",
+      "Open Graph meta tags present",
+      "Viewport meta tag present",
+      "Language attribute set"
+    ],
+    "meta": {
+      "title": "Pastora - Italian Restaurant Website",
+      "description": "Pastora is a warm, elegantly crafted Framer template for Italian restaurants & trattorias — built to showcase your cuisine, tell your story, and turn hungry visitors into loyal, returning guests.",
+      "canonical": null,
+      "ogImage": "https://framerusercontent.com/images/zXmdTFNUuTIyCP2uUtYCiVdiY.png"
+    }
+  },
+  {
+    "url": "https://alive-thanks-218466.framer.app/blogs",
+    "score": 96,
+    "issues": [
+      {
+        "type": "warning",
+        "message": "Meta description too long (195 chars). May be truncated."
+      },
+      {
+        "type": "info",
+        "message": "No canonical URL specified"
+      }
+    ],
+    "passed": [
+      "Title tag is properly configured",
+      "Single H1 heading present",
+      "All images have alt attributes",
+      "Open Graph meta tags present",
+      "Viewport meta tag present",
+      "Language attribute set"
+    ],
+    "meta": {
+      "title": "Pastora - Italian Restaurant Website",
+      "description": "Pastora is a warm, elegantly crafted Framer template for Italian restaurants & trattorias — built to showcase your cuisine, tell your story, and turn hungry visitors into loyal, returning guests.",
+      "canonical": null,
+      "ogImage": "https://framerusercontent.com/images/zXmdTFNUuTIyCP2uUtYCiVdiY.png"
+    }
+  },
+  {
+    "url": "https://alive-thanks-218466.framer.app/blogs/a-personalized-private-dining-experience",
+    "score": 96,
+    "issues": [
+      {
+        "type": "warning",
+        "message": "Meta description too long (195 chars). May be truncated."
+      },
+      {
+        "type": "info",
+        "message": "No canonical URL specified"
+      }
+    ],
+    "passed": [
+      "Title tag is properly configured",
+      "Single H1 heading present",
+      "All images have alt attributes",
+      "Open Graph meta tags present",
+      "Viewport meta tag present",
+      "Language attribute set"
+    ],
+    "meta": {
+      "title": "A Personalized Private Dining Experience - My Framer Site",
+      "description": "Pastora is a warm, elegantly crafted Framer template for Italian restaurants & trattorias — built to showcase your cuisine, tell your story, and turn hungry visitors into loyal, returning guests.",
+      "canonical": null,
+      "ogImage": "https://framerusercontent.com/images/zXmdTFNUuTIyCP2uUtYCiVdiY.png"
+    }
+  },
+  {
+    "url": "https://alive-thanks-218466.framer.app/blogs/fine-private-dining-crafted-with-care",
+    "score": 96,
+    "issues": [
+      {
+        "type": "warning",
+        "message": "Meta description too long (195 chars). May be truncated."
+      },
+      {
+        "type": "info",
+        "message": "No canonical URL specified"
+      }
+    ],
+    "passed": [
+      "Title tag is properly configured",
+      "Single H1 heading present",
+      "All images have alt attributes",
+      "Open Graph meta tags present",
+      "Viewport meta tag present",
+      "Language attribute set"
+    ],
+    "meta": {
+      "title": "Fine Private Dining, Crafted with Care - My Framer Site",
+      "description": "Pastora is a warm, elegantly crafted Framer template for Italian restaurants & trattorias — built to showcase your cuisine, tell your story, and turn hungry visitors into loyal, returning guests.",
+      "canonical": null,
+      "ogImage": "https://framerusercontent.com/images/zXmdTFNUuTIyCP2uUtYCiVdiY.png"
+    }
+  },
+  {
+    "url": "https://alive-thanks-218466.framer.app/blogs/luxury-private-dining-expertly-curated",
+    "score": 96,
+    "issues": [
+      {
+        "type": "warning",
+        "message": "Meta description too long (195 chars). May be truncated."
+      },
+      {
+        "type": "info",
+        "message": "No canonical URL specified"
+      }
+    ],
+    "passed": [
+      "Title tag is properly configured",
+      "Single H1 heading present",
+      "All images have alt attributes",
+      "Open Graph meta tags present",
+      "Viewport meta tag present",
+      "Language attribute set"
+    ],
+    "meta": {
+      "title": "Luxury Private Dining, Expertly Curated - My Framer Site",
+      "description": "Pastora is a warm, elegantly crafted Framer template for Italian restaurants & trattorias — built to showcase your cuisine, tell your story, and turn hungry visitors into loyal, returning guests.",
+      "canonical": null,
+      "ogImage": "https://framerusercontent.com/images/zXmdTFNUuTIyCP2uUtYCiVdiY.png"
+    }
+  },
+  {
+    "url": "https://alive-thanks-218466.framer.app/contact",
+    "score": 96,
+    "issues": [
+      {
+        "type": "warning",
+        "message": "Meta description too long (195 chars). May be truncated."
+      },
+      {
+        "type": "info",
+        "message": "No canonical URL specified"
+      }
+    ],
+    "passed": [
+      "Title tag is properly configured",
+      "Single H1 heading present",
+      "All images have alt attributes",
+      "Open Graph meta tags present",
+      "Viewport meta tag present",
+      "Language attribute set"
+    ],
+    "meta": {
+      "title": "Pastora - Italian Restaurant Website",
+      "description": "Pastora is a warm, elegantly crafted Framer template for Italian restaurants & trattorias — built to showcase your cuisine, tell your story, and turn hungry visitors into loyal, returning guests.",
+      "canonical": null,
+      "ogImage": "https://framerusercontent.com/images/zXmdTFNUuTIyCP2uUtYCiVdiY.png"
+    }
+  },
+  {
+    "url": "https://alive-thanks-218466.framer.app/menu",
+    "score": 96,
+    "issues": [
+      {
+        "type": "warning",
+        "message": "Meta description too long (195 chars). May be truncated."
+      },
+      {
+        "type": "info",
+        "message": "No canonical URL specified"
+      }
+    ],
+    "passed": [
+      "Title tag is properly configured",
+      "Single H1 heading present",
+      "All images have alt attributes",
+      "Open Graph meta tags present",
+      "Viewport meta tag present",
+      "Language attribute set"
+    ],
+    "meta": {
+      "title": "Pastora - Italian Restaurant Website",
+      "description": "Pastora is a warm, elegantly crafted Framer template for Italian restaurants & trattorias — built to showcase your cuisine, tell your story, and turn hungry visitors into loyal, returning guests.",
+      "canonical": null,
+      "ogImage": "https://framerusercontent.com/images/zXmdTFNUuTIyCP2uUtYCiVdiY.png"
+    }
+  },
+  {
+    "url": "https://alive-thanks-218466.framer.app/privacy-policy",
+    "score": 96,
+    "issues": [
+      {
+        "type": "warning",
+        "message": "Meta description too long (195 chars). May be truncated."
+      },
+      {
+        "type": "info",
+        "message": "No canonical URL specified"
+      }
+    ],
+    "passed": [
+      "Title tag is properly configured",
+      "Single H1 heading present",
+      "All images have alt attributes",
+      "Open Graph meta tags present",
+      "Viewport meta tag present",
+      "Language attribute set"
+    ],
+    "meta": {
+      "title": "Pastora - Italian Restaurant Website",
+      "description": "Pastora is a warm, elegantly crafted Framer template for Italian restaurants & trattorias — built to showcase your cuisine, tell your story, and turn hungry visitors into loyal, returning guests.",
+      "canonical": null,
+      "ogImage": "https://framerusercontent.com/images/zXmdTFNUuTIyCP2uUtYCiVdiY.png"
+    }
+  },
+  {
+    "url": "https://alive-thanks-218466.framer.app/recipes",
+    "score": 96,
+    "issues": [
+      {
+        "type": "warning",
+        "message": "Meta description too long (195 chars). May be truncated."
+      },
+      {
+        "type": "info",
+        "message": "No canonical URL specified"
+      }
+    ],
+    "passed": [
+      "Title tag is properly configured",
+      "Single H1 heading present",
+      "All images have alt attributes",
+      "Open Graph meta tags present",
+      "Viewport meta tag present",
+      "Language attribute set"
+    ],
+    "meta": {
+      "title": "Pastora - Italian Restaurant Website",
+      "description": "Pastora is a warm, elegantly crafted Framer template for Italian restaurants & trattorias — built to showcase your cuisine, tell your story, and turn hungry visitors into loyal, returning guests.",
+      "canonical": null,
+      "ogImage": "https://framerusercontent.com/images/zXmdTFNUuTIyCP2uUtYCiVdiY.png"
+    }
+  },
+  {
+    "url": "https://alive-thanks-218466.framer.app/recipes/fettuccine-alfredo",
+    "score": 96,
+    "issues": [
+      {
+        "type": "warning",
+        "message": "Meta description too long (195 chars). May be truncated."
+      },
+      {
+        "type": "info",
+        "message": "No canonical URL specified"
+      }
+    ],
+    "passed": [
+      "Title tag is properly configured",
+      "Single H1 heading present",
+      "All images have alt attributes",
+      "Open Graph meta tags present",
+      "Viewport meta tag present",
+      "Language attribute set"
+    ],
+    "meta": {
+      "title": "Fettuccine Alfredo - My Framer Site",
+      "description": "Pastora is a warm, elegantly crafted Framer template for Italian restaurants & trattorias — built to showcase your cuisine, tell your story, and turn hungry visitors into loyal, returning guests.",
+      "canonical": null,
+      "ogImage": "https://framerusercontent.com/images/zXmdTFNUuTIyCP2uUtYCiVdiY.png"
+    }
+  },
+  {
+    "url": "https://alive-thanks-218466.framer.app/recipes/margherita-pizza",
+    "score": 96,
+    "issues": [
+      {
+        "type": "warning",
+        "message": "Meta description too long (195 chars). May be truncated."
+      },
+      {
+        "type": "info",
+        "message": "No canonical URL specified"
+      }
+    ],
+    "passed": [
+      "Title tag is properly configured",
+      "Single H1 heading present",
+      "All images have alt attributes",
+      "Open Graph meta tags present",
+      "Viewport meta tag present",
+      "Language attribute set"
+    ],
+    "meta": {
+      "title": "Margherita Pizza - My Framer Site",
+      "description": "Pastora is a warm, elegantly crafted Framer template for Italian restaurants & trattorias — built to showcase your cuisine, tell your story, and turn hungry visitors into loyal, returning guests.",
+      "canonical": null,
+      "ogImage": "https://framerusercontent.com/images/zXmdTFNUuTIyCP2uUtYCiVdiY.png"
+    }
+  },
+  {
+    "url": "https://alive-thanks-218466.framer.app/recipes/spaghetti-carbonara",
+    "score": 96,
+    "issues": [
+      {
+        "type": "warning",
+        "message": "Meta description too long (195 chars). May be truncated."
+      },
+      {
+        "type": "info",
+        "message": "No canonical URL specified"
+      }
+    ],
+    "passed": [
+      "Title tag is properly configured",
+      "Single H1 heading present",
+      "All images have alt attributes",
+      "Open Graph meta tags present",
+      "Viewport meta tag present",
+      "Language attribute set"
+    ],
+    "meta": {
+      "title": "Spaghetti Carbonara - My Framer Site",
+      "description": "Pastora is a warm, elegantly crafted Framer template for Italian restaurants & trattorias — built to showcase your cuisine, tell your story, and turn hungry visitors into loyal, returning guests.",
+      "canonical": null,
+      "ogImage": "https://framerusercontent.com/images/zXmdTFNUuTIyCP2uUtYCiVdiY.png"
+    }
+  },
+  {
+    "url": "https://alive-thanks-218466.framer.app/recipes/tuscan-herb-chicken",
+    "score": 96,
+    "issues": [
+      {
+        "type": "warning",
+        "message": "Meta description too long (195 chars). May be truncated."
+      },
+      {
+        "type": "info",
+        "message": "No canonical URL specified"
+      }
+    ],
+    "passed": [
+      "Title tag is properly configured",
+      "Single H1 heading present",
+      "All images have alt attributes",
+      "Open Graph meta tags present",
+      "Viewport meta tag present",
+      "Language attribute set"
+    ],
+    "meta": {
+      "title": "Tuscan Herb Chicken - My Framer Site",
+      "description": "Pastora is a warm, elegantly crafted Framer template for Italian restaurants & trattorias — built to showcase your cuisine, tell your story, and turn hungry visitors into loyal, returning guests.",
+      "canonical": null,
+      "ogImage": "https://framerusercontent.com/images/zXmdTFNUuTIyCP2uUtYCiVdiY.png"
+    }
+  },
+  {
+    "url": "https://alive-thanks-218466.framer.app/reservation",
+    "score": 96,
+    "issues": [
+      {
+        "type": "warning",
+        "message": "Meta description too long (195 chars). May be truncated."
+      },
+      {
+        "type": "info",
+        "message": "No canonical URL specified"
+      }
+    ],
+    "passed": [
+      "Title tag is properly configured",
+      "Single H1 heading present",
+      "All images have alt attributes",
+      "Open Graph meta tags present",
+      "Viewport meta tag present",
+      "Language attribute set"
+    ],
+    "meta": {
+      "title": "Pastora - Italian Restaurant Website",
+      "description": "Pastora is a warm, elegantly crafted Framer template for Italian restaurants & trattorias — built to showcase your cuisine, tell your story, and turn hungry visitors into loyal, returning guests.",
+      "canonical": null,
+      "ogImage": "https://framerusercontent.com/images/zXmdTFNUuTIyCP2uUtYCiVdiY.png"
+    }
+  },
+  {
+    "url": "https://alive-thanks-218466.framer.app/",
+    "score": 98,
+    "issues": [
+      {
+        "type": "warning",
+        "message": "Meta description too long (195 chars). May be truncated."
+      }
+    ],
+    "passed": [
+      "Title tag is properly configured",
+      "Single H1 heading present",
+      "All images have alt attributes",
+      "Canonical URL is set",
+      "Open Graph meta tags present",
+      "Viewport meta tag present",
+      "Language attribute set"
+    ],
+    "meta": {
+      "title": "Pastora - Italian Restaurant Website",
+      "description": "Pastora is a warm, elegantly crafted Framer template for Italian restaurants & trattorias — built to showcase your cuisine, tell your story, and turn hungry visitors into loyal, returning guests.",
+      "canonical": "https://alive-thanks-218466.framer.app/",
+      "ogImage": "https://framerusercontent.com/images/zXmdTFNUuTIyCP2uUtYCiVdiY.png"
+    }
+  },
+  {
+    "url": "https://alive-thanks-218466.framer.app/404",
+    "score": 98,
+    "issues": [
+      {
+        "type": "warning",
+        "message": "Meta description too long (195 chars). May be truncated."
+      }
+    ],
+    "passed": [
+      "Title tag is properly configured",
+      "Single H1 heading present",
+      "All images have alt attributes",
+      "Canonical URL is set",
+      "Open Graph meta tags present",
+      "Viewport meta tag present",
+      "Language attribute set"
+    ],
+    "meta": {
+      "title": "Pastora - Italian Restaurant Website",
+      "description": "Pastora is a warm, elegantly crafted Framer template for Italian restaurants & trattorias — built to showcase your cuisine, tell your story, and turn hungry visitors into loyal, returning guests.",
+      "canonical": "https://alive-thanks-218466.framer.app/404",
+      "ogImage": "https://framerusercontent.com/images/zXmdTFNUuTIyCP2uUtYCiVdiY.png"
+    }
+  },
+  {
+    "url": "https://alive-thanks-218466.framer.app/fr",
+    "score": 98,
+    "issues": [
+      {
+        "type": "warning",
+        "message": "Meta description too long (229 chars). May be truncated."
+      }
+    ],
+    "passed": [
+      "Title tag is properly configured",
+      "Single H1 heading present",
+      "All images have alt attributes",
+      "Canonical URL is set",
+      "Open Graph meta tags present",
+      "Viewport meta tag present",
+      "Language attribute set"
+    ],
+    "meta": {
+      "title": "Pastora - Site Web de Restaurant Italien",
+      "description": "Pastora est un modèle Framer chaleureux et élégamment conçu pour les restaurants et trattorias italiens — conçu pour mettre en valeur votre cuisine, raconter votre histoire et transformer les visiteurs affamés en clients fidèles.",
+      "canonical": "https://alive-thanks-218466.framer.app/fr/",
+      "ogImage": "https://framerusercontent.com/images/zXmdTFNUuTIyCP2uUtYCiVdiY.png"
+    }
+  }
+]

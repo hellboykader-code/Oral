@@ -1,0 +1,58 @@
+.smile__head {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-end;
+  gap: 2rem;
+  margin-bottom: 2.6rem;
+}
+.smile__rows {
+  display: flex;
+  flex-direction: column;
+  gap: 1.2rem;
+}
+.smile-marquee {
+  overflow: hidden;
+  -webkit-mask-image: linear-gradient(90deg, transparent, #000 6%, #000 94%, transparent);
+  mask-image: linear-gradient(90deg, transparent, #000 6%, #000 94%, transparent);
+}
+.smile-marquee__track {
+  display: flex;
+  gap: 1.2rem;
+  width: max-content;
+  animation: smile-scroll 45s linear infinite;
+}
+.smile-marquee--rev .smile-marquee__track {
+  animation-direction: reverse;
+}
+.smile-marquee:hover .smile-marquee__track {
+  animation-play-state: paused;
+}
+.smile-marquee__item {
+  flex: 0 0 auto;
+  width: clamp(220px, 26vw, 340px);
+  aspect-ratio: 4 / 3;
+  border-radius: var(--radius);
+  overflow: hidden;
+}
+.smile-marquee__item img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+@keyframes smile-scroll {
+  from { transform: translateX(0); }
+  to { transform: translateX(-50%); }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .smile-marquee__track {
+    animation: none;
+  }
+}
+@media (max-width: 700px) {
+  .smile__head {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+}

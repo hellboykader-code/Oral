@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link href="https://fonts.googleapis.com/css2?family=Gloock&family=Geist:wght@400;500;600&family=Geist+Mono:wght@400;500&display=swap" rel="stylesheet">
+</helmet>
+<header style="position:fixed;top:0;left:0;right:0;z-index:50;display:flex;justify-content:center;padding:14px clamp(14px,3vw,32px);box-sizing:border-box;pointer-events:none">
+  <nav style="pointer-events:auto;width:min(1240px,100%);display:flex;align-items:center;justify-content:space-between;gap:20px;padding:10px 10px 10px 20px;border-radius:999px;background:rgba(18,15,12,.62);border:1px solid rgba(244,239,230,.1);backdrop-filter:blur(16px) saturate(140%);-webkit-backdrop-filter:blur(16px) saturate(140%);box-sizing:border-box">
+    <a href="accueil.php" style="display:flex;align-items:center;gap:10px;color:#f4efe6;text-decoration:none">
+      <span style="width:26px;height:26px;border-radius:50%;background:radial-gradient(circle at 35% 30%,#ffd9a8,#f2a65a 55%,#9a5a22);box-shadow:0 0 18px rgba(242,166,90,.5)"></span>
+      <span style="font:400 22px/1 Gloock,serif;letter-spacing:-.01em">Fidelo</span>
+    </a>
+    <div style="display:{{ deskDisplay }};align-items:center;gap:4px;font:500 14px Geist,sans-serif">
+      <a href="accueil.php" style="padding:9px 14px;border-radius:999px;text-decoration:none;color:{{ cAccueil }}" style-hover="color:#f4efe6">Accueil</a>
+      <a href="tarifs.php" style="padding:9px 14px;border-radius:999px;text-decoration:none;color:{{ cTarifs }}" style-hover="color:#f4efe6">Tarifs</a>
+      <a href="contact.php" style="padding:9px 14px;border-radius:999px;text-decoration:none;color:{{ cContact }}" style-hover="color:#f4efe6">Contact</a>
+    </div>
+    <div style="display:flex;align-items:center;gap:8px">
+      <a href="inscription.php" style="display:flex;align-items:center;gap:8px;padding:11px 18px;border-radius:999px;background:#f2a65a;color:#1a1007;font:600 14px Geist,sans-serif;text-decoration:none;box-shadow:0 8px 30px rgba(242,166,90,.25);transition:transform .2s,box-shadow .2s" style-hover="transform:translateY(-1px);box-shadow:0 12px 40px rgba(242,166,90,.4);color:#1a1007">Commencer gratuitement</a>
+      <button onClick="{{ toggle }}" aria-label="Menu" style="display:{{ burgerDisplay }};width:44px;height:44px;border-radius:50%;border:1px solid rgba(244,239,230,.18);background:transparent;color:#f4efe6;font-size:16px;cursor:pointer">{{ burgerIcon }}</button>
+    </div>
+  </nav>
+  <sc-if value="{{ open }}" hint-placeholder-val="{{ false }}">
+    <div style="pointer-events:auto;position:absolute;top:76px;left:14px;right:14px;display:flex;flex-direction:column;gap:2px;padding:10px;border-radius:22px;background:rgba(18,15,12,.94);border:1px solid rgba(244,239,230,.1);backdrop-filter:blur(16px);font:500 17px Geist,sans-serif">
+      <a href="accueil.php" style="padding:14px 16px;color:#f4efe6;text-decoration:none">Accueil</a>
+      <a href="tarifs.php" style="padding:14px 16px;color:#f4efe6;text-decoration:none">Tarifs</a>
+      <a href="contact.php" style="padding:14px 16px;color:#f4efe6;text-decoration:none">Contact</a>
+    </div>
+  </sc-if>
+</header>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props="{&quot;active&quot;:{&quot;editor&quot;:&quot;enum&quot;,&quot;options&quot;:[&quot;accueil&quot;,&quot;tarifs&quot;,&quot;contact&quot;,&quot;legal&quot;],&quot;default&quot;:&quot;accueil&quot;,&quot;tsType&quot;:&quot;string&quot;}}">
+class Component extends DCLogic {
+  state = { open: false, narrow: typeof window !== 'undefined' && window.innerWidth < 760 };
+  componentDidMount() { this.onR = () => this.setState({ narrow: window.innerWidth < 760 }); window.addEventListener('resize', this.onR); }
+  componentWillUnmount() { window.removeEventListener('resize', this.onR); }
+  renderVals() {
+    const a = this.props.active || 'accueil';
+    const c = k => (k === a ? '#f4efe6' : '#a39a8c');
+    const n = this.state.narrow;
+    return {
+      cAccueil: c('accueil'), cTarifs: c('tarifs'), cContact: c('contact'),
+      deskDisplay: n ? 'none' : 'flex', burgerDisplay: n ? 'grid' : 'none',
+      burgerIcon: this.state.open ? '✕' : '☰', open: n && this.state.open,
+      toggle: () => this.setState(s => ({ open: !s.open })),
+    };
+  }
+}
+</script>
+</body>
+</html>

@@ -1,0 +1,369 @@
+<!doctype html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Vialo — Auto-école</title>
+<meta name="description" content="Vialo, auto-école : prenez le volant en confiance. Moniteurs certifiés, voitures récentes, 98% de réussite au premier passage.">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 48 48'%3E%3Crect width='48' height='48' rx='12' fill='%23fab700'/%3E%3Cpath d='M14 34 22 13h4l8 21' fill='none' stroke='%231f1f1f' stroke-width='3.4' stroke-linejoin='round'/%3E%3Cpath d='M24 18v3M24 25v3M24 31v2' stroke='%231f1f1f' stroke-width='3' stroke-linecap='round'/%3E%3C/svg%3E">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter+Tight:wght@500;600;700;800&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+:root{
+  --yellow:#fab700; --yellow-d:#e0a300; --ink:#1f1f1f; --ink-2:#3f3f42; --muted:#6b6b66;
+  --cream:#f8f7ec; --cream-2:#efeee1; --line:#e6e5dc; --card:#ffffff; --white:#fff;
+  --shadow:0 16px 44px rgba(31,31,31,.08); --shadow-s:0 6px 20px rgba(31,31,31,.05);
+  --wrap:1200px; --font:"Inter",system-ui,sans-serif; --disp:"Inter Tight",system-ui,sans-serif;
+}
+*{margin:0;padding:0;box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{font-family:var(--font);color:var(--ink);background:var(--cream);line-height:1.6;-webkit-font-smoothing:antialiased;overflow-x:hidden}
+a{color:inherit;text-decoration:none}
+img{max-width:100%;display:block}
+.wrap{max-width:var(--wrap);margin:0 auto;padding:0 24px}
+section{padding:92px 0}
+section[id]{scroll-margin-top:84px}
+h1,h2,h3{font-family:var(--disp);font-weight:700;letter-spacing:-.02em;line-height:1.04;color:var(--ink)}
+.accent{color:var(--yellow)}
+.tag{display:inline-flex;align-items:center;gap:8px;font:600 13px var(--font);color:var(--ink-2);text-transform:uppercase;letter-spacing:.08em}
+.tag::before{content:"";width:9px;height:9px;border-radius:3px;background:var(--yellow)}
+
+.btn{display:inline-flex;align-items:center;gap:10px;font:600 15px var(--font);padding:14px 26px;border-radius:12px;border:0;cursor:pointer;transition:transform .18s,box-shadow .18s,background .18s,color .18s}
+.btn:active{transform:scale(.97)}
+.btn-dark{background:var(--ink);color:#fff}
+.btn-dark:hover{transform:translateY(-2px);box-shadow:0 12px 24px rgba(31,31,31,.22)}
+.btn-yellow{background:var(--yellow);color:var(--ink)}
+.btn-yellow:hover{background:var(--yellow-d);transform:translateY(-2px)}
+.btn-ghost{background:transparent;color:var(--ink);border:1.5px solid var(--ink)}
+.btn-ghost:hover{background:var(--ink);color:#fff}
+.btn svg{width:16px;height:16px}
+.arrow-btn{width:48px;height:48px;border-radius:50%;background:var(--ink);color:#fff;display:grid;place-items:center;flex:none;transition:.2s}
+.arrow-btn:hover{transform:scale(1.08)}
+.arrow-btn svg{width:20px;height:20px}
+
+/* NAV */
+header{position:fixed;top:0;left:0;right:0;z-index:100;transition:background .28s,box-shadow .28s,backdrop-filter .28s}
+header.solid{background:rgba(248,247,236,.86);backdrop-filter:saturate(1.2) blur(12px);box-shadow:0 1px 0 rgba(31,31,31,.06)}
+.nav{display:flex;align-items:center;justify-content:space-between;height:76px}
+.brand{display:flex;align-items:center;gap:10px}
+.brand .wm{font:800 22px var(--disp);color:var(--ink);letter-spacing:-.03em}
+.nav-menu{display:flex;align-items:center;gap:32px}
+.nav-menu a{font-weight:500;color:var(--ink-2);transition:color .15s}
+.nav-menu a:hover{color:var(--ink)}
+.burger{display:none;flex-direction:column;gap:5px;background:none;border:0;cursor:pointer;padding:8px}
+.burger span{width:24px;height:2.4px;background:var(--ink);border-radius:2px}
+.mobile{position:fixed;inset:0;z-index:99;background:var(--cream);display:flex;flex-direction:column;justify-content:center;align-items:center;gap:24px;transform:translateY(-100%);transition:transform .4s cubic-bezier(.6,.2,.1,1);visibility:hidden}
+.mobile.open{transform:translateY(0);visibility:visible}
+.mobile a{font:700 26px var(--disp);color:var(--ink)}
+
+/* HERO */
+.hero{padding:132px 0 0}
+.hero-top{display:grid;grid-template-columns:1.4fr .9fr;gap:40px;align-items:end;margin-bottom:44px}
+.hero h1{font-size:clamp(42px,6.4vw,80px);font-weight:800}
+.hero .lead{color:var(--muted);font-size:18px;margin:22px 0 30px;max-width:440px}
+.hero-cta{display:flex;align-items:center;gap:22px;flex-wrap:wrap}
+.hero-avs{display:flex;align-items:center;gap:12px}
+.hero-avs .a{display:flex}
+.hero-avs .a img{width:42px;height:42px;border-radius:50%;border:2.5px solid var(--cream);object-fit:cover;margin-left:-12px}
+.hero-avs .a img:first-child{margin-left:0}
+.hero-avs small{color:var(--ink-2);font-weight:600;font-size:13.5px;max-width:110px;line-height:1.3}
+.stat-card{background:var(--yellow);border-radius:18px;padding:30px 28px;position:relative;overflow:hidden}
+.stat-card .big{font:800 60px var(--disp);color:var(--ink);line-height:1}
+.stat-card .lbl{font:700 16px var(--disp);color:var(--ink);margin-top:4px}
+.stat-card .row{display:flex;align-items:center;justify-content:space-between;gap:16px;margin-top:26px}
+.stat-card .row p{font-size:14px;color:var(--ink);max-width:180px}
+.hero-img{border-radius:22px;overflow:hidden;aspect-ratio:16/6.5;box-shadow:var(--shadow)}
+.hero-img img{width:100%;height:100%;object-fit:cover;object-position:center 40%;transform:scale(1.05);animation:hz 12s ease-out forwards}
+@keyframes hz{to{transform:scale(1)}}
+
+/* reveal */
+.reveal{opacity:0;transform:translateY(28px);transition:opacity .7s,transform .7s cubic-bezier(.2,.7,.2,1)}
+.reveal.in{opacity:1;transform:none}
+.reveal.d1{transition-delay:.08s}.reveal.d2{transition-delay:.16s}.reveal.d3{transition-delay:.24s}.reveal.d4{transition-delay:.32s}
+
+/* STATS band */
+.stats{background:var(--ink);color:#fff;border-radius:26px}
+.stats .wrap{padding-top:52px;padding-bottom:52px}
+.stats-head{text-align:center;max-width:640px;margin:0 auto 40px}
+.stats-head h2{color:#fff;font-size:clamp(26px,3.4vw,40px)}
+.stats-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:24px;text-align:center}
+.stats-grid .n{font:800 48px var(--disp);color:var(--yellow)}
+.stats-grid .l{color:rgba(255,255,255,.75);font-size:14.5px;margin-top:4px}
+
+/* COURSES */
+.courses-head{display:flex;align-items:flex-end;justify-content:space-between;gap:20px;margin-bottom:44px;flex-wrap:wrap}
+.courses-head h2{font-size:clamp(30px,4.4vw,52px);max-width:16ch}
+.course-grid{display:grid;grid-template-columns:1fr 1fr;gap:24px}
+.course{background:var(--card);border:1px solid var(--line);border-radius:20px;padding:24px;box-shadow:var(--shadow-s);transition:transform .25s,box-shadow .25s}
+.course:hover{transform:translateY(-6px);box-shadow:var(--shadow)}
+.course .top{display:flex;align-items:center;justify-content:space-between;gap:16px}
+.course .badge{display:inline-flex;align-items:center;gap:7px;font:600 13px var(--font);color:var(--ink-2)}
+.course .badge::before{content:"";width:10px;height:10px;border-radius:3px;background:var(--yellow)}
+.course .media{margin:18px 0;border-radius:14px;overflow:hidden;aspect-ratio:16/9}
+.course .media img{width:100%;height:100%;object-fit:cover;transition:transform .5s}
+.course:hover .media img{transform:scale(1.05)}
+.course .bot{display:flex;align-items:flex-end;justify-content:space-between;gap:16px}
+.course h3{font-size:23px;margin-bottom:8px}
+.course p{color:var(--muted);font-size:14.5px;max-width:34ch}
+
+/* BENEFITS (yellow block) */
+.benefits-wrap{display:grid;grid-template-columns:1fr 1fr;border-radius:26px;overflow:hidden;box-shadow:var(--shadow)}
+.benefits-left{background:var(--yellow);padding:clamp(34px,5vw,60px)}
+.benefits-left .tag{color:var(--ink)}
+.benefits-left h2{font-size:clamp(28px,3.6vw,42px);margin:16px 0 26px}
+.ben-list{display:grid;grid-template-columns:1fr 1fr;gap:16px 22px;margin-bottom:32px}
+.ben-list li{list-style:none;display:flex;align-items:center;gap:11px;font-weight:600;font-size:15.5px;color:var(--ink)}
+.ben-list li .ck{width:26px;height:26px;border-radius:50%;background:var(--ink);color:var(--yellow);display:grid;place-items:center;flex:none}
+.ben-list li .ck svg{width:15px;height:15px}
+.benefits-right{position:relative;min-height:340px}
+.benefits-right img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover}
+
+/* INSTRUCTORS */
+.inst-head{display:flex;align-items:flex-end;justify-content:space-between;gap:20px;margin-bottom:44px;flex-wrap:wrap}
+.inst-head h2{font-size:clamp(30px,4.4vw,50px);max-width:16ch}
+.inst-head p{color:var(--muted);max-width:44ch;margin-top:14px}
+.inst-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:24px}
+.inst{border-radius:20px;overflow:hidden;position:relative;box-shadow:var(--shadow-s)}
+.inst .ph{aspect-ratio:1/1;overflow:hidden}
+.inst .ph img{width:100%;height:100%;object-fit:cover;transition:transform .5s}
+.inst:hover .ph img{transform:scale(1.05)}
+.inst .meta{padding:22px 22px 24px;background:var(--card);border:1px solid var(--line);border-top:0}
+.inst .meta b{font:700 20px var(--disp)}
+.inst .meta span{display:block;color:var(--muted);font-size:14px;margin-top:3px}
+
+/* STEPS */
+.steps3{display:grid;grid-template-columns:repeat(3,1fr);gap:24px}
+.stp{background:var(--card);border:1px solid var(--line);border-radius:20px;padding:34px 28px;box-shadow:var(--shadow-s);transition:transform .25s,border-color .25s}
+.stp:hover{transform:translateY(-6px);border-color:var(--yellow)}
+.stp .n{width:54px;height:54px;border-radius:14px;background:var(--yellow);color:var(--ink);font:800 22px var(--disp);display:grid;place-items:center;margin-bottom:20px}
+.stp h3{font-size:21px;margin-bottom:8px}
+.stp p{color:var(--muted);font-size:14.5px}
+
+/* CTA */
+.cta{background:var(--ink);border-radius:26px;color:#fff;text-align:center;padding:clamp(44px,6vw,74px) 24px}
+.cta h2{color:#fff;font-size:clamp(30px,4.4vw,52px);max-width:18ch;margin:0 auto 16px}
+.cta p{color:rgba(255,255,255,.75);max-width:46ch;margin:0 auto 30px}
+
+/* FOOTER */
+footer{background:var(--cream);border-top:1px solid var(--line);padding:58px 0 30px}
+.foot-grid{display:grid;grid-template-columns:1.5fr 1fr 1fr 1fr;gap:30px}
+.foot-brand .wm{font:800 22px var(--disp)}
+.foot-brand p{color:var(--muted);font-size:14px;margin-top:14px;max-width:250px}
+.foot-brand .c{color:var(--ink-2);font-size:14px;margin-top:8px}
+.foot-col h4{font:700 15px var(--disp);margin-bottom:15px}
+.foot-col a{display:block;color:var(--muted);font-size:14px;margin-bottom:11px;transition:color .15s}
+.foot-col a:hover{color:var(--ink)}
+.foot-bottom{margin-top:34px;padding-top:22px;border-top:1px solid var(--line);display:flex;justify-content:space-between;gap:12px;flex-wrap:wrap;color:var(--muted);font-size:13px}
+
+@media(max-width:960px){
+  .hero-top{grid-template-columns:1fr;gap:28px}
+  .stats-grid{grid-template-columns:1fr 1fr;gap:30px}
+  .course-grid{grid-template-columns:1fr}
+  .benefits-wrap{grid-template-columns:1fr}
+  .benefits-right{min-height:240px;order:-1}
+  .inst-grid{grid-template-columns:1fr 1fr}
+  .steps3{grid-template-columns:1fr}
+  .foot-grid{grid-template-columns:1fr 1fr}
+}
+@media(max-width:700px){
+  section{padding:66px 0}
+  .nav-menu,.nav-right .btn-dark{display:none}
+  .burger{display:flex}
+  .ben-list{grid-template-columns:1fr}
+  .inst-grid{grid-template-columns:1fr}
+  .foot-grid{grid-template-columns:1fr}
+}
+</style>
+</head>
+<body id="top">
+
+<header id="hdr">
+  <div class="wrap nav">
+    <a class="brand" href="#top">
+      <span style="width:38px;height:38px;border-radius:11px;background:var(--yellow);display:grid;place-items:center"><svg width="24" viewBox="0 0 48 48"><path d="M14 34 22 13h4l8 21" fill="none" stroke="#1f1f1f" stroke-width="3.4" stroke-linejoin="round"/><path d="M24 18v3M24 25v3M24 31v2" stroke="#1f1f1f" stroke-width="3" stroke-linecap="round"/></svg></span>
+      <span class="wm">Vialo</span>
+    </a>
+    <nav class="nav-menu">
+      <a href="#apropos">À propos</a>
+      <a href="#formations">Formations</a>
+      <a href="#tarifs">Tarifs</a>
+      <a href="#contact">Contact</a>
+    </nav>
+    <div class="nav-right">
+      <a class="btn btn-dark" href="#contact">Consultation gratuite</a>
+      <button class="burger" id="burger" aria-label="Menu"><span></span><span></span><span></span></button>
+    </div>
+  </div>
+</header>
+
+<div class="mobile" id="mobile">
+  <a href="#apropos">À propos</a>
+  <a href="#formations">Formations</a>
+  <a href="#tarifs">Tarifs</a>
+  <a href="#contact">Contact</a>
+  <a class="btn btn-dark" href="#contact">Consultation gratuite</a>
+</div>
+
+<!-- HERO -->
+<section class="hero">
+  <div class="wrap">
+    <div class="hero-top">
+      <div>
+        <h1 class="reveal in">Prenez le volant en confiance.</h1>
+        <p class="lead reveal in">Nos moniteurs certifiés vous accompagnent à chaque étape de votre apprentissage, dans des voitures récentes.</p>
+        <div class="hero-cta reveal in">
+          <a class="btn btn-dark" href="#contact">Commencer aujourd'hui</a>
+          <div class="hero-avs">
+            <div class="a"><img src="assets/i1.jpg" alt=""><img src="assets/i2.jpg" alt=""><img src="assets/i3.jpg" alt=""></div>
+            <small>1 000+ élèves satisfaits</small>
+          </div>
+        </div>
+      </div>
+      <div class="stat-card reveal d2">
+        <div class="big"><span class="count" data-to="98">0</span>%</div>
+        <div class="lbl">de réussite au 1er passage</div>
+        <div class="row"><p>Rejoignez des milliers d'élèves déjà diplômés avec nous</p>
+          <a class="arrow-btn" href="#contact" aria-label="En savoir plus"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4"><path d="M5 12h14M13 6l6 6-6 6" stroke-linecap="round" stroke-linejoin="round"/></svg></a>
+        </div>
+      </div>
+    </div>
+    <div class="hero-img reveal"><img src="assets/hero.jpg" alt="Conduire avec Vialo"></div>
+  </div>
+</section>
+
+<!-- STATS -->
+<section id="apropos">
+  <div class="wrap"><div class="stats reveal"><div class="wrap">
+    <div class="stats-head">
+      <span class="tag" style="color:#fff;justify-content:center">L'auto-école</span>
+      <h2>Rejoignez les élèves qui ont obtenu leur permis avec nous</h2>
+    </div>
+    <div class="stats-grid">
+      <div><div class="n"><span class="count" data-to="22">0</span></div><div class="l">Moniteurs</div></div>
+      <div><div class="n"><span class="count" data-to="999">0</span></div><div class="l">Élèves formés</div></div>
+      <div><div class="n"><span class="count" data-to="18">0</span></div><div class="l">Voitures récentes</div></div>
+      <div><div class="n"><span class="count" data-to="250">0</span>+</div><div class="l">Avis vérifiés</div></div>
+    </div>
+  </div></div></div>
+</section>
+
+<!-- COURSES -->
+<section id="formations">
+  <div class="wrap">
+    <div class="courses-head reveal">
+      <div><span class="tag">Formations</span><h2 style="margin-top:16px">Tout pour réussir au volant</h2></div>
+      <a class="btn btn-ghost" href="#tarifs">Voir les formations</a>
+    </div>
+    <div class="course-grid">
+      <div class="course reveal d1"><div class="top"><span class="badge">Avancé</span></div><div class="media"><img src="assets/c1.jpg" alt="Conduite défensive"></div><div class="bot"><div><h3>Conduite défensive</h3><p>Anticipez et gérez sereinement les situations à risque sur la route.</p></div><a class="arrow-btn" href="#contact" aria-label="Découvrir"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4"><path d="M5 12h14M13 6l6 6-6 6" stroke-linecap="round" stroke-linejoin="round"/></svg></a></div></div>
+      <div class="course reveal d2"><div class="top"><span class="badge">Débutant</span></div><div class="media"><img src="assets/c2.jpg" alt="Conduite accompagnée"></div><div class="bot"><div><h3>Conduite accompagnée</h3><p>Des leçons progressives pour prendre confiance dès le plus jeune âge.</p></div><a class="arrow-btn" href="#contact" aria-label="Découvrir"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4"><path d="M5 12h14M13 6l6 6-6 6" stroke-linecap="round" stroke-linejoin="round"/></svg></a></div></div>
+      <div class="course reveal d1"><div class="top"><span class="badge">Débutant</span></div><div class="media"><img src="assets/c3.jpg" alt="Premier permis"></div><div class="bot"><div><h3>Premier permis</h3><p>Les techniques essentielles et le code de la route pour bien démarrer.</p></div><a class="arrow-btn" href="#contact" aria-label="Découvrir"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4"><path d="M5 12h14M13 6l6 6-6 6" stroke-linecap="round" stroke-linejoin="round"/></svg></a></div></div>
+      <div class="course reveal d2"><div class="top"><span class="badge">Avancé</span></div><div class="media"><img src="assets/c4.jpg" alt="Conduite de nuit"></div><div class="bot"><div><h3>Conduite de nuit</h3><p>Améliorez votre conduite de nuit et par conditions difficiles.</p></div><a class="arrow-btn" href="#contact" aria-label="Découvrir"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4"><path d="M5 12h14M13 6l6 6-6 6" stroke-linecap="round" stroke-linejoin="round"/></svg></a></div></div>
+    </div>
+  </div>
+</section>
+
+<!-- BENEFITS -->
+<section>
+  <div class="wrap"><div class="benefits-wrap reveal">
+    <div class="benefits-left">
+      <span class="tag">Pourquoi Vialo</span>
+      <h2>Ce qui fait la différence</h2>
+      <ul class="ben-list">
+        <li><span class="ck"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><path d="M5 13l4 4L19 7" stroke-linecap="round" stroke-linejoin="round"/></svg></span> Équipe certifiée</li>
+        <li><span class="ck"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><path d="M5 13l4 4L19 7" stroke-linecap="round" stroke-linejoin="round"/></svg></span> Planning flexible</li>
+        <li><span class="ck"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><path d="M5 13l4 4L19 7" stroke-linecap="round" stroke-linejoin="round"/></svg></span> Voitures récentes</li>
+        <li><span class="ck"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><path d="M5 13l4 4L19 7" stroke-linecap="round" stroke-linejoin="round"/></svg></span> Taux de réussite élevé</li>
+        <li><span class="ck"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><path d="M5 13l4 4L19 7" stroke-linecap="round" stroke-linejoin="round"/></svg></span> Suivi personnalisé</li>
+        <li><span class="ck"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><path d="M5 13l4 4L19 7" stroke-linecap="round" stroke-linejoin="round"/></svg></span> Accompagnement à l'examen</li>
+      </ul>
+      <a class="btn btn-dark" href="#apropos">En savoir plus</a>
+    </div>
+    <div class="benefits-right"><img src="assets/benefits.jpg" alt="Apprendre à conduire avec Vialo"></div>
+  </div></div>
+</section>
+
+<!-- INSTRUCTORS -->
+<section id="moniteurs">
+  <div class="wrap">
+    <div class="inst-head reveal">
+      <div><span class="tag">L'équipe</span><h2 style="margin-top:16px">Des moniteurs qui vous mettent à l'aise</h2></div>
+      <p>Chaque membre de l'équipe apporte calme, expérience et une vraie passion pour aider ses élèves.</p>
+    </div>
+    <div class="inst-grid">
+      <div class="inst reveal d1"><div class="ph"><img src="assets/i1.jpg" alt="Julien Faure"></div><div class="meta"><b>Julien Faure</b><span>Moniteur principal</span></div></div>
+      <div class="inst reveal d2"><div class="ph"><img src="assets/i2.jpg" alt="Sofia Renard"></div><div class="meta"><b>Sofia Renard</b><span>Formatrice conduite défensive</span></div></div>
+      <div class="inst reveal d3"><div class="ph"><img src="assets/i3.jpg" alt="Marc Petit"></div><div class="meta"><b>Marc Petit</b><span>Spécialiste boîte manuelle</span></div></div>
+    </div>
+  </div>
+</section>
+
+<!-- STEPS -->
+<section>
+  <div class="wrap">
+    <div class="courses-head reveal"><div><span class="tag">Déroulement</span><h2 style="margin-top:16px">Votre permis en 3 étapes</h2></div></div>
+    <div class="steps3">
+      <div class="stp reveal d1"><div class="n">01</div><h3>Inscrivez-vous</h3><p>Choisissez votre formule et constituez votre dossier en quelques minutes.</p></div>
+      <div class="stp reveal d2"><div class="n">02</div><h3>Prenez la route</h3><p>Enchaînez les leçons de code et de conduite avec votre moniteur dédié.</p></div>
+      <div class="stp reveal d3"><div class="n">03</div><h3>Décrochez le permis</h3><p>Passez l'examen en confiance, accompagné jusqu'au jour J.</p></div>
+    </div>
+  </div>
+</section>
+
+<!-- TARIFS (CTA) -->
+<section id="tarifs">
+  <div class="wrap"><div class="cta reveal">
+    <span class="tag" style="color:#fff;justify-content:center">Tarifs & inscription</span>
+    <h2 style="margin-top:16px">Prêt à prendre le volant&nbsp;?</h2>
+    <p>Réservez votre consultation gratuite : on évalue votre niveau et on construit ensemble le forfait le plus adapté à votre rythme et votre budget.</p>
+    <div style="display:flex;gap:14px;justify-content:center;flex-wrap:wrap">
+      <a class="btn btn-yellow" href="#contact">Réserver ma consultation gratuite</a>
+      <a class="btn btn-ghost" style="border-color:#fff;color:#fff" href="tel:+33100000000">01&nbsp;00&nbsp;00&nbsp;00&nbsp;00</a>
+    </div>
+  </div></div>
+</section>
+
+<footer id="contact">
+  <div class="wrap">
+    <div class="foot-grid">
+      <div class="foot-brand">
+        <div class="brand"><span style="width:34px;height:34px;border-radius:10px;background:var(--yellow);display:grid;place-items:center"><svg width="22" viewBox="0 0 48 48"><path d="M14 34 22 13h4l8 21" fill="none" stroke="#1f1f1f" stroke-width="3.4" stroke-linejoin="round"/><path d="M24 18v3M24 25v3M24 31v2" stroke="#1f1f1f" stroke-width="3" stroke-linecap="round"/></svg></span><span class="wm">Vialo</span></div>
+        <p>Auto-école moderne. On vous accompagne jusqu'à votre permis, en confiance.</p>
+        <div class="c">Votre adresse — Votre ville</div>
+        <div class="c">contact@vialo.fr</div>
+        <div class="c">01 00 00 00 00</div>
+      </div>
+      <div class="foot-col"><h4>Navigation</h4><a href="#top">Accueil</a><a href="#formations">Formations</a><a href="#apropos">À propos</a><a href="#tarifs">Tarifs</a></div>
+      <div class="foot-col"><h4>Aide</h4><a href="#contact">Contact</a><a href="#moniteurs">Nos moniteurs</a><a href="#">Mentions légales</a></div>
+      <div class="foot-col"><h4>Réseaux</h4><a href="#">Instagram</a><a href="#">Facebook</a><a href="#">WhatsApp</a></div>
+    </div>
+    <div class="foot-bottom">
+      <span>© <span id="yr"></span> Vialo — Auto-école. Tous droits réservés.</span>
+      <span>Site démo — coordonnées à personnaliser.</span>
+    </div>
+  </div>
+</footer>
+
+<script>
+(function(){
+  document.getElementById('yr').textContent=new Date().getFullYear();
+  var hdr=document.getElementById('hdr');
+  function os(){hdr.classList.toggle('solid',window.pageYOffset>24);}
+  window.addEventListener('scroll',os,{passive:true});os();
+  var burger=document.getElementById('burger'),mob=document.getElementById('mobile');
+  burger.addEventListener('click',function(){mob.classList.toggle('open');});
+  mob.querySelectorAll('a').forEach(function(a){a.addEventListener('click',function(){mob.classList.remove('open');});});
+  var io=new IntersectionObserver(function(es){es.forEach(function(e){if(e.isIntersecting){e.target.classList.add('in');io.unobserve(e.target);}});},{threshold:.14});
+  document.querySelectorAll('.reveal:not(.in)').forEach(function(el){io.observe(el);});
+  // counters
+  function animCount(el){var to=+el.dataset.to,dur=1400,t0=null;
+    function step(ts){if(!t0)t0=ts;var p=Math.min((ts-t0)/dur,1);var e=1-Math.pow(1-p,3);
+      el.textContent=Math.round(to*e).toLocaleString('fr-FR');if(p<1)requestAnimationFrame(step);}
+    requestAnimationFrame(step);}
+  var cio=new IntersectionObserver(function(es){es.forEach(function(e){if(e.isIntersecting){animCount(e.target);cio.unobserve(e.target);}});},{threshold:.6});
+  document.querySelectorAll('.count').forEach(function(el){cio.observe(el);});
+})();
+</script>
+</body>
+</html>

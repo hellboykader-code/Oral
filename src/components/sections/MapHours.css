@@ -1,0 +1,79 @@
+.maphours__grid {
+  display: grid;
+  grid-template-columns: 1.3fr 1fr;
+  gap: 1.6rem;
+  align-items: stretch;
+}
+.maphours__map {
+  border-radius: var(--radius-lg);
+  overflow: hidden;
+  min-height: 420px;
+  box-shadow: var(--shadow);
+}
+.maphours__map iframe {
+  width: 100%;
+  height: 100%;
+  min-height: 420px;
+  border: 0;
+  display: block;
+}
+.maphours__panel {
+  background: var(--color-ink);
+  color: var(--color-cream);
+  border-radius: var(--radius-lg);
+  padding: clamp(1.8rem, 4vw, 2.8rem);
+  display: flex;
+  flex-direction: column;
+  gap: 1.4rem;
+}
+.maphours__title {
+  color: var(--color-cream);
+  font-size: var(--fs-h2);
+}
+.maphours__coords {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+.maphours__coords li {
+  display: flex;
+  flex-direction: column;
+  gap: 0.2rem;
+}
+.maphours__label {
+  font-size: 0.78rem;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  color: var(--color-accent);
+}
+.maphours__coords a {
+  color: var(--color-cream);
+  font-size: 1.05rem;
+}
+.maphours__coords a:hover {
+  text-decoration: underline;
+}
+.maphours__hours ul {
+  margin-top: 0.6rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+.maphours__hours li {
+  display: flex;
+  justify-content: space-between;
+  gap: 1rem;
+  font-size: 0.95rem;
+  opacity: 0.9;
+  padding-bottom: 0.5rem;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+}
+.maphours__hours .is-closed {
+  color: var(--color-accent);
+}
+
+@media (max-width: 860px) {
+  .maphours__grid {
+    grid-template-columns: 1fr;
+  }
+}

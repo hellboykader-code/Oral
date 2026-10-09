@@ -1,0 +1,84 @@
+/* ============================================================
+   Design tokens — « Sérène » (reconstruit du modèle Dentiva)
+   Palette douce et chaleureuse : terracotta + sauge + crèmes,
+   texte quasi-noir. Ambiance clean, calme, premium.
+   ============================================================ */
+:root {
+  /* Couleurs de marque (extraites du modèle Dentiva) */
+  --color-ink: #030303;        /* quasi-noir — texte & fonds sombres */
+  --color-ink-soft: #1b1a19;   /* variante sombre */
+  --color-accent: #963f36;     /* terracotta — accent signature */
+  --color-accent-soft: #b9564c;
+  --color-accent-ink: #faf7f5; /* texte sur accent */
+  --color-sage: #6e8568;       /* vert sauge — accent secondaire */
+  --color-mint: #dbf6e9;       /* menthe claire — pastilles/surbrillance */
+  --color-cream: #faf7f5;      /* crème chaude (fond principal) */
+  --color-cream-2: #f2eeec;    /* crème plus soutenue */
+  --color-mist: #f6f7f9;       /* gris très clair */
+  --color-line: #e4ddd8;       /* bordures claires */
+  --color-muted: #6b6560;      /* texte secondaire */
+  --color-white: #ffffff;
+
+  /* Surfaces sémantiques */
+  --bg: var(--color-cream);
+  --bg-elevated: var(--color-white);
+  --bg-invert: var(--color-ink);
+  --text: var(--color-ink);
+  --text-muted: var(--color-muted);
+  --text-invert: var(--color-cream);
+  --border: var(--color-line);
+
+  /* Typographie (polices du modèle Dentiva) */
+  --font-display: 'Red Hat Display', 'Manrope', system-ui, sans-serif;
+  --font-body: 'Inter', system-ui, -apple-system, sans-serif;
+  --font-alt: 'Manrope', system-ui, sans-serif;
+
+  /* Échelle typographique fluide (clamp) */
+  --fs-hero: clamp(2.6rem, 6vw, 5rem);
+  --fs-h1: clamp(2.1rem, 4.4vw, 3.6rem);
+  --fs-h2: clamp(1.7rem, 3.2vw, 2.7rem);
+  --fs-h3: clamp(1.25rem, 1.9vw, 1.6rem);
+  --fs-lead: clamp(1.02rem, 1.35vw, 1.3rem);
+  --fs-body: 1rem;
+  --fs-sm: 0.875rem;
+
+  /* Rythme d'espacement */
+  --space-1: 0.5rem;
+  --space-2: 1rem;
+  --space-3: 1.5rem;
+  --space-4: 2rem;
+  --space-5: 3rem;
+  --space-6: 4rem;
+  --space-7: 6rem;
+  --space-8: 8rem;
+
+  /* Rayons & ombres (plus doux, plus arrondis que Éclat) */
+  --radius-sm: 14px;
+  --radius: 22px;
+  --radius-lg: 32px;
+  --radius-pill: 999px;
+  --shadow-sm: 0 2px 10px rgba(3, 3, 3, 0.05);
+  --shadow: 0 16px 44px rgba(3, 3, 3, 0.08);
+  --shadow-lg: 0 30px 70px rgba(3, 3, 3, 0.12);
+
+  /* Conteneur & mise en page */
+  --container: 1240px;
+  --container-narrow: 900px;
+  --header-h: 74px;
+
+  /* Transitions */
+  --ease-out: cubic-bezier(0.16, 1, 0.3, 1);
+  --ease-in-out: cubic-bezier(0.65, 0, 0.35, 1);
+  --dur-fast: 0.25s;
+  --dur: 0.5s;
+  --dur-slow: 0.8s;
+}
+
+/* Thème sombre (header/footer) : inversion sémantique */
+[data-surface='dark'] {
+  --bg: var(--color-ink);
+  --bg-elevated: var(--color-ink-soft);
+  --text: var(--color-cream);
+  --text-muted: #a8a29c;
+  --border: rgba(255, 255, 255, 0.12);
+}

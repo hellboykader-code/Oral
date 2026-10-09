@@ -1,0 +1,41 @@
+.cta__card {
+  position: relative;
+  overflow: hidden;
+  background: var(--color-ink);
+  color: var(--color-cream);
+  border-radius: var(--radius-lg);
+  padding: clamp(2.5rem, 7vw, 5.5rem);
+  text-align: center;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 1.2rem;
+}
+.cta__card::before {
+  content: '';
+  position: absolute;
+  inset: auto -10% -60% -10%;
+  height: 120%;
+  background: radial-gradient(
+    60% 60% at 50% 100%,
+    rgba(209, 252, 113, 0.28),
+    transparent 70%
+  );
+  pointer-events: none;
+}
+.cta__title {
+  position: relative;
+  color: var(--color-cream);
+  font-size: var(--fs-h1);
+  max-width: 22ch;
+}
+.cta__text {
+  position: relative;
+  color: #a7b0ab;
+  font-size: var(--fs-lead);
+  max-width: 52ch;
+}
+.cta__card > div {
+  position: relative;
+  margin-top: 0.6rem;
+}
