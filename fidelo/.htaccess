@@ -16,6 +16,11 @@ DirectoryIndex accueil.php index.php
 </IfModule>
 
 <IfModule mod_headers.c>
+  # Ne pas révéler la version de PHP au monde (en-tête ajouté par PHP lui-même,
+  # retiré ici au niveau serveur — couvre aussi les 4 pages marketing qui
+  # n'incluent pas lib.php).
+  Header always unset X-Powered-By
+  Header unset X-Powered-By
   Header always set X-Content-Type-Options "nosniff"
   Header always set X-Frame-Options "SAMEORIGIN"
   Header always set Referrer-Policy "strict-origin-when-cross-origin"
@@ -48,6 +53,15 @@ DirectoryIndex accueil.php index.php
     Header always set Cache-Control "no-store, no-cache, must-revalidate, private"
   </IfModule>
 </Files>
+
+# La carte client (points, nom) et l'espace commerçant affichent des données
+# personnelles/business : jamais mis en cache par le navigateur ou un proxy
+# partagé (poste public, réseau boutique).
+<FilesMatch "^(carte|index)\.php$">
+  <IfModule mod_headers.c>
+    Header always set Cache-Control "no-store, private"
+  </IfModule>
+</FilesMatch>
 
 # Bloquer l'accès direct aux fichiers sensibles
 # Le guide d'installation contient l'URL de la console et des identifiants de démo :

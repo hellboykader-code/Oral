@@ -169,6 +169,38 @@ msgseen, subscribe, client_msg`, + endpoint GET `?nfc=<shopId>` (tap NFC →
   rate-limit GET sur lookup promo/join par shortcode, brute-force protection
   IP-only (pas de verrou par compte), WebAuthn sans compteur de signature.
 
+### Scan OWASP ZAP (propriétaire, 9 oct 2026) — 10 alertes passées en revue
+
+- **Corrigé** (`.htaccess`) : en-tête `X-Powered-By` (version PHP) retiré
+  globalement (`Header unset`), y compris sur les 4 pages marketing qui
+  n'incluent pas `lib.php`. `Cache-Control: no-store, private` ajouté sur
+  `carte.php` et `index.php` (données personnelles/business, jamais en cache
+  navigateur/proxy partagé) — même esprit que `console.php`, déjà protégée.
+- **Déjà voulu, pas un bug** : CSP `unsafe-eval` — scopé **uniquement** aux 5
+  pages marketing (`accueil/tarifs/contact/confidentialite/mentions-legales
+  .php`, Babel standalone côté navigateur) ; le reste du site (app
+  commerçant, carte, console, API) garde une CSP stricte sans `unsafe-eval`.
+  `unsafe-inline` (script+style) reste nécessaire tant que l'architecture est
+  en un fichier par page (pas de nonce/refactor prévu). Clé `?k=` de
+  `console.php` : déjà redirigée instantanément vers une URL propre (ne reste
+  jamais dans la barre d'adresse) — ZAP la voit forcément une fois dans sa
+  propre requête de scan, c'est inhérent à tout lien magique de secours.
+- **Non actionnable / faux positif probable** : SRI (Sub Resource Integrity)
+  manquante sur les `<link>` Google Fonts — Google sert un CSS différent par
+  User-Agent, un hash SRI casserait le chargement pour une partie des
+  visiteurs ; Google déconseille officiellement le SRI sur son Fonts API.
+  Aucun autre script/style tiers chargé (vérifié : seul Google Fonts CSS).
+- **Informationnel, aucune action** : « Authentication Request Identified »,
+  « Session Management Response Identified » (ZAP signale juste qu'il a vu un
+  formulaire de connexion / des cookies de session — normal).
+- **À vérifier avec le détail exact de l'alerte** (pas encore vu) :
+  « User Controllable HTML Element Attribute (Potential XSS) ». Revue de code
+  faite sur tous les `$_GET`/`$_POST` reflétés en HTML (`promo`, `p`, `c`,
+  `s`, `j`, `ids`…) : tous filtrés par allow-list regex et/ou échappés via
+  `e()` avant affichage — rien trouvé de concrètement exploitable, mais le
+  scan passif de ZAP marque toute réflexion même échappée. Demander à
+  l'export ZAP (Rapport → HTML/XML) l'URL + paramètre exact pour confirmer.
+
 ## Conventions de travail (établies, à respecter)
 
 - **Toujours tester en isolation** avant de livrer : copier `fidelo/` dans
